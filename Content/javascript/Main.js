@@ -1,0 +1,124 @@
+﻿var viewWidth = 800;
+var viewHeight = 600;
+window.onload = InitializeGameEngine;
+
+var gameViewContext;
+var sprites = [];
+var mouseInfo = { x: 0, y: 0, pressed: false, oldX: 0, oldY: 0, clicked: false };
+var mainLoop = { interval: null, milliseconds: 20 };
+
+
+function InitializeGameEngine() {
+
+    for (var i = 0; i < 4; i++) {
+        for (var j = 0; j < 4; j++) {
+            sprites.push(new Gerbil(100 + j * 32, 300 + i * 32));
+        }
+    }
+    sprites.push(new Wall(0, 540, 800, 60));
+    sprites.push(new Wall(0, 0, 800, 60));
+    sprites.push(new Wall(0, 0, 60, 600));
+    sprites.push(new Wall(740, 0, 60, 600));
+    sprites.push(new Wall(400, 300, 60, 60));
+    sprites.push(new Wall(460, 240, 280, 60));
+
+    //initializeGraphicSheets();
+    var gameView = document.getElementById('gameView');
+
+    gameView.addEventListener("mousedown", onMouseDown, false);
+    gameView.addEventListener("mouseup", onMouseUp, false);
+    gameView.addEventListener("mousemove", onMouseMove, false);
+    gameView.addEventListener("touchstart", onMouseDown, false);
+    gameView.addEventListener("touchmove", onMouseMove, false);
+    gameView.addEventListener("touchend", onMouseUp, false);
+    gameView.oncontextmenu = function (e) { e.preventDefault(); };
+
+    gameView.onmousedown = function (e) {
+        e = e || window.event;
+        mouseInfo.x = e.clientX;
+        mouseInfo.y = e.clientY;
+        mouseInfo.pressed = true;
+        mouseInfo.clicked = true;
+    };
+
+    gameView.onmousemove = function (e) {
+        e = e || window.event;
+        mouseInfo.x = e.clientX;
+        mouseInfo.y = e.clientY;
+    };
+
+    gameView.onmouseup = function (e) { mouseInfo.pressed = false; };
+    gameView.onmouseout = function (e) { mouseInfo.pressed = false; };
+
+    gameView.ontouchstart = function (e) {
+        e = e || window.event;
+        e.preventDefault();
+        var touch = e.touches.item(0);
+        mouseInfo.x = touch.clientX;
+        mouseInfo.y = touch.clientY;
+        mouseInfo.pressed = true;
+        mouseInfo.clicked = true;
+    };
+
+    gameView.ontouchmove = function (e) {
+        e = e || window.event;
+        e.preventDefault();
+        var touch = e.touches.item(0);
+        mouseInfo.x = touch.clientX;
+        mouseInfo.y = touch.clientY;
+        mouseInfo.pressed = true;
+    };
+
+    gameView.ontouchend = function (e) {
+        e = e || window.event;
+        e.preventDefault();
+        mouseInfo.pressed = false;
+    }
+
+    gameViewContext = gameView.getContext('2d');
+    gameViewContext.imageSmoothingEnabled = false;
+    mainLoop.interval = setInterval(pulse, mainLoop.milliseconds);
+}
+
+var debugKeyStep = false;
+function pulse() {
+    MainDrawLoop();
+    //cycleMouseInfo();
+}
+
+var rewinds = [];
+Array.prototype.clone = function () {
+    var ret = [];
+    for (var i = 0; i < this.length; i++) {
+        var obj = {};
+        for (var prop in this[i]) {
+            obj[prop] = this[i][prop];
+        }
+    }
+};
+
+function MainDrawLoop() {
+
+    gameViewContext.clearRect(0, 0, viewWidth, viewHeight);
+    
+    var debugPressed = keyboardState.isKeyPressed(keyboardState.key.M);
+    if (!debugPressed) debugKeyStep = false;
+
+    for (var i = 0; i < sprites.length; i++)
+        if (sprites[i] && sprites[i].active)
+            if (!keyboardState.isKeyPressed(keyboardState.key.Space) || (debugPressed && !debugKeyStep)) {
+                //rewinds.push(sprites.clone());
+                //if (rewinds.length > 10) rewinds.splice(0, 1);
+                sprites[i].executeRules();
+            }
+    for (var i = sprites.length - 1; i > 0; i--)
+        if (sprites[i] && !sprites[i].active)
+            sprites[i].delete();
+    for (var i = 0; i < sprites.length; i++) {
+        sprites[i].prepareDraw();
+        sprites[i].draw();
+    }
+
+    if (debugPressed) debugKeyStep = true;
+}
+
