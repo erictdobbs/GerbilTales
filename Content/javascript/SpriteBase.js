@@ -11,6 +11,8 @@ function SpriteBase(x, y) {
     this.dx = 0;
     this.dy = 0;
 
+    this.weight = 1;
+
     this.spriteClasses = [];
     this.shadowColor = "white";
     this.shadowBlur = 0;
@@ -50,5 +52,42 @@ function SpriteBase(x, y) {
         if (this.getTop() > sprite.getBottom()) return false;
         if (this.getBottom() < sprite.getTop()) return false;
         return true;
+    }
+
+    //this.getRidingSprites = function () {
+    //    var me = this;
+    //    return sprites.filter(function (sprite) {
+    //        return sprite.getBottom() == me.getTop() &&
+    //            sprite.getLeft() < me.getRight() &&
+    //            sprite.getRight() > me.getLeft();
+    //    });
+    //}
+
+    //this.getSupportingSprites = function () {
+    //    var me = this;
+    //    return sprites.filter(function (sprite) {
+    //        return sprite.getTop() == me.getBottom() &&
+    //            sprite.getLeft() < me.getRight() &&
+    //            sprite.getRight() > me.getLeft();
+    //    });
+    //}
+
+    this.getCumulativeRiders = function () {
+        var ret = [];
+        //var riders = this.getRidingSprites();
+        //for (var i = 0; i < riders.length; i++) {
+        //    var supporters = riders[i].getSupportingSprites();
+        //    if (supporters.every()) {
+        //        ret.push(riders[i]);
+        //        var cumulativeRiders = riders[i].getCumulativeRiders
+        //    }
+        //    ret += (riders[i].weight + riders[i].getCumulativeRiders()) / supporters.length;
+        //}
+
+        for (var i = 0; i < sprites.length; i++) if (this === sprites[i].riding) {
+            ret.push(sprites[i]);
+            ret.pushArray(sprites[i].getCumulativeRiders());
+        }
+        return ret.distinct();
     }
 }

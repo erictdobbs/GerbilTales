@@ -10,6 +10,7 @@
 
     this.color = new Color(220, 220, 128, 1.0);
     this.borderColor = new Color(180, 180, 80, 1.0);
+    this.riding = null;
 
     this.isStanding = false;
 
@@ -20,10 +21,13 @@
         this.speedResetCounter -= 1;
         if (this.speedResetCounter <= 0) {
             this.speed = Math.random() + 4;
-            this.speedResetCounter = Math.random() * 100;
+            this.speedResetCounter = 100 + Math.random() * 100;
         }
 
         if (this.moveDirection) this.dx = this.speed * this.moveDirection;
+        //var supportingSprites = this.getSupportingSprites();
+        //for (var i = 0; i < supportingSprites.length; i++) this.dx += supportingSprites[i].dx / supportingSprites.length;
+        //if (Math.abs(this.dx) > 10) this.dx = this.dx < 0 ? -10 : 10;
         this.dx *= .9;
 
         this.blockMovement();
@@ -101,6 +105,7 @@
     }
 
     this.blockMovement = function () {
+        this.riding = null;
         this.isStanding = false;
         for (var i = 0; i < sprites.length; i++) {
             if (sprites[i] == this) continue;
@@ -121,8 +126,12 @@
                 else {
                     if (this.y < sprites[i].y) {
                         this.isStanding = true;
+                        this.riding = sprites[i];
                         this.setBottom(sprites[i].getTop());
                         this.dy = sprites[i].dy;
+                    } else {
+                        if (sprites[i] instanceof Wall) this.setTop(sprites[i].getBottom());
+                        if (this.dy < 0) this.dy = 0;
                     }
                 }
             }

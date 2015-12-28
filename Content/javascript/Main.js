@@ -10,6 +10,11 @@ var mainLoop = { interval: null, milliseconds: 20 };
 
 function InitializeGameEngine() {
 
+    var scale1 = new Scale(680, 300, 60, 60);
+    var scale2 = new Scale(60, 420, 60, 60);
+    scale1.pair(scale2);
+
+    sprites.push(scale1, scale2);
     for (var i = 0; i < 4; i++) {
         for (var j = 0; j < 4; j++) {
             sprites.push(new Gerbil(100 + j * 32, 300 + i * 32));
@@ -19,8 +24,8 @@ function InitializeGameEngine() {
     sprites.push(new Wall(0, 0, 800, 60));
     sprites.push(new Wall(0, 0, 60, 600));
     sprites.push(new Wall(740, 0, 60, 600));
-    sprites.push(new Wall(400, 300, 60, 60));
-    sprites.push(new Wall(460, 240, 280, 60));
+    sprites.push(new Wall(400, 360, 60, 60));
+    sprites.push(new Wall(460, 300, 220, 60));
 
     //initializeGraphicSheets();
     var gameView = document.getElementById('gameView');
@@ -86,29 +91,22 @@ function pulse() {
     //cycleMouseInfo();
 }
 
-var rewinds = [];
-Array.prototype.clone = function () {
-    var ret = [];
-    for (var i = 0; i < this.length; i++) {
-        var obj = {};
-        for (var prop in this[i]) {
-            obj[prop] = this[i][prop];
-        }
-    }
-};
+
+var paused = false;
 
 function MainDrawLoop() {
 
     gameViewContext.clearRect(0, 0, viewWidth, viewHeight);
+
+    if (keyboardState.isKeyPressed(keyboardState.key.P)) paused = false;
+    if (keyboardState.isKeyPressed(keyboardState.key.O)) paused = true;
     
     var debugPressed = keyboardState.isKeyPressed(keyboardState.key.M);
     if (!debugPressed) debugKeyStep = false;
 
     for (var i = 0; i < sprites.length; i++)
         if (sprites[i] && sprites[i].active)
-            if (!keyboardState.isKeyPressed(keyboardState.key.Space) || (debugPressed && !debugKeyStep)) {
-                //rewinds.push(sprites.clone());
-                //if (rewinds.length > 10) rewinds.splice(0, 1);
+            if (!paused || (debugPressed && !debugKeyStep)) {
                 sprites[i].executeRules();
             }
     for (var i = sprites.length - 1; i > 0; i--)
