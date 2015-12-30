@@ -37,6 +37,10 @@ function SpriteBase(x, y) {
         sprites.splice(sprites.indexOf(this), 1);
     }
 
+    this.getIndex = function () {
+        return sprites.indexOf(this);
+    }
+
     this.getTop = function () { return this.y - this.height / 2; }
     this.getBottom = function () { return this.y + this.height/2; }
     this.getLeft = function () { return this.x - this.width / 2; }
@@ -46,6 +50,13 @@ function SpriteBase(x, y) {
     this.setLeft = function (x) { this.x = x + this.width / 2; }
     this.setRight = function (x) { this.x = x - this.width / 2; }
 
+    this.isMouseOver = function () {
+        return mouseX <= this.getRight() &&
+            mouseX >= this.getLeft() &&
+            mouseY <= this.getBottom() &&
+            mouseY >= this.getTop();
+    }
+
     this.doesOverlapSprite = function (sprite) {
         if (this.getLeft() > sprite.getRight()) return false;
         if (this.getRight() < sprite.getLeft()) return false;
@@ -54,36 +65,44 @@ function SpriteBase(x, y) {
         return true;
     }
 
-    //this.getRidingSprites = function () {
-    //    var me = this;
-    //    return sprites.filter(function (sprite) {
-    //        return sprite.getBottom() == me.getTop() &&
-    //            sprite.getLeft() < me.getRight() &&
-    //            sprite.getRight() > me.getLeft();
-    //    });
-    //}
-
-    //this.getSupportingSprites = function () {
-    //    var me = this;
-    //    return sprites.filter(function (sprite) {
-    //        return sprite.getTop() == me.getBottom() &&
-    //            sprite.getLeft() < me.getRight() &&
-    //            sprite.getRight() > me.getLeft();
-    //    });
-    //}
+    this.blockMovement = function (lockHorizontal) {
+        this.riding = null;
+        this.isStanding = false;
+        for (var i = 0; i < sprites.length; i++) {
+            if (sprites[i] == this) continue;
+            if (this.doesOverlapSprite(sprites[i])) {
+                var xOff = this.x - sprites[i].x;
+                var yOff = this.y - sprites[i].y;
+                var blockedHoriz = Math.abs(xOff) + (sprites[i].height - sprites[i].width) / 2 >= Math.abs(yOff);
+                if (blockedHoriz) {
+                    if (lockHorizontal) continue;
+                    if (this.x > sprites[i].x) {
+                        if (this.dx < 0) this.dx = 0;
+                        this.setLeft(sprites[i].getRight());
+                    }
+                    else {
+                        if (this.dx > 0) this.dx = 0;
+                        this.setRight(sprites[i].getLeft());
+                    }
+                }
+                else {
+                    if (keyboardState.isKeyPressed(keyboardState.key.S) && sprites[i] instanceof Gerbil && this instanceof Gerbil) continue;
+                    if (this.y < sprites[i].y) {
+                        this.isStanding = true;
+                        this.riding = sprites[i];
+                        this.setBottom(sprites[i].getTop());
+                        this.dy = sprites[i].dy;
+                    } else {
+                        if (sprites[i] instanceof Wall || sprites[i] instanceof Scale) this.setTop(sprites[i].getBottom());
+                        if (this.dy < 0) this.dy = 0;
+                    }
+                }
+            }
+        }
+    }
 
     this.getCumulativeRiders = function () {
         var ret = [];
-        //var riders = this.getRidingSprites();
-        //for (var i = 0; i < riders.length; i++) {
-        //    var supporters = riders[i].getSupportingSprites();
-        //    if (supporters.every()) {
-        //        ret.push(riders[i]);
-        //        var cumulativeRiders = riders[i].getCumulativeRiders
-        //    }
-        //    ret += (riders[i].weight + riders[i].getCumulativeRiders()) / supporters.length;
-        //}
-
         for (var i = 0; i < sprites.length; i++) if (this === sprites[i].riding) {
             ret.push(sprites[i]);
             ret.pushArray(sprites[i].getCumulativeRiders());

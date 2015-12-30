@@ -5,6 +5,10 @@ Array.prototype.distinct = function () {
     return me.filter(function (value, index) { return me.indexOf(value) == index });
 };
 
+Array.prototype.any = function (func) {
+    return this.filter(func).length > 0;
+};
+
 // Also some other array extensions
 
 Array.prototype.pushArray = function () {

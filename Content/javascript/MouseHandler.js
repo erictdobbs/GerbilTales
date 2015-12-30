@@ -20,7 +20,6 @@ function onMouseDown(e) {
         mouseX = x;
         mouseY = y;
     }
-
 }
 
 function onMouseUp(e) {

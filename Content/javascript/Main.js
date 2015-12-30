@@ -10,12 +10,13 @@ var mainLoop = { interval: null, milliseconds: 20 };
 
 function InitializeGameEngine() {
 
-    var scale1 = new Scale(680, 300, 60, 60);
+    var scale1 = new Scale(680, 240, 60, 60);
     var scale2 = new Scale(60, 420, 60, 60);
     scale1.pair(scale2);
 
     sprites.push(scale1, scale2);
-    for (var i = 0; i < 4; i++) {
+
+    for (var i = 0; i < 2; i++) {
         for (var j = 0; j < 4; j++) {
             sprites.push(new Gerbil(100 + j * 32, 300 + i * 32));
         }
@@ -24,8 +25,14 @@ function InitializeGameEngine() {
     sprites.push(new Wall(0, 0, 800, 60));
     sprites.push(new Wall(0, 0, 60, 600));
     sprites.push(new Wall(740, 0, 60, 600));
-    sprites.push(new Wall(400, 360, 60, 60));
-    sprites.push(new Wall(460, 300, 220, 60));
+    sprites.push(new Wall(400, 180, 60, 120));
+    sprites.push(new Wall(400, 300, 280, 60));
+    sprites.push(new Wall(120, 420, 60, 120));
+
+    var wheel = new Wheel(680, 480, 100);
+    sprites.push(wheel);
+
+    sprites.push(new Fan(340, 520, 60, 20, wheel));
 
     //initializeGraphicSheets();
     var gameView = document.getElementById('gameView');
