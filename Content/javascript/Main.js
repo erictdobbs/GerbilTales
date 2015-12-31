@@ -7,7 +7,6 @@ var sprites = [];
 var mouseInfo = { x: 0, y: 0, pressed: false, oldX: 0, oldY: 0, clicked: false };
 var mainLoop = { interval: null, milliseconds: 20 };
 
-
 function InitializeGameEngine() {
 
     var scale1 = new Scale(680, 240, 60, 60);
@@ -119,6 +118,9 @@ function MainDrawLoop() {
     for (var i = sprites.length - 1; i > 0; i--)
         if (sprites[i] && !sprites[i].active)
             sprites[i].delete();
+
+    camera.updateCamera();
+
     for (var i = 0; i < sprites.length; i++) {
         sprites[i].prepareDraw();
         sprites[i].draw();

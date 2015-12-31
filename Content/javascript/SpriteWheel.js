@@ -11,6 +11,8 @@
     this.isClicked = false;
 
     this.executeRules = function () {
+        this.cameraFocus = (this.runners.length > 0);
+
         if (!this.isClicked && keyboardState.isKeyPressed(keyboardState.key.S) && this.runners.length > 0) {
             this.isClicked = true;
             this.runners[0].wheel = null;
@@ -68,7 +70,7 @@
         gameViewContext.fillStyle = this.color.toString();
         gameViewContext.strokeStyle = this.borderColor.toString();
         gameViewContext.beginPath();
-        gameViewContext.arc(this.x, this.y, this.width/2, 0, 2 * Math.PI);
+        this.camera.arc(this.x, this.y, this.width / 2, 0, 2 * Math.PI);
         //gameViewContext.fill();
         gameViewContext.stroke();
 
@@ -80,7 +82,7 @@
 
         gameViewContext.font = "20px monospace";
         gameViewContext.fillStyle = this.borderColor.toString();
-        gameViewContext.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
+        this.camera.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
     }
 }
 Wheel.prototype = new SpriteBase();

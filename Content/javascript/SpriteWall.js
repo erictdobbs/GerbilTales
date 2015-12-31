@@ -11,14 +11,14 @@
 
     this.draw = function () {
         gameViewContext.fillStyle = this.color.toString();
-        gameViewContext.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
+        this.camera.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
         gameViewContext.strokeStyle = this.borderColor.toString();
         gameViewContext.lineWidth = 3;
-        gameViewContext.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
+        this.camera.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
 
         gameViewContext.font = "20px monospace";
         gameViewContext.fillStyle = this.borderColor.toString();
-        gameViewContext.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
+        this.camera.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
     }
 }
 Wall.prototype = new SpriteBase();

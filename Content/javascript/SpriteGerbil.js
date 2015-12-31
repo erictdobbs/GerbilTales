@@ -1,8 +1,31 @@
-﻿function Gerbil(x, y) {
+﻿function GerbilX() {
+    var numGerbils = 0;
+    var xSum = 0;
+    for (var i = 0; i < sprites.length; i++) if (sprites[i] instanceof Gerbil && sprites[i].wheel == null) {
+        numGerbils++;
+        xSum += sprites[i].x;
+    }
+    var center = xSum / numGerbils;
+    return center;
+}
+function GerbilY() {
+    var numGerbils = 0;
+    var ySum = 0;
+    for (var i = 0; i < sprites.length; i++) if (sprites[i] instanceof Gerbil && sprites[i].wheel == null) {
+        numGerbils++;
+        ySum += sprites[i].y;
+    }
+    var center = ySum / numGerbils;
+    return center;
+}
+
+function Gerbil(x, y) {
     SpriteBase.call(this, x, y);
 
     this.speed = Math.random() + 4;
     this.speedResetCounter = 0;
+
+    this.cameraFocus = true;
 
     this.moveDirection = 0;
     this.climbCooldownTimer = 0;
@@ -17,9 +40,9 @@
 
     this.executeRules = function () {
         this.handleInput();
+        this.cameraFocus = (this.wheel === null);
 
-        if (this.wheel) {
-        } else {
+        if (!this.wheel) {
             this.dy += 0.4;
 
             this.speedResetCounter -= 1;
@@ -44,13 +67,7 @@
         if (keyboardState.isKeyPressed(keyboardState.key.A)) this.moveDirection = -1;
         else if (keyboardState.isKeyPressed(keyboardState.key.D)) this.moveDirection = 1;
         else if (keyboardState.isKeyPressed(keyboardState.key.W)) {
-            var numGerbils = 0;
-            var xSum = 0;
-            for (var i = 0; i < sprites.length; i++) if (sprites[i] instanceof Gerbil && sprites[i].wheel == null) {
-                numGerbils++;
-                xSum += sprites[i].x;
-            }
-            var center = xSum / numGerbils;
+            var center = sprites.filter(function (obj) { return obj instanceof Gerbil && obj.wheel == null; }).map(function (obj) { return obj.x; }).average();
             this.moveDirection = (center - this.x) / 10;
             if (Math.abs(this.moveDirection) > 1) this.moveDirection = this.moveDirection / Math.abs(this.moveDirection);
         }
@@ -60,14 +77,14 @@
         this.color.b = 128 + this.climbCounter * 2;
         if (this.climbCooldownTimer > 0) this.color.b = 255;
         gameViewContext.fillStyle = this.color.toString();
-        gameViewContext.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
+        this.camera.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
         gameViewContext.strokeStyle = this.borderColor.toString();
         gameViewContext.lineWidth = 3;
-        gameViewContext.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
+        this.camera.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
 
         gameViewContext.font = "12px monospace";
         gameViewContext.fillStyle = this.borderColor.toString();
-        gameViewContext.fillText(sprites.indexOf(this), this.x - 7, this.y + 5);
+        this.camera.fillText(sprites.indexOf(this), this.x - 7, this.y + 5);
     }
 
     this.climb = function () {

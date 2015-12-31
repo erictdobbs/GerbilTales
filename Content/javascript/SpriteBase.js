@@ -1,7 +1,12 @@
 ﻿var drawHitboxes = false;
 
+var camera = new Camera(400, 300);
+
 function SpriteBase(x, y) {
+    this.camera = camera;
     this.active = true;
+
+    this.cameraFocus = false;
 
     this.x = x;
     this.y = y;

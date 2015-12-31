@@ -13,6 +13,7 @@
     this.borderColor = new Color(80, 80, 80, 1.0);
 
     this.executeRules = function () {
+        this.cameraFocus = this.powerSource.cameraFocus;
         for (var i = 0; i < sprites.length; i++) {
             if (sprites[i] instanceof Gerbil) {
                 if (sprites[i].getBottom() <= this.getTop() &&
@@ -37,14 +38,14 @@
 
     this.draw = function () {
         gameViewContext.fillStyle = this.color.toString();
-        gameViewContext.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
+        this.camera.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
         gameViewContext.strokeStyle = this.borderColor.toString();
         gameViewContext.lineWidth = 3;
-        gameViewContext.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
+        this.camera.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
 
         gameViewContext.font = "20px monospace";
         gameViewContext.fillStyle = this.borderColor.toString();
-        gameViewContext.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
+        this.camera.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
 
         for (var i = 0; i < this.fanParticles.length; i++) this.fanParticles[i].draw();
     }
@@ -72,6 +73,6 @@ function FanParticle(fan, x, y) {
         if (alpha > 1.0) alpha = 1.0;
         this.color = new Color(fanColor.r, fanColor.g, fanColor.b, alpha);
         gameViewContext.strokeStyle = this.color.toString();
-        gameViewContext.strokeRect(this.fan.getLeft() + this.x, this.fan.getTop() - this.y, 1, 1);
+        this.fan.camera.strokeRect(this.fan.getLeft() + this.x, this.fan.getTop() - this.y, 1, 1);
     }
 }

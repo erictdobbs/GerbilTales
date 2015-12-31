@@ -27,6 +27,17 @@
         var pairSumWeight = 0;
         for (var i = 0; i < pairRiders.length; i++) pairSumWeight += pairRiders[i].weight;
 
+        if (riders.length > 0 || pairRiders.length > 0) {
+            this.paired.cameraFocus = true;
+            this.cameraFocus = true;
+            this.cameraCounter = 50;
+        }
+        this.cameraCounter -= 1;
+        if (this.cameraCounter < 0) {
+            this.paired.cameraFocus = false;
+            this.cameraFocus = false;
+        }
+
         this.ridingWeight = sumWeight;
         this.targetDy = (sumWeight - pairSumWeight) / 10;
         var rewinding = false;
@@ -55,20 +66,20 @@
 
     this.draw = function () {
         gameViewContext.fillStyle = this.color.toString();
-        gameViewContext.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
+        this.camera.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
         gameViewContext.strokeStyle = this.borderColor.toString();
         gameViewContext.lineWidth = 3;
-        gameViewContext.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
+        this.camera.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
 
         gameViewContext.font = "20px monospace";
         gameViewContext.fillStyle = this.borderColor.toString();
-        gameViewContext.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
+        this.camera.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
 
         var drawX = this.x;
         var drawY = this.getTop() - 30;
         if (!this.paired || (this.paired && this.paired.x > this.x)) {
             while (drawY > this.minY) {
-                gameViewContext.strokeRect(drawX - 6, drawY - 6, 12, 12);
+                this.camera.strokeRect(drawX - 6, drawY - 6, 12, 12);
                 drawY -= 30;
             }
         }
@@ -76,13 +87,13 @@
             drawX += (this.minY - drawY);
             drawY = this.minY;
             while (drawX < this.paired.x) {
-                gameViewContext.strokeRect(drawX - 6, drawY - 6, 12, 12);
+                this.camera.strokeRect(drawX - 6, drawY - 6, 12, 12);
                 drawX += 30;
             }
             drawY += (drawX - this.paired.x);
             drawX = this.paired.x;
             while (drawY < this.paired.getTop()) {
-                gameViewContext.strokeRect(drawX - 6, drawY - 6, 12, 12);
+                this.camera.strokeRect(drawX - 6, drawY - 6, 12, 12);
                 drawY += 30;
             }
         }
