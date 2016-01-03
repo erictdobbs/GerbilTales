@@ -2,6 +2,8 @@
 var viewHeight = 600;
 window.onload = InitializeGameEngine;
 
+var debugMode = false;
+
 var gameViewContext;
 var sprites = [];
 var mouseInfo = { x: 0, y: 0, pressed: false, oldX: 0, oldY: 0, clicked: false };
@@ -121,6 +123,9 @@ function MainDrawLoop() {
 
     camera.updateCamera();
 
+    for (var i = 0; i < sprites.length; i++) {
+        camera.drawPowerConnection(sprites[i]);
+    }
     for (var i = 0; i < sprites.length; i++) {
         sprites[i].prepareDraw();
         sprites[i].draw();

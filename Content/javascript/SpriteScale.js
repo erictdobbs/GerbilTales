@@ -71,9 +71,11 @@
         gameViewContext.lineWidth = 3;
         this.camera.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
 
-        gameViewContext.font = "20px monospace";
-        gameViewContext.fillStyle = this.borderColor.toString();
-        this.camera.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
+        if (debugMode) {
+            gameViewContext.font = "20px monospace";
+            gameViewContext.fillStyle = this.borderColor.toString();
+            this.camera.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
+        }
 
         var drawX = this.x;
         var drawY = this.getTop() - 30;

@@ -24,7 +24,7 @@ function Gerbil(x, y) {
 
     this.speed = Math.random() + 4;
     this.speedResetCounter = 0;
-
+    this.frameCount = 0;
     this.cameraFocus = true;
 
     this.moveDirection = 0;
@@ -73,18 +73,38 @@ function Gerbil(x, y) {
         }
     }
 
+    this.imageSource = document.getElementById("Gerbil");
     this.draw = function () {
-        this.color.b = 128 + this.climbCounter * 2;
-        if (this.climbCooldownTimer > 0) this.color.b = 255;
-        gameViewContext.fillStyle = this.color.toString();
-        this.camera.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
-        gameViewContext.strokeStyle = this.borderColor.toString();
-        gameViewContext.lineWidth = 3;
-        this.camera.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
+        this.frameCount++;
+        //this.color.b = 128 + this.climbCounter * 2;
+        //if (this.climbCooldownTimer > 0) this.color.b = 255;
+        //gameViewContext.fillStyle = this.color.toString();
+        //this.camera.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
+        //gameViewContext.strokeStyle = this.borderColor.toString();
+        //gameViewContext.lineWidth = 3;
+        //this.camera.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
 
-        gameViewContext.font = "12px monospace";
-        gameViewContext.fillStyle = this.borderColor.toString();
-        this.camera.fillText(sprites.indexOf(this), this.x - 7, this.y + 5);
+        //gameViewContext.font = "12px monospace";
+        //gameViewContext.fillStyle = this.borderColor.toString();
+        //this.camera.fillText(sprites.indexOf(this), this.x - 7, this.y + 5);
+        if (this.wheel != null) {
+            if (this.frameCount % 10 < 5)
+                this.camera.drawImage(this.imageSource, 16, 16, 16, 16, this.getLeft(), this.getTop(), this.width, this.height);
+            else
+                this.camera.drawImage(this.imageSource, 32, 16, 16, 16, this.getLeft(), this.getTop(), this.width, this.height);
+        } else if (this.moveDirection < 0) {
+            if (this.frameCount % 10 < 5)
+                this.camera.drawImage(this.imageSource, 16, 0, 16, 16, this.getLeft(), this.getTop(), this.width, this.height);
+            else
+                this.camera.drawImage(this.imageSource, 32, 0, 16, 16, this.getLeft(), this.getTop(), this.width, this.height);
+        } else if (this.moveDirection > 0) {
+            if (this.frameCount % 10 < 5)
+                this.camera.drawImage(this.imageSource, 16, 16, 16, 16, this.getLeft(), this.getTop(), this.width, this.height);
+            else
+                this.camera.drawImage(this.imageSource, 32, 16, 16, 16, this.getLeft(), this.getTop(), this.width, this.height);
+        } else {
+            this.camera.drawImage(this.imageSource, 0, 0, 16, 16, this.getLeft(), this.getTop(), this.width, this.height);
+        }
     }
 
     this.climb = function () {
@@ -97,30 +117,22 @@ function Gerbil(x, y) {
         if (isMouseClicked && this.y < mouseY) return;
 
         var isClimbing = false;
-        if (this.moveDirection < 0) {
+
+        if (keyboardState.isKeyPressed(keyboardState.key.W))
             for (var i = 0; i < sprites.length; i++) {
                 if (sprites[i] == this) continue;
+                if (!sprites[i].solid) continue;
                 if (keyboardState.isKeyPressed(keyboardState.key.S) && sprites[i] instanceof Gerbil) continue;
-                if (Math.abs(this.getLeft() - sprites[i].getRight()) < 10 && this.y < sprites[i].getBottom() && this.getBottom() > sprites[i].getTop()) {
+                var horizClose = (this.moveDirection < 0 && Math.abs(this.getLeft() - sprites[i].getRight()) < 10) ||
+                                 (this.moveDirection > 0 && Math.abs(this.getRight() - sprites[i].getLeft()) < 10)
+
+                if (horizClose && this.y < sprites[i].getBottom() && this.getBottom() > sprites[i].getTop()) {
                     if (sprites[i].isStanding === false) continue;
                     this.dy = sprites[i].dy - (60 - this.climbCounter) / 20;
                     if (this.dy < -5) this.dy = -5;
                     isClimbing = true;
                 }
             }
-        }
-        if (this.moveDirection > 0) {
-            for (var i = 0; i < sprites.length; i++) {
-                if (sprites[i] == this) continue;
-                if (keyboardState.isKeyPressed(keyboardState.key.S) && sprites[i] instanceof Gerbil) continue;
-                if (Math.abs(this.getRight() - sprites[i].getLeft()) < 10 && this.y < sprites[i].getBottom() && this.getBottom() > sprites[i].getTop()) {
-                    if (sprites[i].isStanding === false) continue;
-                    this.dy = sprites[i].dy - (60 - this.climbCounter) / 20;
-                    if (this.dy < -5) this.dy = -5;
-                    isClimbing = true;
-                }
-            }
-        }
 
         if (isClimbing) this.climbCounter += 1;
         if (this.climbCounter > 60) {

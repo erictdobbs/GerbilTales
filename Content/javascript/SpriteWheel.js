@@ -5,40 +5,52 @@
     this.maxRunners = 3;
     this.runners = [];
     this.power = 0;
-    
-    this.color = new Color(192, 192, 128, 0.7);
+    this.solid = false;
+
+    this.unpoweredColor = new Color(255, 64, 64, 0.7);
+    this.poweredColor = new Color(64, 255, 64, 0.7);
     this.borderColor = new Color(100, 100, 80, 1.0);
-    this.isClicked = false;
+    this.downPressed = false;
+    this.upPressed = false;
 
     this.executeRules = function () {
         this.cameraFocus = (this.runners.length > 0);
 
-        if (!this.isClicked && keyboardState.isKeyPressed(keyboardState.key.S) && this.runners.length > 0) {
-            this.isClicked = true;
+        if (!this.downPressed && keyboardState.isKeyPressed(keyboardState.key.S) && this.runners.length > 0) {
+            this.downPressed = true;
             this.runners[0].wheel = null;
+            this.runners[0].solid = true;
             this.runners[0].setRight(this.getLeft() - 1);
             this.runners[0].dx = -3;
             this.runners.splice(0, 1);
         }
         if (!keyboardState.isKeyPressed(keyboardState.key.S)) {
-            this.isClicked = false;
+            this.downPressed = false;
         }
 
         for (var i = 0; i < this.runners.length; i++) this.updateRunner(this.runners[i]);
         this.power += this.runners.length * 0.0003;
         if (this.power > this.runners.length / this.maxRunners) this.power = this.runners.length / this.maxRunners;
-        for (var i = 0; i < sprites.length; i++) {
-            if (sprites[i] instanceof Gerbil && this.doesOverlapSprite(sprites[i])) {
-                if (sprites[i].wheel == null && this.runners.length < this.maxRunners) {
-                    this.runners.push(sprites[i]);
-                    sprites[i].x = this.x + (Math.random() - 0.5) * this.width / 3;
-                    sprites[i].y = this.y;
-                    sprites[i].dx = 0.2;
-                    sprites[i].dy = 0;
-                    sprites[i].wheel = this;
-                    return;
+
+        if (!this.upPressed && keyboardState.isKeyPressed(keyboardState.key.W)) {
+            this.upPressed = true;
+            for (var i = 0; i < sprites.length; i++) {
+                if (sprites[i] instanceof Gerbil && this.doesOverlapSprite(sprites[i])) {
+                    if (sprites[i].wheel == null && this.runners.length < this.maxRunners) {
+                        this.runners.push(sprites[i]);
+                        sprites[i].x = this.x + (Math.random() - 0.5) * this.width / 3;
+                        sprites[i].y = this.y;
+                        sprites[i].dx = 0.2;
+                        sprites[i].dy = 0;
+                        sprites[i].wheel = this;
+                        sprites[i].solid = false;
+                        return;
+                    }
                 }
             }
+        }
+        if (!keyboardState.isKeyPressed(keyboardState.key.W)) {
+            this.upPressed = false;
         }
     };
 
@@ -66,23 +78,40 @@
         runner.dy += 0.4;
     }
 
+    this.baseTheta = 0;
     this.draw = function () {
-        gameViewContext.fillStyle = this.color.toString();
         gameViewContext.strokeStyle = this.borderColor.toString();
+        gameViewContext.fillStyle = this.borderColor.toString();
         gameViewContext.beginPath();
         this.camera.arc(this.x, this.y, this.width / 2, 0, 2 * Math.PI);
-        //gameViewContext.fill();
         gameViewContext.stroke();
+        gameViewContext.beginPath();
+        this.camera.arc(this.x, this.y, 8, 0, 2 * Math.PI);
+        gameViewContext.fill();
 
-        //gameViewContext.fillStyle = this.color.toString();
-        //gameViewContext.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
-        //gameViewContext.strokeStyle = this.borderColor.toString();
-        //gameViewContext.lineWidth = 3;
-        //gameViewContext.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
+        this.baseTheta += this.power / 10;
+        for (var i = 0; i < this.maxRunners; i++) {
+            var thetaStart = i * 2 * Math.PI / this.maxRunners + this.baseTheta;
+            var arcLength = 2 * Math.PI / this.maxRunners - 0.1;
+            gameViewContext.strokeStyle = this.unpoweredColor.toString();
+            gameViewContext.beginPath();
+            this.camera.arc(this.x, this.y, 5 + this.width / 2, thetaStart, thetaStart + arcLength);
+            gameViewContext.stroke();
+            if (this.power > i / this.maxRunners) {
+                var powerSlice = (this.power - i / this.maxRunners) * this.maxRunners;
+                if (powerSlice > 1) powerSlice = 1;
+                gameViewContext.strokeStyle = this.poweredColor.toString();
+                gameViewContext.beginPath();
+                this.camera.arc(this.x, this.y, 5 + this.width / 2, thetaStart, thetaStart + arcLength * powerSlice);
+                gameViewContext.stroke();
+            }
+        }
 
-        gameViewContext.font = "20px monospace";
-        gameViewContext.fillStyle = this.borderColor.toString();
-        this.camera.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
+        if (debugMode) {
+            gameViewContext.font = "20px monospace";
+            gameViewContext.fillStyle = this.borderColor.toString();
+            this.camera.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
+        }
     }
 }
 Wheel.prototype = new SpriteBase();

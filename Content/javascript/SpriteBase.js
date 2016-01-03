@@ -5,6 +5,7 @@ var camera = new Camera(400, 300);
 function SpriteBase(x, y) {
     this.camera = camera;
     this.active = true;
+    this.solid = true;
 
     this.cameraFocus = false;
 
@@ -75,6 +76,7 @@ function SpriteBase(x, y) {
         this.isStanding = false;
         for (var i = 0; i < sprites.length; i++) {
             if (sprites[i] == this) continue;
+            if (!sprites[i].solid) continue;
             if (this.doesOverlapSprite(sprites[i])) {
                 var xOff = this.x - sprites[i].x;
                 var yOff = this.y - sprites[i].y;
