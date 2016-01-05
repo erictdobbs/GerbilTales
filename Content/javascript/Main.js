@@ -17,6 +17,9 @@ function InitializeGameEngine() {
 
     sprites.push(scale1, scale2);
 
+    var button = new Button(240, 535, 60, 5);
+    sprites.push(button);
+
     for (var i = 0; i < 2; i++) {
         for (var j = 0; j < 4; j++) {
             sprites.push(new Gerbil(100 + j * 32, 300 + i * 32));
@@ -26,16 +29,22 @@ function InitializeGameEngine() {
     sprites.push(new Wall(0, 0, 800, 60));
     sprites.push(new Wall(0, 0, 60, 600));
     sprites.push(new Wall(740, 0, 60, 600));
-    sprites.push(new Wall(400, 180, 60, 120));
-    sprites.push(new Wall(400, 300, 280, 60));
+    sprites.push(new Wall(460, 240, 60, 60));
+    sprites.push(new Wall(460, 300, 220, 60));
     sprites.push(new Wall(120, 420, 60, 120));
+
+
+    sprites.push(new Wall(120, 180, 120, 60));
+    var cell = new Cell(120, 120, 120, 60, button)
+    cell.addCaptive(sprites[4]);
+    cell.addCaptive(sprites[5]);
+    sprites.push(cell);
 
     var wheel = new Wheel(680, 480, 100);
     sprites.push(wheel);
 
-    sprites.push(new Fan(340, 520, 60, 20, wheel));
+    sprites.push(new Fan(400, 520, 60, 20, wheel));
 
-    //initializeGraphicSheets();
     var gameView = document.getElementById('gameView');
 
     gameView.addEventListener("mousedown", onMouseDown, false);

@@ -1,7 +1,7 @@
 ﻿function GerbilX() {
     var numGerbils = 0;
     var xSum = 0;
-    for (var i = 0; i < sprites.length; i++) if (sprites[i] instanceof Gerbil && sprites[i].wheel == null) {
+    for (var i = 0; i < sprites.length; i++) if (sprites[i] instanceof Gerbil && sprites[i].container == null) {
         numGerbils++;
         xSum += sprites[i].x;
     }
@@ -11,7 +11,7 @@
 function GerbilY() {
     var numGerbils = 0;
     var ySum = 0;
-    for (var i = 0; i < sprites.length; i++) if (sprites[i] instanceof Gerbil && sprites[i].wheel == null) {
+    for (var i = 0; i < sprites.length; i++) if (sprites[i] instanceof Gerbil && sprites[i].container == null) {
         numGerbils++;
         ySum += sprites[i].y;
     }
@@ -34,15 +34,15 @@ function Gerbil(x, y) {
     this.color = new Color(192, 192, 128, 1.0);
     this.borderColor = new Color(100, 100, 80, 1.0);
     this.riding = null;
-    this.wheel = null;
+    this.container = null;
 
     this.isStanding = false;
 
     this.executeRules = function () {
         this.handleInput();
-        this.cameraFocus = (this.wheel === null);
+        this.cameraFocus = (this.container === null);
 
-        if (!this.wheel) {
+        if (!this.container || this.container instanceof Cell) {
             this.dy += 0.4;
 
             this.speedResetCounter -= 1;
@@ -67,7 +67,7 @@ function Gerbil(x, y) {
         if (keyboardState.isKeyPressed(keyboardState.key.A)) this.moveDirection = -1;
         else if (keyboardState.isKeyPressed(keyboardState.key.D)) this.moveDirection = 1;
         else if (keyboardState.isKeyPressed(keyboardState.key.W)) {
-            var center = sprites.filter(function (obj) { return obj instanceof Gerbil && obj.wheel == null; }).map(function (obj) { return obj.x; }).average();
+            var center = sprites.filter(function (obj) { return obj instanceof Gerbil && obj.container == null; }).map(function (obj) { return obj.x; }).average();
             this.moveDirection = (center - this.x) / 10;
             if (Math.abs(this.moveDirection) > 1) this.moveDirection = this.moveDirection / Math.abs(this.moveDirection);
         }
@@ -87,7 +87,7 @@ function Gerbil(x, y) {
         //gameViewContext.font = "12px monospace";
         //gameViewContext.fillStyle = this.borderColor.toString();
         //this.camera.fillText(sprites.indexOf(this), this.x - 7, this.y + 5);
-        if (this.wheel != null) {
+        if (this.container != null && this.container instanceof Wheel) {
             if (this.frameCount % 10 < 5)
                 this.camera.drawImage(this.imageSource, 16, 16, 16, 16, this.getLeft(), this.getTop(), this.width, this.height);
             else

@@ -76,6 +76,7 @@ function SpriteBase(x, y) {
         this.isStanding = false;
         for (var i = 0; i < sprites.length; i++) {
             if (sprites[i] == this) continue;
+            if (sprites[i] == this.container) continue;
             if (!sprites[i].solid) continue;
             if (this.doesOverlapSprite(sprites[i])) {
                 var xOff = this.x - sprites[i].x;

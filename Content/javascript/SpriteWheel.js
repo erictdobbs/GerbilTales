@@ -18,9 +18,8 @@
 
         if (!this.downPressed && keyboardState.isKeyPressed(keyboardState.key.S) && this.runners.length > 0) {
             this.downPressed = true;
-            this.runners[0].wheel = null;
+            this.runners[0].container = null;
             this.runners[0].solid = true;
-            this.runners[0].setRight(this.getLeft() - 1);
             this.runners[0].dx = -3;
             this.runners.splice(0, 1);
         }
@@ -36,13 +35,10 @@
             this.upPressed = true;
             for (var i = 0; i < sprites.length; i++) {
                 if (sprites[i] instanceof Gerbil && this.doesOverlapSprite(sprites[i])) {
-                    if (sprites[i].wheel == null && this.runners.length < this.maxRunners) {
+                    if (sprites[i].container == null) {
                         this.runners.push(sprites[i]);
-                        sprites[i].x = this.x + (Math.random() - 0.5) * this.width / 3;
-                        sprites[i].y = this.y;
-                        sprites[i].dx = 0.2;
-                        sprites[i].dy = 0;
-                        sprites[i].wheel = this;
+                        sprites[i].container = this;
+                        sprites[i].riding = this;
                         sprites[i].solid = false;
                         return;
                     }
@@ -65,7 +61,7 @@
             runner.dx = 2 + Math.random() * 3;
             runner.dy = -3;
         }
-        var maxX = this.x + radius;
+        var maxX = this.x + radius - 3;
         if (runner.x > maxX) runner.x = maxX;
         var maxY = this.y + Math.pow(-Math.pow(this.x - runner.x, 2) + Math.pow(radius, 2), 0.5);
         if (runner.y > maxY) {
@@ -105,6 +101,11 @@
                 this.camera.arc(this.x, this.y, 5 + this.width / 2, thetaStart, thetaStart + arcLength * powerSlice);
                 gameViewContext.stroke();
             }
+        }
+        if (this.runners.length) {
+            gameViewContext.font = "20px monospace";
+            gameViewContext.fillStyle = this.borderColor.toString();
+            this.camera.centerText(this.runners.length + "/" + this.maxRunners, this.x, this.y - this.width * 0.6);
         }
 
         if (debugMode) {

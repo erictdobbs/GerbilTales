@@ -7,22 +7,29 @@
     //this.accel = 1;
     //this.maxSpeed = 3;
 
+    this.convertX = function (x) { return (x - this.x) * this.scale + 400; }
+    this.convertY = function (y) { return (y - this.y) * this.scale + 300; }
+
     this.fillRect = function (x, y, width, height) {
-        gameViewContext.fillRect((x - this.x)*this.scale + 400, (y - this.y)*this.scale + 300, width*this.scale, height*this.scale);
+        gameViewContext.fillRect(this.convertX(x), this.convertY(y), width * this.scale, height * this.scale);
     }
     this.strokeRect = function (x, y, width, height) {
-        gameViewContext.strokeRect((x - this.x) * this.scale + 400, (y - this.y) * this.scale + 300, width * this.scale, height * this.scale);
+        gameViewContext.strokeRect(this.convertX(x), this.convertY(y), width * this.scale, height * this.scale);
     }
     this.drawImage = function (image, sx, sy, swidth, sheight, x, y, width, height) {
         gameViewContext.drawImage(image, sx, sy, swidth, sheight,
-            (x - this.x) * this.scale + 400, (y - this.y) * this.scale + 300, width * this.scale, height * this.scale);
+            this.convertX(x), this.convertY(y), width * this.scale, height * this.scale);
     }
     this.fillText = function (text, x, y) {
-        gameViewContext.fillText(text, (x - this.x) * this.scale + 400, (y - this.y) * this.scale + 300);
+        gameViewContext.fillText(text, this.convertX(x), this.convertY(y));
+    }
+    this.centerText = function (text, x, y) {
+        var width = gameViewContext.measureText(text).width;
+        gameViewContext.fillText(text, this.convertX(x) - width/2, this.convertY(y));
     }
     this.arc = function (x, y, radius, thetaStart, thetaEnd) {
         if (thetaEnd < thetaStart) return;
-        gameViewContext.arc((x - this.x) * this.scale + 400, (y - this.y) * this.scale + 300, radius * this.scale, thetaStart, thetaEnd);
+        gameViewContext.arc(this.convertX(x), this.convertY(y), radius * this.scale, thetaStart, thetaEnd);
     }
 
     this.updateCamera = function () {
@@ -47,11 +54,11 @@
         this.y += this.dy;
     }
 
-    this.powerFrame = 0;
     this.drawPowerConnection = function (target) {
         var source = target.powerSource;
         if (source == null) return;
-        this.powerFrame += source.power;
+        if (!target.powerFrame) target.powerFrame = 0;
+        target.powerFrame += source.power;
         
         var xDir = target.x > source.x ? 1 : -1;
         var yDir = target.y > source.y ? 1 : -1;
@@ -64,7 +71,7 @@
 
         var bubbleGap = 3;
         var bubbleDelay = 7;
-        var bubbleCount = parseInt(this.powerFrame / bubbleDelay + 1) % bubbleGap;
+        var bubbleCount = parseInt(target.powerFrame / bubbleDelay + 1) % bubbleGap;
 
         for (var x = source.x - (source.x - target.x) % indicatorDistance ; x * xDir < target.x * xDir; x += xDir * indicatorDistance) {
             gameViewContext.beginPath();
