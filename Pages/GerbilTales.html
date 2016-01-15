@@ -19,12 +19,39 @@
     <script type="text/javascript" src="../Content/javaScript/SpriteWheel.js"></script>
     <script type="text/javascript" src="../Content/javaScript/SpriteButton.js"></script>
     <script type="text/javascript" src="../Content/javaScript/SpriteCell.js"></script>
+    <script type="text/javascript" src="../Content/javaScript/SpriteGerbilSpawn.js"></script>
+
+    <script type="text/javascript" src="../Content/javaScript/EditorAnchors.js"></script>
+    <script type="text/javascript" src="../Content/javaScript/EditorHandler.js"></script>
+    <script type="text/javascript" src="../Content/javaScript/EditorBase.js"></script>
+    <script type="text/javascript" src="../Content/javaScript/EditorWall.js"></script>
+    <script type="text/javascript" src="../Content/javaScript/EditorWheel.js"></script>
+    <script type="text/javascript" src="../Content/javaScript/EditorFan.js"></script>
+    <script type="text/javascript" src="../Content/javaScript/EditorButton.js"></script>
+    <script type="text/javascript" src="../Content/javaScript/EditorCell.js"></script>
+    <script type="text/javascript" src="../Content/javaScript/EditorGerbilSpawn.js"></script>
+
     <script type="text/javascript" src="../Content/javaScript/Main.js"></script>
 </head>
 <body class="unselectable" unselectable="on">
-    <canvas id="gameView" width="800" height="600" unselectable="on" class="unselectable">
-        Your browser does not support HTML5 canvases.
-    </canvas>
+    <table id="CanvasTable">
+        <tr>
+            <td>
+                <canvas id="gameView" width="800" height="600" unselectable="on" class="unselectable">
+                    Your browser does not support HTML5 canvases.
+                </canvas>
+            </td>
+            <td id="editCell">
+                <table id="editables">
+                </table>
+                <div id="editSprites">
+
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div id="editorButtons"></div>
 
     <!-- Image files -->
     <div class="hidden">

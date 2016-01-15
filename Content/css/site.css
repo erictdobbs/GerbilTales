@@ -16,6 +16,44 @@
     display: none !important;
 }
 
+#CanvasTable {
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#editables {
+    margin-left:20px;
+    margin-top:50px;
+    height: 160px;
+}
+#editCell {
+    width: 300px;
+    vertical-align:top;
+}
+
+#editorButtons {
+    margin: 20px;
+}
+
+
+#editSprites {
+    margin-left:20px;
+    margin-top:50px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.editorObject {
+    cursor:pointer;
+    margin: 5px;
+    padding: 7px;
+    background-color: rgba(255, 255, 255, 0.29);
+}
+.editorObject.selected {
+    font-weight: bold;
+    color: white;
+    background-color: rgb(34, 67, 93);
+}
+
 canvas {
     display: block;
     margin-top: 50px;

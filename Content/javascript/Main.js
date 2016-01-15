@@ -6,6 +6,7 @@ var debugMode = false;
 
 var gameViewContext;
 var sprites = [];
+var editorSprites = [];
 var mouseInfo = { x: 0, y: 0, pressed: false, oldX: 0, oldY: 0, clicked: false };
 var mainLoop = { interval: null, milliseconds: 20 };
 
@@ -104,26 +105,32 @@ function InitializeGameEngine() {
 
 var debugKeyStep = false;
 function pulse() {
+    UpdateMouseDelta();
     MainDrawLoop();
     //cycleMouseInfo();
 }
 
+var gameMode = {
+    play: 0,
+    playPaused: 1,
+    edit: 2
+}
 
-var paused = false;
+var mode = gameMode.play;
 
 function MainDrawLoop() {
 
     gameViewContext.clearRect(0, 0, viewWidth, viewHeight);
 
-    if (keyboardState.isKeyPressed(keyboardState.key.P)) paused = false;
-    if (keyboardState.isKeyPressed(keyboardState.key.O)) paused = true;
+    if (keyboardState.isKeyPressed(keyboardState.key.P) && mode == gameMode.playPaused) mode = gameMode.play;
+    if (keyboardState.isKeyPressed(keyboardState.key.O) && mode == gameMode.play) mode = gameMode.playPaused;
     
     var debugPressed = keyboardState.isKeyPressed(keyboardState.key.M);
     if (!debugPressed) debugKeyStep = false;
 
     for (var i = 0; i < sprites.length; i++)
         if (sprites[i] && sprites[i].active)
-            if (!paused || (debugPressed && !debugKeyStep)) {
+            if (mode != gameMode.playPaused || (debugPressed && !debugKeyStep)) {
                 sprites[i].executeRules();
             }
     for (var i = sprites.length - 1; i > 0; i--)
@@ -138,6 +145,19 @@ function MainDrawLoop() {
     for (var i = 0; i < sprites.length; i++) {
         sprites[i].prepareDraw();
         sprites[i].draw();
+    }
+
+    
+    if (mode == gameMode.edit) {
+        HandleAnchors();
+        for (var i = 0; i < editorSprites.length; i++) {
+            camera.drawPowerConnection(editorSprites[i]);
+        }
+        for (var i = 0; i < editorSprites.length; i++) {
+            editorSprites[i].draw();
+        }
+        DrawEditorGridLines();
+        if (selectedSprite) selectedSprite.drawAnchors();
     }
 
     if (debugPressed) debugKeyStep = true;

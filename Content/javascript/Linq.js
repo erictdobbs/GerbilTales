@@ -41,5 +41,6 @@ Array.prototype.sum = function () {
     return ret;
 };
 Array.prototype.average = function () {
+    if (!this.length) return 0;
     return this.sum() / this.length;
 };

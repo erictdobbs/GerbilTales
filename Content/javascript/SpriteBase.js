@@ -57,10 +57,10 @@ function SpriteBase(x, y) {
     this.setRight = function (x) { this.x = x - this.width / 2; }
 
     this.isMouseOver = function () {
-        return mouseX <= this.getRight() &&
-            mouseX >= this.getLeft() &&
-            mouseY <= this.getBottom() &&
-            mouseY >= this.getTop();
+        return this.camera.getMouseX() <= this.getRight() &&
+            this.camera.getMouseX() >= this.getLeft() &&
+            this.camera.getMouseY() <= this.getBottom() &&
+            this.camera.getMouseY() >= this.getTop();
     }
 
     this.doesOverlapSprite = function (sprite) {

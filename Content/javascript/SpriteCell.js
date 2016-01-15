@@ -1,11 +1,18 @@
-﻿function Cell(x, y, width, height, powerSource) {
+﻿function Cell(x, y, width, height, powerSource, gerbilCount) {
     SpriteBase.call(this, x + width/2, y + height/2);
     this.width = width;
     this.height = height;
 
     this.powerSource = powerSource;
 
+    this.addCaptive = function (sprite) {
+        this.captives.push(sprite);
+        sprite.container = this;
+    }
+
     this.captives = [];
+    for (var i = 0; i < gerbilCount; i++)
+        this.addCaptive(new Gerbil(this.x, this.y));
 
     this.barWidth = 5;
     this.color = new Color(80, 80, 80, 1.0);
@@ -45,11 +52,6 @@
             gameViewContext.fillStyle = this.color.toString();
             this.camera.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
         }
-    }
-
-    this.addCaptive = function (sprite) {
-        this.captives.push(sprite);
-        sprite.container = this;
     }
 
     this.freeCaptives = function () {
