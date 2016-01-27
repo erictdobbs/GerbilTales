@@ -38,6 +38,11 @@ function HandleAnchors() {
 }
 
 function SwitchToEditMode() {
+    var editButton = document.getElementById('toggleEdit');
+    var playButton = document.getElementById('togglePlay');
+    editButton.className = 'hidden';
+    playButton.className = '';
+
     mode = gameMode.edit;
     //for (var i = 0; i < sprites.length; i++) sprites[i].kill();
     sprites = [];
@@ -55,6 +60,11 @@ function SwitchToEditMode() {
 }
 
 function SwitchToPlayMode() {
+    var editButton = document.getElementById('toggleEdit');
+    var playButton = document.getElementById('togglePlay');
+    editButton.className = '';
+    playButton.className = 'hidden';
+
     mode = gameMode.play;
     for (var i = 0; i < sprites.length; i++) sprites[i].kill();
     var buttonContainer = document.getElementById('editorButtons');
@@ -80,11 +90,11 @@ function InsertEditorObject(index) {
 }
 
 function UpdateEditorPanel() {
-    var editorObjDiv = document.createElement("div");
     var container = document.getElementById("editSprites");
     container.innerHTML = "";
 
     for (var i = 0; i < editorSprites.length; i++) {
+        var editorObjDiv = document.createElement("div");
         editorObjDiv.classList.add("editorObject");
         if (editorSprites[i] == selectedSprite) editorObjDiv.classList.add("selected");
         editorObjDiv.innerHTML = editorSprites[i].constructor.name.replace("Editor", "");
