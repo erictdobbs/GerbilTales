@@ -72,6 +72,7 @@ function SpriteBase(x, y) {
     }
 
     this.blockMovement = function (lockHorizontal) {
+        var blocked = [];
         this.riding = null;
         this.isStanding = false;
         for (var i = 0; i < sprites.length; i++) {
@@ -87,10 +88,12 @@ function SpriteBase(x, y) {
                     if (this.x > sprites[i].x) {
                         if (this.dx < 0) this.dx = 0;
                         this.setLeft(sprites[i].getRight());
+                        blocked.push(sprites[i]);
                     }
                     else {
                         if (this.dx > 0) this.dx = 0;
                         this.setRight(sprites[i].getLeft());
+                        blocked.push(sprites[i]);
                     }
                 }
                 else {
@@ -100,13 +103,16 @@ function SpriteBase(x, y) {
                         this.riding = sprites[i];
                         this.setBottom(sprites[i].getTop());
                         this.dy = sprites[i].dy;
+                        blocked.push(sprites[i]);
                     } else {
                         if (sprites[i] instanceof Wall || sprites[i] instanceof Scale) this.setTop(sprites[i].getBottom());
                         if (this.dy < 0) this.dy = 0;
+                        blocked.push(sprites[i]);
                     }
                 }
             }
         }
+        return blocked;
     }
 
     this.getCumulativeRiders = function () {

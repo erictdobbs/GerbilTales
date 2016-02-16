@@ -22,6 +22,9 @@ function GerbilY() {
 function Gerbil(x, y) {
     SpriteBase.call(this, x, y);
 
+    this.isDead = false;
+    this.dealTimer = 0;
+
     this.speed = Math.random() + 4;
     this.speedResetCounter = 0;
     this.frameCount = 0;
@@ -38,7 +41,21 @@ function Gerbil(x, y) {
 
     this.isStanding = false;
 
+    this.killGerbil = function () {
+        this.isDead = true;
+        this.dx = 0;
+        this.dy = -1;
+    }
+
     this.executeRules = function () {
+        if (this.isDead) {
+            this.dealTimer++;
+            this.x += this.dx;
+            this.y += this.dy;
+
+            if (this.dealTimer > 60) this.kill();
+            return;
+        }
         this.handleInput();
         this.cameraFocus = (this.container === null);
 
@@ -54,7 +71,11 @@ function Gerbil(x, y) {
             if (this.moveDirection) this.dx = this.speed * this.moveDirection;
             this.dx *= .9;
 
-            this.blockMovement();
+            var solidTouchedSprites = this.blockMovement();
+            if (solidTouchedSprites.any(function (x) { return x instanceof SpikeBlock })) {
+                this.killGerbil();
+            }
+
             this.climb();
 
             this.x += this.dx;
@@ -76,18 +97,12 @@ function Gerbil(x, y) {
     this.imageSource = document.getElementById("Gerbil");
     this.draw = function () {
         this.frameCount++;
-        //this.color.b = 128 + this.climbCounter * 2;
-        //if (this.climbCooldownTimer > 0) this.color.b = 255;
-        //gameViewContext.fillStyle = this.color.toString();
-        //this.camera.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
-        //gameViewContext.strokeStyle = this.borderColor.toString();
-        //gameViewContext.lineWidth = 3;
-        //this.camera.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
-
-        //gameViewContext.font = "12px monospace";
-        //gameViewContext.fillStyle = this.borderColor.toString();
-        //this.camera.fillText(sprites.indexOf(this), this.x - 7, this.y + 5);
-        if (this.container != null && this.container instanceof Wheel) {
+        if (this.isDead) {
+            if (this.frameCount % 10 < 5)
+                this.camera.drawImage(this.imageSource, 0, 16, 16, 16, this.getLeft(), this.getTop(), this.width, this.height);
+            else
+                this.camera.drawImage(this.imageSource, 0, 16, 16, 16, this.getLeft() + 2, this.getTop(), this.width, this.height);
+        } else if (this.container != null && this.container instanceof Wheel) {
             if (this.frameCount % 10 < 5)
                 this.camera.drawImage(this.imageSource, 16, 16, 16, 16, this.getLeft(), this.getTop(), this.width, this.height);
             else
