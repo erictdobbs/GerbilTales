@@ -34,7 +34,7 @@ function InitializeGameEngine() {
     sprites.push(new Wall(460, 300, 220, 60));
     sprites.push(new Wall(120, 420, 60, 120));
 
-    sprites.push(new SpikeBlock(200, 200, 120, 60));
+    sprites.push(new SpikeBlock(260, 260, 30, 30));
 
     sprites.push(new Wall(120, 180, 120, 60));
     var cell = new Cell(120, 120, 120, 60, button)

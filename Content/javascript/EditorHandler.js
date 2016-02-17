@@ -116,6 +116,7 @@ function SelectEditorObject(index) {
 var editorObjectTypes = [
     { name: 'Wall', add: function (tileX, tileY) { return new EditorWall(tileX, tileY, 4, 2); } },
     { name: 'Gerbil Start', add: function (tileX, tileY) { return new EditorGerbilSpawn(tileX, tileY, 2, 2); } },
+    { name: 'Spike Block', add: function (tileX, tileY) { return new EditorSpikeBlock(tileX, tileY, 1, 1); } },
     { name: 'Wheel', add: function (tileX, tileY) { return new EditorWheel(tileX, tileY, 3); } },
     { name: 'Button', add: function (tileX, tileY) { return new EditorButton(tileX, tileY, 3); } },
     { name: 'Fan', add: function (tileX, tileY) { return new EditorFan(tileX, tileY, 4); } },

@@ -58,6 +58,18 @@
         gameViewContext.lineTo(this.convertX(x2), this.convertY(y2));
         gameViewContext.stroke();
     }
+    this.drawPolygon = function (points) {
+        if (points.length == 0) return;
+        gameViewContext.beginPath();
+        gameViewContext.moveTo(this.convertX(points[0].x), this.convertY(points[0].y));
+        for (var i = 1; i < points.length; i++) {
+            gameViewContext.lineTo(this.convertX(points[i].x), this.convertY(points[i].y));
+            gameViewContext.stroke();
+        }
+        gameViewContext.lineTo(this.convertX(points[0].x), this.convertY(points[0].y));
+        gameViewContext.stroke();
+        gameViewContext.fill();
+    }
     this.fillRect = function (x, y, width, height) {
         gameViewContext.fillRect(this.convertX(x), this.convertY(y), width * this.scale, height * this.scale);
     }
