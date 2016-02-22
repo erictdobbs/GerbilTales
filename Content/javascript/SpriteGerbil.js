@@ -43,6 +43,7 @@ function Gerbil(x, y) {
 
     this.killGerbil = function () {
         this.isDead = true;
+        this.solid = false;
         this.dx = 0;
         this.dy = -1;
     }
@@ -58,6 +59,14 @@ function Gerbil(x, y) {
         }
         this.handleInput();
         this.cameraFocus = (this.container === null);
+
+        if (this.dy > 10) {
+            var maxY = sprites.filter(function (spr) { return !(spr instanceof Gerbil); }).max(function (spr) { return spr.y; }).y;
+            if (this.y > maxY + 300) {
+                this.killGerbil();
+                return;
+            }
+        }
 
         if (!this.container || this.container instanceof Cell) {
             this.dy += 0.4;
@@ -91,6 +100,12 @@ function Gerbil(x, y) {
             var center = sprites.filter(function (obj) { return obj instanceof Gerbil && obj.container == null; }).map(function (obj) { return obj.x; }).average();
             this.moveDirection = (center - this.x) / 10;
             if (Math.abs(this.moveDirection) > 1) this.moveDirection = this.moveDirection / Math.abs(this.moveDirection);
+        }
+        if (keyboardState.isKeyPressed(keyboardState.key.Space)) {
+            if (this.canJump()) {
+                this.dy -= 5;
+                this.y -= 5;
+            }
         }
     }
 
@@ -154,6 +169,13 @@ function Gerbil(x, y) {
             this.climbCounter = 0;
             this.climbCooldownTimer = 20;
         }
+    }
+
+    this.canJump = function () {
+        var clearAbove = (this.getCumulativeRiders().length == 0);
+        var solidBelow = (this.riding != null && !(this.riding instanceof Gerbil));
+        var canMove = (!this.container || this.container instanceof Cell)
+        return clearAbove && solidBelow && canMove;
     }
 
     

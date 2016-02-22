@@ -2,7 +2,6 @@
     EditorBase.call(this, x, y, width, height);
 
     this.maxGerbils = 5;
-    this.isPowerSource = true;
     this.editables.push(new Editable('tileX', paramTypes.integer));
     this.editables.push(new Editable('tileY', paramTypes.integer));
     this.editables.push(new Editable('width', paramTypes.integer));

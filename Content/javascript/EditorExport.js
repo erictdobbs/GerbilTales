@@ -14,7 +14,11 @@
         var condensedEditorSprite = { a: typeName, e: [] };
         for (var j = 0; j < editorSprite.editables.length; j++) {
             var editable = editorSprite.editables[j];
-            condensedEditorSprite.e.push(editorSprite[editable.paramName]);
+            if (editable.paramType == paramTypes.powerSource) {
+                condensedEditorSprite.e.push(editorSprites.indexOf(editorSprite[editable.paramName]));
+            } else {
+                condensedEditorSprite.e.push(editorSprite[editable.paramName]);
+            }
         }
         condensedEditorSprites.push(condensedEditorSprite);
     }
@@ -39,11 +43,26 @@ function ImportLevel(levelString) {
             
             var spr = editorObjectType.add(0, 0);
             for (var j = 0; j < importSprite.e.length; j++) {
-                var paramName = spr.editables[j].paramName;
+                var editable = spr.editables[j];
+                var paramType = editable.paramType;
+                if (paramType == paramTypes.powerSource) continue;
+                var paramName = editable.paramName;
                 spr[paramName] = importSprite.e[j];
                 console.log("set " + paramName + " to " + importSprite.e[j]);
             }
             editorSprites.push(spr);
+        }
+        for (var i = 0; i < obj.s.length; i++) {
+            var spr = editorSprites[i];
+            var importSprite = obj.s[i];
+            for (var j = 0; j < importSprite.e.length; j++) {
+                var editable = spr.editables[j];
+                var paramType = editable.paramType;
+                if (paramType != paramTypes.powerSource) continue;
+                var paramName = editable.paramName;
+                spr[paramName] = editorSprites[importSprite.e[j]];
+                console.log("set " + paramName + " to " + importSprite.e[j]);
+            }
         }
     } else {
         console.error("Unknown version (" + obj.v + ")");

@@ -55,7 +55,11 @@
     </table>
 
     <button id="toggleEdit" onclick="SwitchToEditMode();">Switch to EDIT mode</button>
-    <button id="togglePlay" onclick="SwitchToPlayMode();" class="hidden">Switch to PLAY mode</button>
+    <div id="togglePlay" class="hidden">
+        <button onclick="SwitchToPlayMode();">Switch to PLAY mode</button>
+        <button onclick="prompt('Here is your level export string:', ExportLevel());">Export level</button>
+        <button onclick="ImportLevel(prompt('Paste your level export string:'));">Import level</button>
+    </div>
     <div id="editorButtons"></div>
 
     <!-- Image files -->
