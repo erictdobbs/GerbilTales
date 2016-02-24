@@ -40,6 +40,14 @@
     this.getMouseX = function () { return this.invertX(mouseX); }
     this.getMouseY = function () { return this.invertY(mouseY); }
 
+    this.moveTo = function (x, y) {
+        gameViewContext.moveTo(this.convertX(x), this.convertY(y));
+    }
+
+    this.lineTo = function (x, y) {
+        gameViewContext.lineTo(this.convertX(x), this.convertY(y));
+    }
+
     this.drawVerticalLine = function (x) {
         gameViewContext.beginPath();
         gameViewContext.moveTo(this.convertX(x), 0);
@@ -88,7 +96,7 @@
         gameViewContext.fillText(text, this.convertX(x) - width/2, this.convertY(y));
     }
     this.arc = function (x, y, radius, thetaStart, thetaEnd) {
-        if (thetaEnd < thetaStart) return;
+        //if (thetaEnd < thetaStart) return;
         gameViewContext.arc(this.convertX(x), this.convertY(y), radius * this.scale, thetaStart, thetaEnd);
     }
 

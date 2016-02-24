@@ -120,5 +120,7 @@ var editorObjectTypes = [
     { name: 'Wheel', type: EditorWheel, add: function (tileX, tileY) { return new this.type(tileX, tileY, 3); } },
     { name: 'Button', type: EditorButton, add: function (tileX, tileY) { return new this.type(tileX, tileY, 3); } },
     { name: 'Fan', type: EditorFan, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4); } },
-    { name: 'Cell', type: EditorCell, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4, 2); } }
+    { name: 'Cell', type: EditorCell, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4, 2); } },
+    { name: 'Clock', type: EditorClock, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1); } },
+    { name: 'Peekablock', type: EditorPeekablock, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4, 2); } }
 ];

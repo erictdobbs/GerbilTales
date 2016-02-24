@@ -47,6 +47,12 @@ function SpriteBase(x, y) {
         return sprites.indexOf(this);
     }
 
+    this.applyGravity = function (alternateGravityConstant) {
+        var gravity = 0.2;
+        if (alternateGravityConstant != null) gravity = alternateGravityConstant;
+        this.dy += gravity;
+    }
+
     this.getTop = function () { return this.y - this.height / 2; }
     this.getBottom = function () { return this.y + this.height/2; }
     this.getLeft = function () { return this.x - this.width / 2; }

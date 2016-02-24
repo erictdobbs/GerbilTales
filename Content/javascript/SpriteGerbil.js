@@ -69,16 +69,16 @@ function Gerbil(x, y) {
         }
 
         if (!this.container || this.container instanceof Cell) {
-            this.dy += 0.4;
+            this.applyGravity();
 
             this.speedResetCounter -= 1;
             if (this.speedResetCounter <= 0) {
-                this.speed = Math.random() + 4;
+                this.speed = Math.random()/2 + 3;
                 this.speedResetCounter = 100 + Math.random() * 100;
             }
 
             if (this.moveDirection) this.dx = this.speed * this.moveDirection;
-            this.dx *= .9;
+            if (this.moveDirection == 0) this.dx *= 0.8;
 
             var solidTouchedSprites = this.blockMovement();
             if (solidTouchedSprites.any(function (x) { return x instanceof SpikeBlock })) {
@@ -103,8 +103,8 @@ function Gerbil(x, y) {
         }
         if (keyboardState.isKeyPressed(keyboardState.key.Space)) {
             if (this.canJump()) {
-                this.dy -= 5;
-                this.y -= 5;
+                this.dy -= 3.8;
+                this.y -= 1;
             }
         }
     }
@@ -159,7 +159,7 @@ function Gerbil(x, y) {
                 if (horizClose && this.y < sprites[i].getBottom() && this.getBottom() > sprites[i].getTop()) {
                     if (sprites[i].isStanding === false) continue;
                     this.dy = sprites[i].dy - (60 - this.climbCounter) / 20;
-                    if (this.dy < -5) this.dy = -5;
+                    if (this.dy < -5) this.dy = -3;
                     isClimbing = true;
                 }
             }
