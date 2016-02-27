@@ -77,9 +77,14 @@ function SwitchToPlayMode() {
         sprites.push(newSprite);
     }
     for (var i = 0; i < editorSprites.length; i++) {
-        if (editorSprites[i].powerSource) {
-            var powerSourceIndex = editorSprites.indexOf(editorSprites[i].powerSource);
-            sprites[i].powerSource = sprites[powerSourceIndex];
+        var editorSprite = editorSprites[i];
+        for (var j = 0; j < editorSprite.editables.length; j++) {
+            var editable = editorSprite.editables[j];
+            if (editable.paramType == paramTypes.powerSource) {
+                var paramName = editable.paramName;
+                var spriteIndex = editorSprites.indexOf(editorSprite[paramName]);
+                sprites[i][paramName] = sprites[spriteIndex];
+            }
         }
     }
 }
@@ -122,5 +127,8 @@ var editorObjectTypes = [
     { name: 'Fan', type: EditorFan, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4); } },
     { name: 'Cell', type: EditorCell, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4, 2); } },
     { name: 'Clock', type: EditorClock, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1); } },
-    { name: 'Peekablock', type: EditorPeekablock, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4, 2); } }
+    { name: 'Peekablock', type: EditorPeekablock, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4, 2); } },
+    { name: 'LogicAnd', type: EditorLogicAnd, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1, 1); } },
+    { name: 'LogicOr', type: EditorLogicOr, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1, 1); } },
+    { name: 'LogicNot', type: EditorLogicNot, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1, 1); } }
 ];

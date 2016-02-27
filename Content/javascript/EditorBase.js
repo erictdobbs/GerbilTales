@@ -72,6 +72,17 @@ function Editable(paramName, paramType) {
             inputBox.setAttribute("onchange", this.paramType.onChange + '(this)');
             return inputBox;
         }
+        if (this.paramType == paramTypes.boolean) {
+            var checkbox = document.createElement("input");
+            checkbox.setAttribute("id", this.paramName);
+            checkbox.classList.add("editorBox");
+            checkbox.setAttribute("type", this.paramType.inputType);
+            checkbox.setAttribute("value", value);
+            checkbox.checked = value;
+            checkbox.setAttribute("onchange", this.paramType.onChange + '(this)');
+            console.log(checkbox);
+            return checkbox;
+        }
         if (this.paramType == paramTypes.powerSource) {
             var selectBox = document.createElement("select");
             selectBox.setAttribute("id", this.paramName);
@@ -105,10 +116,12 @@ function Editable(paramName, paramType) {
 
 function EditorInputChanged(el) { selectedSprite[el.id] = el.value };
 function EditorInputChangedInteger(el) { selectedSprite[el.id] = parseInt(el.value) };
+function EditorInputChangedBoolean(el) { selectedSprite[el.id] = el.checked };
 function EditorInputChangedSprite(el) { selectedSprite[el.id] = editorSprites[el.value] };
 
 
 var paramTypes = {
     integer: { inputType: "number", defaultValue: 0, onChange: 'EditorInputChangedInteger' },
+    boolean: { inputType: "checkbox", defaultValue: false, onChange: 'EditorInputChangedBoolean' },
     powerSource: { onChange: 'EditorInputChangedSprite' }
 };

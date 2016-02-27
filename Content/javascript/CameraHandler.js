@@ -95,9 +95,12 @@
         var width = gameViewContext.measureText(text).width;
         gameViewContext.fillText(text, this.convertX(x) - width/2, this.convertY(y));
     }
-    this.arc = function (x, y, radius, thetaStart, thetaEnd) {
+    this.arc = function (x, y, radius, thetaStart, thetaEnd, counterclockwise) {
         //if (thetaEnd < thetaStart) return;
-        gameViewContext.arc(this.convertX(x), this.convertY(y), radius * this.scale, thetaStart, thetaEnd);
+        gameViewContext.arc(this.convertX(x), this.convertY(y), radius * this.scale, thetaStart, thetaEnd, counterclockwise);
+    }
+    this.arcTo = function (x1, y1, x2, y2, r) {
+        gameViewContext.arcTo(this.convertX(x1), this.convertY(y1), this.convertX(x2), this.convertY(y2), r);
     }
 
     this.updateCamera = function () {
@@ -126,41 +129,47 @@
 
     this.drawPowerConnection = function (target) {
 
-        var source = target.powerSource;
-        if (source == null) return;
-        if (!target.powerFrame) target.powerFrame = 0;
-        if (!source.power) source.power = 0;
-        target.powerFrame += source.power;
+        // THIS COULD BE IMPROVED
 
-        if (target.createSprite) target = target.createSprite();
-        if (source.createSprite) source = source.createSprite();
-        
-        var xDir = target.x > source.x ? 1 : -1;
-        var yDir = target.y > source.y ? 1 : -1;
-        var indicatorDistance = 20;
+        var powerParams = ["powerSource","input1","input2","input"];
+        for (var i = 0; i < powerParams.length; i++) {
+            var powerParam = powerParams[i];
+            var source = target[powerParam];
+            if (source == null) continue;
+            if (!target.powerFrame) target.powerFrame = 0;
+            if (!source.power) source.power = 0;
+            target.powerFrame += source.power;
 
-        var unpoweredColor = new Color(80, 80, 80, (source.power / 4) + 0.2);
-        var poweredColor = new Color(64, 255, 64, (source.power / 4) + 0.2);
-        gameViewContext.strokeStyle = unpoweredColor.toString();
-        gameViewContext.fillStyle = poweredColor.toString();
+            if (target.createSprite) target = target.createSprite();
+            if (source.createSprite) source = source.createSprite();
 
-        var bubbleGap = 3;
-        var bubbleDelay = 7;
-        var bubbleCount = parseInt(target.powerFrame / bubbleDelay + 1) % bubbleGap;
+            var xDir = target.x > source.x ? 1 : -1;
+            var yDir = target.y > source.y ? 1 : -1;
+            var indicatorDistance = 20;
 
-        for (var x = source.x - (source.x - target.x) % indicatorDistance ; x * xDir < target.x * xDir; x += xDir * indicatorDistance) {
-            gameViewContext.beginPath();
-            this.arc(x, source.y, 5, 0, Math.PI * 2);
-            if (bubbleCount == 0) gameViewContext.fill();
-            gameViewContext.stroke();
-            bubbleCount = (bubbleCount - 1 + bubbleGap) % bubbleGap;
-        }
-        for (var y = source.y; y * yDir < target.y * yDir; y += yDir * indicatorDistance) {
-            gameViewContext.beginPath();
-            this.arc(target.x, y, 5, 0, Math.PI * 2);
-            if (bubbleCount == 0) gameViewContext.fill();
-            gameViewContext.stroke();
-            bubbleCount = (bubbleCount - 1 + bubbleGap) % bubbleGap;
+            var unpoweredColor = new Color(80, 80, 80, (source.power / 4) + 0.2);
+            var poweredColor = new Color(64, 255, 64, (source.power / 4) + 0.2);
+            gameViewContext.strokeStyle = unpoweredColor.toString();
+            gameViewContext.fillStyle = poweredColor.toString();
+
+            var bubbleGap = 3;
+            var bubbleDelay = 7;
+            var bubbleCount = parseInt(target.powerFrame / bubbleDelay + 1) % bubbleGap;
+
+            for (var x = source.x - (source.x - target.x) % indicatorDistance ; x * xDir < target.x * xDir; x += xDir * indicatorDistance) {
+                gameViewContext.beginPath();
+                this.arc(x, source.y, 5, 0, Math.PI * 2);
+                if (bubbleCount == 0) gameViewContext.fill();
+                gameViewContext.stroke();
+                bubbleCount = (bubbleCount - 1 + bubbleGap) % bubbleGap;
+            }
+            for (var y = source.y; y * yDir < target.y * yDir; y += yDir * indicatorDistance) {
+                gameViewContext.beginPath();
+                this.arc(target.x, y, 5, 0, Math.PI * 2);
+                if (bubbleCount == 0) gameViewContext.fill();
+                gameViewContext.stroke();
+                bubbleCount = (bubbleCount - 1 + bubbleGap) % bubbleGap;
+            }
         }
     }
 }
