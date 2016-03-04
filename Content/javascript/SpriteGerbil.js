@@ -85,6 +85,13 @@ function Gerbil(x, y) {
                 this.killGerbil();
             }
 
+            var coins = sprites.filter(function (spr) { return spr instanceof Coin; });
+            for (var i = 0; i < coins.length; i++) {
+                if (this.doesOverlapSprite(coins[i])) {
+                    coins[i].kill();
+                }
+            }
+
             this.climb();
 
             this.x += this.dx;

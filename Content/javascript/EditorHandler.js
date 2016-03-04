@@ -130,5 +130,6 @@ var editorObjectTypes = [
     { name: 'Peekablock', type: EditorPeekablock, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4, 2); } },
     { name: 'LogicAnd', type: EditorLogicAnd, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1, 1); } },
     { name: 'LogicOr', type: EditorLogicOr, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1, 1); } },
-    { name: 'LogicNot', type: EditorLogicNot, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1, 1); } }
+    { name: 'LogicNot', type: EditorLogicNot, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1, 1); } },
+    { name: 'Coin', type: EditorCoin, add: function (tileX, tileY) { return new this.type(tileX, tileY); } }
 ];
