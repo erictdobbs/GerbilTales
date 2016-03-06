@@ -118,6 +118,4 @@ function SelectEditorObject(index) {
     UpdateEditorPanel();
 }
 
-var editorObjectTypes = [
-    { name: 'Gerbil Start', type: EditorGerbilSpawn, add: function (tileX, tileY) { return new this.type(tileX, tileY, 2, 2); } }
-];
+var editorObjectTypes = [];
