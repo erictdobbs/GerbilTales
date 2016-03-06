@@ -119,17 +119,5 @@ function SelectEditorObject(index) {
 }
 
 var editorObjectTypes = [
-    { name: 'Wall', type: EditorWall, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4, 2); } },
-    { name: 'Gerbil Start', type: EditorGerbilSpawn, add: function (tileX, tileY) { return new this.type(tileX, tileY, 2, 2); } },
-    { name: 'Spike Block', type: EditorSpikeBlock, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1, 1); } },
-    { name: 'Wheel', type: EditorWheel, add: function (tileX, tileY) { return new this.type(tileX, tileY, 3); } },
-    { name: 'Button', type: EditorButton, add: function (tileX, tileY) { return new this.type(tileX, tileY, 3); } },
-    { name: 'Fan', type: EditorFan, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4); } },
-    { name: 'Cell', type: EditorCell, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4, 2); } },
-    { name: 'Clock', type: EditorClock, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1); } },
-    { name: 'Peekablock', type: EditorPeekablock, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4, 2); } },
-    { name: 'LogicAnd', type: EditorLogicAnd, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1, 1); } },
-    { name: 'LogicOr', type: EditorLogicOr, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1, 1); } },
-    { name: 'LogicNot', type: EditorLogicNot, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1, 1); } },
-    { name: 'Coin', type: EditorCoin, add: function (tileX, tileY) { return new this.type(tileX, tileY); } }
+    { name: 'Gerbil Start', type: EditorGerbilSpawn, add: function (tileX, tileY) { return new this.type(tileX, tileY, 2, 2); } }
 ];

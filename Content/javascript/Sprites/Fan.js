@@ -1,5 +1,34 @@
-﻿function Fan(x, y, width, height, powerSource) {
-    SpriteBase.call(this, x + width/2, y + height/2);
+﻿function EditorFan(x, y, width) {
+    EditorBase.call(this, x, y, width, 1);
+
+    this.powerSource = null;
+    this.editables.push(new Editable('tileX', paramTypes.integer));
+    this.editables.push(new Editable('tileY', paramTypes.integer));
+    this.editables.push(new Editable('width', paramTypes.integer));
+    this.editables.push(new Editable('powerSource', paramTypes.powerSource));
+
+    this.anchors.push(new CenterAnchor(this));
+    this.anchors.push(new LeftAnchor(this));
+    this.anchors.push(new RightAnchor(this));
+    
+    this.createSprite = function () {
+        var fan = new Fan(parseInt(this.tileX) * editorScale,
+            parseInt(this.tileY) * editorScale,
+            parseInt(this.width) * editorScale,
+            editorScale,
+            this.powerSource);
+        return fan;
+    }
+}
+EditorFan.prototype = new EditorBase();
+EditorFan.prototype.constructor = EditorFan;
+
+editorObjectTypes.push(
+    { name: 'Fan', type: EditorFan, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4); } }
+);
+
+function Fan(x, y, width, height, powerSource) {
+    SpriteBase.call(this, x + width / 2, y + height / 2);
     this.width = width;
     this.height = height;
     this.range = 300;
@@ -8,7 +37,7 @@
 
     this.fanParticles = []
     for (var i = 0; i < 9; i++) this.fanParticles.push(new FanParticle(this, Math.random() * this.width, 16 * i));
-    
+
     this.color = new Color(100, 128, 128, 1.0);
     this.borderColor = new Color(80, 80, 80, 1.0);
 
@@ -32,7 +61,7 @@
         return 0;
     }
 
-    this.getFanStrength = function(y) {
+    this.getFanStrength = function (y) {
         return (this.range - (this.y - y)) / this.range * this.getPower() / 2;
     }
 
