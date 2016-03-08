@@ -11,42 +11,6 @@ var mouseInfo = { x: 0, y: 0, pressed: false, oldX: 0, oldY: 0, clicked: false }
 var mainLoop = { interval: null, milliseconds: 20 };
 
 function InitializeGameEngine() {
-
-    var scale1 = new Scale(680, 240, 60, 60);
-    var scale2 = new Scale(60, 420, 60, 60);
-    scale1.pair(scale2);
-
-    sprites.push(scale1, scale2);
-
-    var button = new Button(240, 535, 60, 5);
-    sprites.push(button);
-
-    for (var i = 0; i < 2; i++) {
-        for (var j = 0; j < 4; j++) {
-            sprites.push(new Gerbil(100 + j * 32, 300 + i * 32));
-        }
-    }
-    sprites.push(new Wall(0, 540, 800, 60));
-    sprites.push(new Wall(0, 0, 800, 60));
-    sprites.push(new Wall(0, 0, 60, 600));
-    sprites.push(new Wall(740, 0, 60, 600));
-    sprites.push(new Wall(460, 240, 60, 60));
-    sprites.push(new Wall(460, 300, 220, 60));
-    sprites.push(new Wall(120, 420, 60, 120));
-
-    sprites.push(new SpikeBlock(260, 260, 30, 30));
-
-    sprites.push(new Wall(120, 180, 120, 60));
-    var cell = new Cell(120, 120, 120, 60, button)
-    cell.addCaptive(sprites[4]);
-    cell.addCaptive(sprites[5]);
-    sprites.push(cell);
-
-    var wheel = new Wheel(680, 480, 100);
-    sprites.push(wheel);
-
-    sprites.push(new Fan(400, 520, 60, 20, wheel));
-
     var gameView = document.getElementById('gameView');
 
     gameView.addEventListener("mousedown", onMouseDown, false);
@@ -122,6 +86,11 @@ var mode = gameMode.play;
 function MainDrawLoop() {
 
     gameViewContext.clearRect(0, 0, viewWidth, viewHeight);
+
+    var background = document.getElementById('Background1');
+    gameViewContext.drawImage(background, 20, 10, 260, 190, 0, 0, 800, 600);
+    gameViewContext.fillStyle = "rgba(72, 140, 192, 0.5)";
+    gameViewContext.fillRect(0, 0, 800, 600);
 
     if (keyboardState.isKeyPressed(keyboardState.key.P) && mode == gameMode.playPaused) mode = gameMode.play;
     if (keyboardState.isKeyPressed(keyboardState.key.O) && mode == gameMode.play) mode = gameMode.playPaused;
