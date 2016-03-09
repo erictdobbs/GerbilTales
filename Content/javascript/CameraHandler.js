@@ -4,10 +4,13 @@
     this.dx = 0;
     this.dy = 0;
     this.scale = 1;
+    this.editorTargetScale = 1;
     this.width = 800;
     this.height = 600;
-    //this.accel = 1;
-    //this.maxSpeed = 3;
+    this.accel = 0.5;
+    this.maxSpeed = 10;
+    this.inertia = 0.9;
+    this.zoomSpeedRatio = 1.5;
 
     this.convertX = function (x) { return (x - this.x) * this.scale + this.width/2; }
     this.convertY = function (y) { return (y - this.y) * this.scale + this.height / 2; }
@@ -106,22 +109,39 @@
     this.updateCamera = function () {
         if (mode == gameMode.play || mode == gameMode.playPaused) {
             var cameraFoci = sprites.filter(function (obj) { return obj.cameraFocus; });
+            var fociXs = cameraFoci.map(function (obj) { return obj.x; });
+            var fociYs = cameraFoci.map(function (obj) { return obj.y; });
+
+            var targetX = fociXs.average();
+            var targetY = fociYs.average();
+            var xRange = cameraFoci.map(function (obj) { return obj.getRight(); }).max() - cameraFoci.map(function (obj) { return obj.getLeft(); }).min();
+            var yRange = cameraFoci.map(function (obj) { return obj.getBottom(); }).max() - cameraFoci.map(function (obj) { return obj.getTop(); }).min();
+
+            var targetScale = 1 / [(xRange + 256) / this.width, (yRange + 256) / this.height].max();
+            this.scale += (targetScale - this.scale) / 20;
+            this.editorTargetScale = this.scale;
+
+            this.dx = (targetX - this.x) / 20;
+            this.dy = (targetY - this.y) / 20;
         } else if (mode == gameMode.edit) {
-            var cameraFoci = editorSprites.map(function(obj) {return obj.createSprite(); });
+            if (mouseScroll > 0) this.editorTargetScale *= this.zoomSpeedRatio;
+            if (mouseScroll < 0) this.editorTargetScale /= this.zoomSpeedRatio;
+            this.scale += (this.editorTargetScale - this.scale) / 20;
+
+            if (!keyboardState.isLeftPressed() && !keyboardState.isRightPressed()) this.dx *= this.inertia;
+            if (!keyboardState.isUpPressed() && !keyboardState.isDownPressed()) this.dy *= this.inertia;
+
+            var accel = this.accel / this.scale;
+            var maxSpeed = this.maxSpeed / this.scale;
+            if (keyboardState.isLeftPressed()) this.dx -= accel;
+            if (keyboardState.isRightPressed()) this.dx += accel;
+            if (keyboardState.isUpPressed()) this.dy -= accel;
+            if (keyboardState.isDownPressed()) this.dy += accel;
+            if (this.dx > maxSpeed) this.dx = maxSpeed;
+            if (this.dx < -maxSpeed) this.dx = -maxSpeed;
+            if (this.dy > maxSpeed) this.dy = maxSpeed;
+            if (this.dy < -maxSpeed) this.dy = -maxSpeed;
         }
-        var fociXs = cameraFoci.map(function (obj) { return obj.x; });
-        var fociYs = cameraFoci.map(function (obj) { return obj.y; });
-
-        var targetX = fociXs.average();
-        var targetY = fociYs.average();
-        var xRange = cameraFoci.map(function (obj) { return obj.getRight(); }).max() - cameraFoci.map(function (obj) { return obj.getLeft(); }).min();
-        var yRange = cameraFoci.map(function (obj) { return obj.getBottom(); }).max() - cameraFoci.map(function (obj) { return obj.getTop(); }).min();
-
-        var targetScale = 1 / [(xRange + 256) / this.width, (yRange + 256) / this.height].max();
-        this.scale += (targetScale - this.scale) / 20;
-
-        this.dx = (targetX - this.x) / 20;
-        this.dy = (targetY - this.y) / 20;
 
         this.x += this.dx;
         this.y += this.dy;

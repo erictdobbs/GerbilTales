@@ -1,6 +1,12 @@
 ﻿var m_isMouseClicked = false;
 var m_mouseX = 0;
 var m_mouseY = 0;
+var m_mouseScroll = 0;
+
+
+function onMouseScroll(e) {
+    m_mouseScroll = e.wheelDelta;
+}
 
 function onMouseDown(e) {
     if (e.button === undefined || e.button === 0) {
@@ -58,6 +64,7 @@ function onMouseMove(e) {
 
 var mouseX = 0;
 var mouseY = 0;
+var mouseScroll = 0;
 var mouseDeltaX = 0;
 var mouseDeltaY = 0;
 var oldMouseX = 0;
@@ -68,6 +75,8 @@ var isMouseChanged = false;
 function UpdateMouseDelta() {
     mouseX = m_mouseX;
     mouseY = m_mouseY;
+    mouseScroll = m_mouseScroll;
+    m_mouseScroll = 0;
     isMouseClicked = m_isMouseClicked;
 
     mouseDeltaX = mouseX - oldMouseX;

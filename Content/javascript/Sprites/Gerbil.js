@@ -123,14 +123,14 @@ function Gerbil(x, y) {
 
     this.handleInput = function () {
         this.moveDirection = 0;
-        if (keyboardState.isKeyPressed(keyboardState.key.A)) this.moveDirection = -1;
-        else if (keyboardState.isKeyPressed(keyboardState.key.D)) this.moveDirection = 1;
-        else if (keyboardState.isKeyPressed(keyboardState.key.W)) {
+        if (keyboardState.isLeftPressed()) this.moveDirection = -1;
+        else if (keyboardState.isRightPressed()) this.moveDirection = 1;
+        else if (keyboardState.isUpPressed()) {
             var center = sprites.filter(function (obj) { return obj instanceof Gerbil && obj.container == null; }).map(function (obj) { return obj.x; }).average();
             this.moveDirection = (center - this.x) / 10;
             if (Math.abs(this.moveDirection) > 1) this.moveDirection = this.moveDirection / Math.abs(this.moveDirection);
         }
-        if (keyboardState.isKeyPressed(keyboardState.key.Space)) {
+        if (keyboardState.isJumpPressed()) {
             if (this.canJump()) {
                 this.dy -= 3.8;
                 this.y -= 1;
@@ -177,11 +177,11 @@ function Gerbil(x, y) {
 
         var isClimbing = false;
 
-        if (keyboardState.isKeyPressed(keyboardState.key.W))
+        if (keyboardState.isUpPressed())
             for (var i = 0; i < sprites.length; i++) {
                 if (sprites[i] == this) continue;
                 if (!sprites[i].solid) continue;
-                if (keyboardState.isKeyPressed(keyboardState.key.S) && sprites[i] instanceof Gerbil) continue;
+                if (keyboardState.isDownPressed() && sprites[i] instanceof Gerbil) continue;
                 var horizClose = (this.moveDirection < 0 && Math.abs(this.getLeft() - sprites[i].getRight()) < 10) ||
                                  (this.moveDirection > 0 && Math.abs(this.getRight() - sprites[i].getLeft()) < 10)
 

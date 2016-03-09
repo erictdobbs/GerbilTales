@@ -1,5 +1,25 @@
 ﻿var keyboardState;
 keyboardState = new Object();
+
+keyboardState.keyState = new Array();
+keyboardState.handleKeyDown = function (e) {
+    e = e || window.event;
+    keyboardState.keyState[e.keyCode] = true;
+};
+
+keyboardState.handleKeyUp = function (e) {
+    e = e || window.event;
+    keyboardState.keyState[e.keyCode] = false;
+};
+
+keyboardState.isKeyPressed = function (key) { return keyboardState.keyState[key]; };
+
+keyboardState.isLeftPressed = function () { return this.isKeyPressed(this.key["A"]); };
+keyboardState.isRightPressed = function () { return this.isKeyPressed(this.key["D"]); };
+keyboardState.isUpPressed = function () { return this.isKeyPressed(this.key["W"]); };
+keyboardState.isDownPressed = function () { return this.isKeyPressed(this.key["S"]); };
+keyboardState.isJumpPressed = function () { return this.isKeyPressed(this.key["Space"]); };
+
 keyboardState.key = {
     None: 0,
     Enter: 13,
@@ -100,19 +120,6 @@ keyboardState.key = {
     RightBracket: 221,
     Quote: 222
 };
-
-keyboardState.keyState = new Array();
-keyboardState.handleKeyDown = function (e) {
-    e = e || window.event;
-    keyboardState.keyState[e.keyCode] = true;
-};
-
-keyboardState.handleKeyUp = function (e) {
-    e = e || window.event;
-    keyboardState.keyState[e.keyCode] = false;
-};
-
-keyboardState.isKeyPressed = function (key) { return keyboardState.keyState[key]; };
 
 document.onkeydown = keyboardState.handleKeyDown;
 document.onkeyup = keyboardState.handleKeyUp;

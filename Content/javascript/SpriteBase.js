@@ -103,7 +103,7 @@ function SpriteBase(x, y) {
                     }
                 }
                 else {
-                    if (keyboardState.isKeyPressed(keyboardState.key.S) && sprites[i] instanceof Gerbil && this instanceof Gerbil) continue;
+                    if (keyboardState.isDownPressed() && sprites[i] instanceof Gerbil && this instanceof Gerbil) continue;
                     if (this.y < sprites[i].y) {
                         this.isStanding = true;
                         this.riding = sprites[i];

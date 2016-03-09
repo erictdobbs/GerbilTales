@@ -19,6 +19,7 @@ function InitializeGameEngine() {
     gameView.addEventListener("touchstart", onMouseDown, false);
     gameView.addEventListener("touchmove", onMouseMove, false);
     gameView.addEventListener("touchend", onMouseUp, false);
+    gameView.addEventListener("wheel", onMouseScroll, false);
     gameView.oncontextmenu = function (e) { e.preventDefault(); };
 
     gameView.onmousedown = function (e) {

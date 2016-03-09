@@ -45,14 +45,14 @@ function Wheel(x, y, diameter) {
     this.executeRules = function () {
         this.cameraFocus = (this.runners.length > 0);
 
-        if (!this.downPressed && keyboardState.isKeyPressed(keyboardState.key.S) && this.runners.length > 0) {
+        if (!this.downPressed && keyboardState.isDownPressed() && this.runners.length > 0) {
             this.downPressed = true;
             this.runners[0].container = null;
             this.runners[0].solid = true;
             this.runners[0].dx = -3;
             this.runners.splice(0, 1);
         }
-        if (!keyboardState.isKeyPressed(keyboardState.key.S)) {
+        if (!keyboardState.isDownPressed()) {
             this.downPressed = false;
         }
 
@@ -60,7 +60,7 @@ function Wheel(x, y, diameter) {
         this.power += this.runners.length * 0.0003;
         if (this.power > this.runners.length / this.maxRunners) this.power = this.runners.length / this.maxRunners;
 
-        if (!this.upPressed && keyboardState.isKeyPressed(keyboardState.key.W)) {
+        if (!this.upPressed && keyboardState.isUpPressed()) {
             this.upPressed = true;
             for (var i = 0; i < sprites.length; i++) {
                 if (sprites[i] instanceof Gerbil && this.doesOverlapSprite(sprites[i])) {
@@ -74,7 +74,7 @@ function Wheel(x, y, diameter) {
                 }
             }
         }
-        if (!keyboardState.isKeyPressed(keyboardState.key.W)) {
+        if (!keyboardState.isUpPressed()) {
             this.upPressed = false;
         }
     };
