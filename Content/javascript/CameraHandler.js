@@ -165,7 +165,7 @@
 
             var xDir = target.x > source.x ? 1 : -1;
             var yDir = target.y > source.y ? 1 : -1;
-            var indicatorDistance = 20;
+            var indicatorDistance = 16;
 
             var unpoweredColor = new Color(80, 80, 80, (source.power / 4) + 0.2);
             var poweredColor = new Color(64, 255, 64, (source.power / 4) + 0.2);

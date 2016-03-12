@@ -103,7 +103,7 @@ function Gerbil(x, y) {
             if (this.moveDirection == 0) this.dx *= 0.8;
 
             var solidTouchedSprites = this.blockMovement();
-            if (solidTouchedSprites.any(function (x) { return x instanceof SpikeBlock })) {
+            if (solidTouchedSprites.any(function (x) { return x.deadly; })) {
                 this.killGerbil();
             }
 

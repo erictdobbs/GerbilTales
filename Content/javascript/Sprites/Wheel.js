@@ -6,7 +6,7 @@
     this.maxRunners = 3;
     this.editables.push(new Editable('tileX', paramTypes.integer));
     this.editables.push(new Editable('tileY', paramTypes.integer));
-    this.editables.push(new Editable('radius', paramTypes.integer));
+    this.editables.push(new Editable('radius', paramTypes.integer, ValidateMin1));
     this.editables.push(new Editable('maxRunners', paramTypes.integer));
 
     this.anchors.push(new CenterAnchor(this));

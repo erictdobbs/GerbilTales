@@ -1,7 +1,20 @@
 ﻿var selectedSprite = null;
 var selectedAnchor = null;
 function HandleAnchors() {
+    if (keyboardState.isDeletePressed() && selectedSprite != null) {
+        selectedSprite.delete();
+        selectedSprite = null;
+        selectedAnchor = null;
+    }
+
     if (!isMouseClicked) {
+        if (selectedAnchor != null) {
+            if (selectedSprite) ValidateEditableValue(selectedSprite);
+            if (selectedAnchor.onRelease) {
+                selectedAnchor.onRelease();
+                selectedAnchor.parent.edit();
+            }
+        }
         selectedAnchor = null;
         SetCursor('');
     }
@@ -11,7 +24,6 @@ function HandleAnchors() {
                 if (selectedSprite.anchors[i].isCoordinateWithin(mouseX, mouseY)) {
                     if (isMouseChanged && isMouseClicked) selectedAnchor = selectedSprite.anchors[i];
                     SetCursor(selectedSprite.anchors[i].anchorType.cursor);
-                    //UpdateEditorPanel();
                     break;
                 }
             }
@@ -30,6 +42,7 @@ function HandleAnchors() {
     }
     if (selectedAnchor != null) {
         selectedAnchor.onChange(mouseDeltaX, mouseDeltaY);
+        if (selectedSprite) ValidateEditableValue(selectedSprite);
         var editorBoxes = document.getElementsByClassName('editorBox');
         for (var i = 0; i < editorBoxes.length; i++) {
             editorBoxes[i].value = selectedSprite[editorBoxes[i].id];
@@ -44,7 +57,6 @@ function SwitchToEditMode() {
     playButton.className = '';
 
     mode = gameMode.edit;
-    //for (var i = 0; i < sprites.length; i++) sprites[i].kill();
     sprites = [];
     var buttonContainer = document.getElementById('editorButtons');
 
@@ -60,6 +72,7 @@ function SwitchToEditMode() {
 }
 
 function SwitchToPlayMode() {
+    selectedSprite = null;
     var editButton = document.getElementById('toggleEdit');
     var playButton = document.getElementById('togglePlay');
     editButton.className = '';

@@ -19,6 +19,7 @@ keyboardState.isRightPressed = function () { return this.isKeyPressed(this.key["
 keyboardState.isUpPressed = function () { return this.isKeyPressed(this.key["W"]); };
 keyboardState.isDownPressed = function () { return this.isKeyPressed(this.key["S"]); };
 keyboardState.isJumpPressed = function () { return this.isKeyPressed(this.key["Space"]); };
+keyboardState.isDeletePressed = function () { return this.isKeyPressed(this.key["Delete"]); };
 
 keyboardState.key = {
     None: 0,

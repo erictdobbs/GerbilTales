@@ -57,11 +57,17 @@ function EditorBase(tileX, tileY, width, height) {
         }
         editableContainer.appendChild(newTable);
     }
+
+    this.delete = function () {
+        var editorSpriteIndex = editorSprites.indexOf(this);
+        editorSprites.splice(editorSpriteIndex, 1);
+    }
 }
 
-function Editable(paramName, paramType) {
+function Editable(paramName, paramType, validate) {
     this.paramName = paramName;
     this.paramType = paramType;
+    this.validate = validate;
     this.getInputBox = function (value) {
         if (this.paramType == paramTypes.integer) {
             var inputBox = document.createElement("input");
@@ -114,10 +120,29 @@ function Editable(paramName, paramType) {
     }
 }
 
-function EditorInputChanged(el) { selectedSprite[el.id] = el.value };
-function EditorInputChangedInteger(el) { selectedSprite[el.id] = parseInt(el.value) };
-function EditorInputChangedBoolean(el) { selectedSprite[el.id] = el.checked };
-function EditorInputChangedSprite(el) { selectedSprite[el.id] = editorSprites[el.value] };
+function EditorInputChanged(el) {
+    selectedSprite[el.id] = el.value;
+    ValidateEditableValue(selectedSprite);
+};
+function EditorInputChangedInteger(el) {
+    selectedSprite[el.id] = parseInt(el.value);
+    ValidateEditableValue(selectedSprite);
+};
+function EditorInputChangedBoolean(el) {
+    selectedSprite[el.id] = el.checked;
+    ValidateEditableValue(selectedSprite);
+};
+function EditorInputChangedSprite(el) {
+    selectedSprite[el.id] = editorSprites[el.value];
+    ValidateEditableValue(selectedSprite);
+};
+function ValidateEditableValue(editorSprite) {
+    for (var i = 0; i < editorSprite.editables.length; i++) {
+        var editable = editorSprite.editables[i];
+        var paramName = editable.paramName;
+        if (editable.validate) editorSprite[paramName] = editable.validate(editorSprite[paramName]);
+    }
+}
 
 
 var paramTypes = {

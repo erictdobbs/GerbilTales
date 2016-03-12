@@ -44,6 +44,15 @@ function EditorAnchor(parent, myAnchorType, onChange) {
     this.isCoordinateWithin = function (x, y) {
         return x >= this.left && x <= this.right && y >= this.top && y <= this.bottom;
     }
+
+    this.onRelease = function () {
+        for (var i = 0; i < this.parent.editables.length; i++) {
+            var editable = this.parent.editables[i];
+            if (editable.paramType == paramTypes.integer) {
+                this.parent[editable.paramName] = parseInt(this.parent[editable.paramName]);
+            }
+        }
+    }
 }
 
 function ResizerAnchorSet(parent) {
@@ -63,7 +72,7 @@ function ResizerAnchorSet(parent) {
 }
 
 function CenterAnchor(parent) {
-    this.parent = parent;
+    EditorAnchor.call(this, parent, anchorType.center, null);
     this.onChange = function (dX, dY) {
         if (this.parent.width) this.parent.width = parseInt(this.parent.width)
         if (this.parent.height) this.parent.height = parseInt(this.parent.height)
@@ -71,7 +80,6 @@ function CenterAnchor(parent) {
         this.parent.tileY += dY / editorScale;
     };
     this.draw = function () { }
-    this.anchorType = anchorType.center;
     this.isCoordinateWithin = function (x, y) {
         var sprite = parent.createSprite();
         var left = camera.convertX(sprite.getLeft()) - parent.offset;

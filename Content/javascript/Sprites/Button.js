@@ -4,8 +4,8 @@
     this.isPowerSource = true;
     this.editables.push(new Editable('tileX', paramTypes.integer));
     this.editables.push(new Editable('tileY', paramTypes.integer));
-    this.editables.push(new Editable('width', paramTypes.integer));
-    this.editables.push(new Editable('neededPush', paramTypes.integer));
+    this.editables.push(new Editable('width', paramTypes.integer, ValidateMin1));
+    this.editables.push(new Editable('neededPush', paramTypes.integer, ValidateMin1));
 
     this.anchors.push(new CenterAnchor(this));
     this.anchors.push(new LeftAnchor(this));

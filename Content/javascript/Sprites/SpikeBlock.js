@@ -26,6 +26,8 @@ function SpikeBlock(x, y, width, height) {
     this.width = width;
     this.height = height;
 
+    this.deadly = true;
+
     this.color = new Color(255, 100, 128, 1.0);
     this.borderColor = new Color(150, 80, 80, 1.0);
 

@@ -8,6 +8,7 @@
     this.isPowerSource = true;
     this.editables.push(new Editable('tileX', paramTypes.integer));
     this.editables.push(new Editable('tileY', paramTypes.integer));
+    this.editables.push(new Editable('radius', paramTypes.integer, ValidateMin1));
     this.editables.push(new Editable('timeOn', paramTypes.integer));
     this.editables.push(new Editable('timeOff', paramTypes.integer));
     this.editables.push(new Editable('startingTick', paramTypes.integer));
