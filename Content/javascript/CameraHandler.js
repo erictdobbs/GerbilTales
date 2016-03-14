@@ -5,8 +5,8 @@
     this.dy = 0;
     this.scale = 1;
     this.editorTargetScale = 1;
-    this.width = 800;
-    this.height = 600;
+    this.width = 0;
+    this.height = 0;
     this.accel = 0.5;
     this.maxSpeed = 10;
     this.inertia = 0.9;
@@ -17,29 +17,6 @@
     this.invertX = function (x) { return (x - this.width / 2) / this.scale + this.x; }
     this.invertY = function (y) { return (y - this.height / 2) / this.scale + this.y; }
 
-    //this.shadeRect = function (x, y, width, height) {
-    //    var gap = 8;
-    //    var screenX1 = this.convertX(x);
-    //    var screenX2 = this.convertX(x + width);
-    //    var screenY1 = this.convertY(y);
-    //    var screenY2 = this.convertY(y + height);
-    //    for (var i = gap * parseInt((screenX1 + gap) / gap) ; i < screenX2; i += gap) {
-    //        gameViewContext.beginPath();
-    //        gameViewContext.moveTo(i, screenY1);
-    //        var diagY = (i - screenX1) + screenY1;
-    //        diagY = diagY > screenY2 ? screenY2 : diagY;
-    //        gameViewContext.lineTo(screenX1 + ((i - screenX1) + screenY1 - diagY), diagY);
-    //        gameViewContext.stroke();
-    //    }
-    //    for (var i = gap * parseInt((screenY1 + gap) / gap) ; i < screenY2; i += gap) {
-    //        gameViewContext.beginPath();
-    //        gameViewContext.moveTo(screenX2, i);
-    //        var diagX = (i - screenY1) + screenX2;
-    //        diagX = diagX > screenX2 ? screenX2 : diagX;
-    //        gameViewContext.lineTo(diagX, screenY1 + ((i - screenY1) + screenX2 - diagX));
-    //        gameViewContext.stroke();
-    //    }
-    //}
     this.getMouseX = function () { return this.invertX(mouseX); }
     this.getMouseY = function () { return this.invertY(mouseY); }
 
@@ -67,6 +44,7 @@
         gameViewContext.beginPath();
         gameViewContext.moveTo(this.convertX(x1), this.convertY(y1));
         gameViewContext.lineTo(this.convertX(x2), this.convertY(y2));
+        gameViewContext.closePath();
         gameViewContext.stroke();
     }
     this.drawPolygon = function (points) {
@@ -107,6 +85,8 @@
     }
 
     this.updateCamera = function () {
+        this.width = viewWidth;
+        this.height = viewHeight;
         if (mode == gameMode.play || mode == gameMode.playPaused) {
             var cameraFoci = sprites.filter(function (obj) { return obj.cameraFocus; });
             var fociXs = cameraFoci.map(function (obj) { return obj.x; });

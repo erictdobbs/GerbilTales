@@ -23,10 +23,11 @@ function onMouseDown(e) {
 
         var x = pageX;
         var y = pageY;
-        for (var node = canvas; node != null; node = node.parentNode) {
+        for (var node = canvas; node != null; node = node.offsetParent) {
             if (node.offsetLeft) x -= node.offsetLeft;
             if (node.offsetTop) y -= node.offsetTop;
         }
+
         m_mouseX = x;
         m_mouseY = y;
     }
@@ -50,7 +51,7 @@ function onMouseMove(e) {
 
     var x = pageX;
     var y = pageY;
-    for (var node = canvas; node != null; node = node.parentNode) {
+    for (var node = canvas; node != null; node = node.offsetParent) {
         if (node.offsetLeft) x -= node.offsetLeft;
         if (node.offsetTop) y -= node.offsetTop;
     }
@@ -86,6 +87,8 @@ function UpdateMouseDelta() {
     oldMouseY = mouseY;
     isMouseChanged = (oldIsMouseClicked != isMouseClicked);
     oldIsMouseClicked = isMouseClicked;
+
+    if (keyboardState.isJumpPressed()) console.log(mouseX, mouseY);
 }
 
 

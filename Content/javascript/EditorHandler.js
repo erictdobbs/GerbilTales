@@ -51,39 +51,29 @@ function HandleAnchors() {
 }
 
 function SwitchToEditMode() {
-    var editButton = document.getElementById('toggleEdit');
-    var playButton = document.getElementById('togglePlay');
-    editButton.className = 'hidden';
-    playButton.className = '';
+    editButton.classList.add('hidden');
+    exportButton.classList.remove('hidden');
+    importButton.classList.remove('hidden');
+    playButton.classList.remove('hidden');
 
     mode = gameMode.edit;
     sprites = [];
-    var buttonContainer = document.getElementById('editorButtons');
 
-    for (var i = 0; i < editorObjectTypes.length; i++) {
-        var button = document.createElement("button");
-        button.setAttribute("id", 'create' + editorObjectTypes[i].name);
-        button.classList.add("editorAddButton");
-        button.setAttribute("editorObjectIndex", i);
-        button.innerHTML = 'Insert ' + editorObjectTypes[i].name;
-        button.onclick = function () { InsertEditorObject(this.getAttribute("editorObjectIndex")); };
-        buttonContainer.appendChild(button);
-    }
+    for (var i = 0; i < menus.length; i++) if (menus[i] instanceof ToolMenu) menus[i].display();
 }
 
 function SwitchToPlayMode() {
     selectedSprite = null;
-    var editButton = document.getElementById('toggleEdit');
-    var playButton = document.getElementById('togglePlay');
-    editButton.className = '';
-    playButton.className = 'hidden';
+    UpdateEditorPanel();
+    editButton.classList.remove('hidden');
+    exportButton.classList.add('hidden');
+    importButton.classList.add('hidden');
+    playButton.classList.add('hidden');
 
     mode = gameMode.play;
     for (var i = 0; i < sprites.length; i++) sprites[i].kill();
-    var buttonContainer = document.getElementById('editorButtons');
-    buttonContainer.innerHTML = '';
-    var editorObjContainer = document.getElementById("editSprites");
-    editorObjContainer.innerHTML = '';
+
+    for (var i = 0; i < menus.length; i++) if (menus[i] instanceof ToolMenu) menus[i].hide();
 
     for (var i = 0; i < editorSprites.length; i++) {
         var newSprite = editorSprites[i].createSprite();
@@ -108,18 +98,20 @@ function InsertEditorObject(index) {
 }
 
 function UpdateEditorPanel() {
-    var container = document.getElementById("editSprites");
-    container.innerHTML = "";
+    for (var i = 0; i < menus.length; i++) if (menus[i] instanceof EditableMenu) menus[i].delete();
+    var panel = new EditableMenu();
+    panel.bottomRightPosition();
+    panel.display();;
 
-    for (var i = 0; i < editorSprites.length; i++) {
-        var editorObjDiv = document.createElement("div");
-        editorObjDiv.classList.add("editorObject");
-        if (editorSprites[i] == selectedSprite) editorObjDiv.classList.add("selected");
-        editorObjDiv.innerHTML = editorSprites[i].constructor.name.replace("Editor", "");
-        editorObjDiv.setAttribute("editorSpriteIndex", i);
-        editorObjDiv.onclick = function () { SelectEditorObject(this.getAttribute("editorSpriteIndex")); };
-        container.appendChild(editorObjDiv);
-    }
+    //for (var i = 0; i < editorSprites.length; i++) {
+    //    var editorObjDiv = document.createElement("div");
+    //    editorObjDiv.classList.add("editorObject");
+    //    if (editorSprites[i] == selectedSprite) editorObjDiv.classList.add("selected");
+    //    editorObjDiv.innerHTML = editorSprites[i].constructor.name.replace("Editor", "");
+    //    editorObjDiv.setAttribute("editorSpriteIndex", i);
+    //    editorObjDiv.onclick = function () { SelectEditorObject(this.getAttribute("editorSpriteIndex")); };
+    //    container.appendChild(editorObjDiv);
+    //}
 }
 
 function SelectEditorObject(index) {

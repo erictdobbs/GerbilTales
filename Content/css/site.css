@@ -16,25 +16,64 @@
     display: none !important;
 }
 
+textarea {
+    height: 60px;
+    resize: none;
+}
+
+#MenuContainer {
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.menuButton {
+    background-color: rgb(32,156,156);
+    margin: 20px;
+    padding: 10px;
+    border-style:solid;
+    border-width:2px;
+    border-color:rgb(48, 192, 192);
+    cursor: pointer;
+    font-family: Arial;
+}
+.menuButtonSmall {
+    background-color: rgb(32,156,156);
+    font-size: 12px;
+    border-style:solid;
+    border-width:2px;
+    border-color:rgb(48, 192, 192);
+    cursor: pointer;
+    font-family: Arial;
+    padding: 4px;
+}
+
+.menu {
+    background-color:rgba(122, 172, 209, 0.7);
+    border-style:solid;
+    border-width:2px;
+    border-color:rgba(160, 195, 222, 0.7);
+    position:absolute;
+    text-align: center;
+}
+
+table {
+    margin: auto;
+    width: 100%;
+}
+
 #CanvasTable {
     margin-left:auto;
     margin-right:auto;
 }
 
-#editables {
-    margin-left:20px;
-    margin-top:50px;
-    height: 160px;
-}
 #editCell {
     width: 300px;
     vertical-align:top;
 }
 
-#editorButtons {
-    margin: 20px;
+.editorBox {
+    width: 100%;
 }
-
 
 #editSprites {
     margin-left:20px;
@@ -56,9 +95,6 @@
 
 canvas {
     display: block;
-    margin-top: 50px;
-    margin-left:auto;
-    margin-right:auto;
     outline: 5px solid white;
     outline-offset: 3px;
 }

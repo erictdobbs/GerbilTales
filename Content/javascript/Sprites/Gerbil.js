@@ -140,6 +140,7 @@ function Gerbil(x, y) {
 
     this.imageSource = document.getElementById("Gerbil");
     this.draw = function () {
+        gameViewContext.imageSmoothingEnabled = false;
         this.frameCount++;
         if (this.isDead) {
             if (this.frameCount % 10 < 5)

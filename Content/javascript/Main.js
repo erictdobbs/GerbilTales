@@ -1,5 +1,5 @@
-﻿var viewWidth = 800;
-var viewHeight = 600;
+﻿var viewWidth;
+var viewHeight;
 window.onload = InitializeGameEngine;
 
 var debugMode = false;
@@ -10,8 +10,28 @@ var editorSprites = [];
 var mouseInfo = { x: 0, y: 0, pressed: false, oldX: 0, oldY: 0, clicked: false };
 var mainLoop = { interval: null, milliseconds: 20 };
 
+function ResizeWindow() {
+    var gameViewContainer = document.getElementById('gameViewContainer');
+    var gameView = document.getElementById('gameView');
+    viewWidth = window.innerWidth - 20;
+    viewHeight = window.innerHeight - 20;
+    gameView.width = viewWidth;
+    gameView.height = viewHeight;
+    gameView.style.width = viewWidth + 'px';
+    gameView.style.height = viewHeight + 'px';
+    gameViewContainer.style.width = viewWidth + 'px';
+    gameViewContainer.style.height = viewHeight + 'px';
+}
+
 function InitializeGameEngine() {
     var gameView = document.getElementById('gameView');
+    ResizeWindow();
+
+    var mainMenu = new MainMenu();
+    mainMenu.centerPosition();
+    mainMenu.display();
+
+    document.body.onresize = ResizeWindow;
 
     gameView.addEventListener("mousedown", onMouseDown, false);
     gameView.addEventListener("mouseup", onMouseUp, false);
@@ -89,9 +109,9 @@ function MainDrawLoop() {
     gameViewContext.clearRect(0, 0, viewWidth, viewHeight);
 
     var background = document.getElementById('Background1');
-    gameViewContext.drawImage(background, 20, 10, 260, 190, 0, 0, 800, 600);
+    gameViewContext.drawImage(background, 20, 10, 260, 190, 0, 0, viewWidth, viewHeight);
     gameViewContext.fillStyle = "rgba(72, 140, 192, 0.5)";
-    gameViewContext.fillRect(0, 0, 800, 600);
+    gameViewContext.fillRect(0, 0, viewWidth, viewHeight);
 
     if (keyboardState.isKeyPressed(keyboardState.key.P) && mode == gameMode.playPaused) mode = gameMode.play;
     if (keyboardState.isKeyPressed(keyboardState.key.O) && mode == gameMode.play) mode = gameMode.playPaused;

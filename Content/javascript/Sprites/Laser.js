@@ -24,7 +24,6 @@
         gameViewContext.shadowBlur = this.camera.scale * 2;
 
         this.camera.drawLine(this.x1, this.y1, this.x2, this.y2);
-
         gameViewContext.shadowBlur = 0;
 
     }

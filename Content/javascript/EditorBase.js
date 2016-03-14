@@ -96,6 +96,10 @@ function Editable(paramName, paramType, validate) {
             selectBox.setAttribute("onchange", this.paramType.onChange + '(this)');
 
             var options = editorSprites.filter(function (obj) { return obj.isPowerSource; });
+            var blankOption = document.createElement("option");
+            blankOption.setAttribute("value", null);
+            blankOption.innerHTML = "None";
+            selectBox.appendChild(blankOption);
             for (var i = 0; i < options.length; i++) {
                 var option = document.createElement("option");
                 var val = editorSprites.indexOf(options[i]);

@@ -29,6 +29,16 @@ Array.prototype.max = function (func) {
 
 // Also some other array extensions
 
+Array.prototype.last = function (func) {
+    if (this.length == 0) return null;
+    return this[this.length - 1];
+};
+
+Array.prototype.pop = function (func) {
+    if (this.length == 0) return null;
+    return this.splice(this.length - 1, 1);
+};
+
 Array.prototype.pushArray = function () {
     var toPush = this.concat.apply([], arguments);
     for (var i = 0, len = toPush.length; i < len; ++i) {

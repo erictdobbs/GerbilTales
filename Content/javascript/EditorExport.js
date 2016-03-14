@@ -1,5 +1,4 @@
 ﻿function ExportLevel() {
-
     var condensedEditorSprites = [];
 
     for (var i = 0; i < editorSprites.length; i++) {
@@ -25,11 +24,12 @@
 
     var ret = { v: "1.0", s: condensedEditorSprites };
 
-    return JSON.stringify(ret);
-
+    prompt('Here is your level export string:', JSON.stringify(ret));
 }
 
 function ImportLevel(levelString) {
+    if (levelString == undefined) return;
+    if (levelString == '') return;
     var obj = JSON.parse(levelString);
 
     if (obj.v === "1.0") {

@@ -17,7 +17,7 @@ EditorSpikeBlock.prototype = new EditorBase();
 EditorSpikeBlock.prototype.constructor = EditorSpikeBlock;
 
 editorObjectTypes.push(
-    { name: 'Spike Block', type: EditorSpikeBlock, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1, 1); } }
+    { name: 'Spike', type: EditorSpikeBlock, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1, 1); } }
 );
 
 

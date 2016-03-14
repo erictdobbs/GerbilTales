@@ -129,4 +129,41 @@ function SpriteBase(x, y) {
         }
         return ret.distinct();
     }
+
+    this.findSolidPoint = function(sprites, dir) {
+        // Finds first solid sprite in provided direction
+        // Will not detect some solids thinner than one tile
+        // Returns coordinate and sprite {x,y,sprite}
+        // Searches from center of this sprite
+
+        var intersected = [];
+        for (var i = 0; i < sprites.length; i++) {
+            if (sprites[i] == this) continue;
+            if (this.doesOverlapSprite(sprites[i])) {
+                if (sprites[i].solid) intersected.push(sprites[i]);
+            }
+        }
+        var ret = null;
+        if (dir == direction.right) {
+            var hit = sprites.min(function (spr) { return spr.getLeft(); });
+            if (hit) ret = { x: hit.getLeft(), y: this.y, sprite: hit };
+        } else if (dir == direction.up) {
+            var hit = sprites.min(function (spr) { return spr.getBottom(); });
+            if (hit) ret = { x: this.x, y: hit.getBottom(), sprite: hit };
+        } else if (dir == direction.left) {
+            var hit = sprites.min(function (spr) { return spr.getRight(); });
+            if (hit) ret = { x: hit.getRight(), y: this.y, sprite: hit };
+        } else if (dir == direction.down) {
+            var hit = sprites.min(function (spr) { return spr.getTop(); });
+            if (hit) ret = { x: this.x, y: hit.getTop(), sprite: hit };
+        }
+        return ret;
+    }
+}
+
+var direction = {
+    right: 0,
+    up: 90,
+    left: 180,
+    down: 270
 }
