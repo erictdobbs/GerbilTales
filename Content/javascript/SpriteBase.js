@@ -111,7 +111,7 @@ function SpriteBase(x, y) {
                         this.dy = sprites[i].dy;
                         blocked.push(sprites[i]);
                     } else {
-                        if (sprites[i] instanceof Wall || sprites[i] instanceof Scale) this.setTop(sprites[i].getBottom());
+                        if (sprites[i] instanceof Wall /*|| sprites[i] instanceof Scale*/) this.setTop(sprites[i].getBottom());
                         if (this.dy < 0) this.dy = 0;
                         blocked.push(sprites[i]);
                     }

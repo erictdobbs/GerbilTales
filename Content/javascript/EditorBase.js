@@ -1,22 +1,5 @@
 ﻿var editorScale = 16;
 
-function DrawEditorGridLines() {
-    if (mode == gameMode.edit && editorSprites.length > 0) {
-        gameViewContext.strokeStyle = new Color(128, 128, 128, 0.2).toString();
-        gameViewContext.lineWidth = 3;
-        var asSprites = editorSprites.map(function (obj) { return obj.createSprite(); });
-        var border = 20;
-        var minX = asSprites.min(function (obj) { return obj.getLeft(); }).getLeft();
-        var maxX = asSprites.max(function (obj) { return obj.getRight(); }).getRight();
-        var minY = asSprites.min(function (obj) { return obj.getTop(); }).getTop();
-        var maxY = asSprites.max(function (obj) { return obj.getBottom(); }).getBottom();
-        for (var x = minX - editorScale * border; x <= maxX + editorScale * border; x += editorScale)
-            camera.drawVerticalLine(x);
-        for (var y = minY - editorScale * border; y <= maxY + editorScale * border; y += editorScale)
-            camera.drawHorizontalLine(y);
-    }
-}
-
 function EditorBase(tileX, tileY, width, height) {
 
     this.editables = [];
@@ -52,7 +35,7 @@ function EditorBase(tileX, tileY, width, height) {
         var newTable = document.createElement("table");
         for (var i = 0; i < this.editables.length; i++) {
             var editable = this.editables[i];
-            var newRow = newTable.insertRow(0);
+            var newRow = newTable.insertRow(-1);
             editable.populateRow(newRow, this[editable.paramName]);
         }
         editableContainer.appendChild(newTable);
@@ -61,6 +44,7 @@ function EditorBase(tileX, tileY, width, height) {
     this.delete = function () {
         var editorSpriteIndex = editorSprites.indexOf(this);
         editorSprites.splice(editorSpriteIndex, 1);
+        UpdateEditorPanel();
     }
 }
 
@@ -70,6 +54,15 @@ function Editable(paramName, paramType, validate) {
     this.validate = validate;
     this.getInputBox = function (value) {
         if (this.paramType == paramTypes.integer) {
+            var inputBox = document.createElement("input");
+            inputBox.setAttribute("id", this.paramName);
+            inputBox.classList.add("editorBox");
+            inputBox.setAttribute("type", this.paramType.inputType);
+            inputBox.setAttribute("value", value);
+            inputBox.setAttribute("onchange", this.paramType.onChange + '(this)');
+            return inputBox;
+        }
+        if (this.paramType == paramTypes.string) {
             var inputBox = document.createElement("input");
             inputBox.setAttribute("id", this.paramName);
             inputBox.classList.add("editorBox");
@@ -140,6 +133,10 @@ function EditorInputChangedSprite(el) {
     selectedSprite[el.id] = editorSprites[el.value];
     ValidateEditableValue(selectedSprite);
 };
+function EditorInputChangedText(el) {
+    selectedSprite[el.id] = el.value;
+    ValidateEditableValue(selectedSprite);
+};
 function ValidateEditableValue(editorSprite) {
     for (var i = 0; i < editorSprite.editables.length; i++) {
         var editable = editorSprite.editables[i];
@@ -152,5 +149,6 @@ function ValidateEditableValue(editorSprite) {
 var paramTypes = {
     integer: { inputType: "number", defaultValue: 0, onChange: 'EditorInputChangedInteger' },
     boolean: { inputType: "checkbox", defaultValue: false, onChange: 'EditorInputChangedBoolean' },
+    string: { inputType: "text", defaultValue: '', onChange: 'EditorInputChangedText' },
     powerSource: { onChange: 'EditorInputChangedSprite' }
 };

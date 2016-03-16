@@ -45,9 +45,9 @@ function Gerbil(x, y) {
     SpriteBase.call(this, x, y);
 
     this.isDead = false;
-    this.dealTimer = 0;
+    this.deadTimer = 0;
 
-    this.speed = Math.random() + 4;
+    this.speed = Math.random() / 3 + 2.5;
     this.speedResetCounter = 0;
     this.frameCount = 0;
     this.cameraFocus = true;
@@ -72,11 +72,11 @@ function Gerbil(x, y) {
 
     this.executeRules = function () {
         if (this.isDead) {
-            this.dealTimer++;
+            this.deadTimer++;
             this.x += this.dx;
             this.y += this.dy;
 
-            if (this.dealTimer > 60) this.kill();
+            if (this.deadTimer > 120) this.kill();
             return;
         }
         this.handleInput();
@@ -95,7 +95,7 @@ function Gerbil(x, y) {
 
             this.speedResetCounter -= 1;
             if (this.speedResetCounter <= 0) {
-                this.speed = Math.random() / 2 + 3;
+                this.speed = Math.random() / 3 + 2.5;
                 this.speedResetCounter = 100 + Math.random() * 100;
             }
 

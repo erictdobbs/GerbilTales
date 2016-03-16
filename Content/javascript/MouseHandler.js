@@ -87,8 +87,6 @@ function UpdateMouseDelta() {
     oldMouseY = mouseY;
     isMouseChanged = (oldIsMouseClicked != isMouseClicked);
     oldIsMouseClicked = isMouseClicked;
-
-    if (keyboardState.isJumpPressed()) console.log(mouseX, mouseY);
 }
 
 

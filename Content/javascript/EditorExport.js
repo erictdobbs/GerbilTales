@@ -22,7 +22,7 @@
         condensedEditorSprites.push(condensedEditorSprite);
     }
 
-    var ret = { v: "1.0", s: condensedEditorSprites };
+    var ret = { v: version, s: condensedEditorSprites };
 
     prompt('Here is your level export string:', JSON.stringify(ret));
 }
@@ -32,7 +32,7 @@ function ImportLevel(levelString) {
     if (levelString == '') return;
     var obj = JSON.parse(levelString);
 
-    if (obj.v === "1.0") {
+    if (obj.v === '0.01') {
         editorSprites = [];
         selectedSprite = null;
         for (var i = 0; i < obj.s.length; i++) {
@@ -48,7 +48,7 @@ function ImportLevel(levelString) {
                 if (paramType == paramTypes.powerSource) continue;
                 var paramName = editable.paramName;
                 spr[paramName] = importSprite.e[j];
-                console.log("set " + paramName + " to " + importSprite.e[j]);
+                //console.log("set " + paramName + " to " + importSprite.e[j]);
             }
             editorSprites.push(spr);
         }
@@ -61,7 +61,7 @@ function ImportLevel(levelString) {
                 if (paramType != paramTypes.powerSource) continue;
                 var paramName = editable.paramName;
                 spr[paramName] = editorSprites[importSprite.e[j]];
-                console.log("set " + paramName + " to " + importSprite.e[j]);
+                //console.log("set " + paramName + " to " + importSprite.e[j]);
             }
         }
     } else {

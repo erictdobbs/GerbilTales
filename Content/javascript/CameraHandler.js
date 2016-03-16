@@ -113,10 +113,12 @@
 
             var accel = this.accel / this.scale;
             var maxSpeed = this.maxSpeed / this.scale;
-            if (keyboardState.isLeftPressed()) this.dx -= accel;
-            if (keyboardState.isRightPressed()) this.dx += accel;
-            if (keyboardState.isUpPressed()) this.dy -= accel;
-            if (keyboardState.isDownPressed()) this.dy += accel;
+            if (document.activeElement && document.activeElement.tagName.toLowerCase() != 'input') {
+                if (keyboardState.isLeftPressed()) this.dx -= accel;
+                if (keyboardState.isRightPressed()) this.dx += accel;
+                if (keyboardState.isUpPressed()) this.dy -= accel;
+                if (keyboardState.isDownPressed()) this.dy += accel;
+            }
             if (this.dx > maxSpeed) this.dx = maxSpeed;
             if (this.dx < -maxSpeed) this.dx = -maxSpeed;
             if (this.dy > maxSpeed) this.dy = maxSpeed;
@@ -169,6 +171,24 @@
                 if (bubbleCount == 0) gameViewContext.fill();
                 gameViewContext.stroke();
                 bubbleCount = (bubbleCount - 1 + bubbleGap) % bubbleGap;
+            }
+        }
+    }
+
+    this.drawEditorGridLines = function () {
+        if (mode == gameMode.edit) {
+            gameViewContext.strokeStyle = new Color(128, 128, 128, 0.2).toString();
+            gameViewContext.lineWidth = 3;
+
+            var xStart = parseInt(this.x / editorScale) * editorScale;
+            for (var i = 0; i < 30; i++) {
+                this.drawVerticalLine(xStart + editorScale * (i + 1));
+                this.drawVerticalLine(xStart - editorScale * i);
+            }
+            var yStart = parseInt(this.y / editorScale) * editorScale;
+            for (var i = 0; i < 30; i++) {
+                this.drawHorizontalLine(yStart + editorScale * (i + 1));
+                this.drawHorizontalLine(yStart - editorScale * i);
             }
         }
     }

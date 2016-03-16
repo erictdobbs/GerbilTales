@@ -124,7 +124,7 @@ function MainDrawLoop() {
             if (mode != gameMode.playPaused || (debugPressed && !debugKeyStep)) {
                 sprites[i].executeRules();
             }
-    for (var i = sprites.length - 1; i > 0; i--)
+    for (var i = sprites.length - 1; i >= 0; i--)
         if (sprites[i] && !sprites[i].active)
             sprites[i].delete();
 
@@ -147,7 +147,7 @@ function MainDrawLoop() {
         for (var i = 0; i < editorSprites.length; i++) {
             editorSprites[i].draw();
         }
-        DrawEditorGridLines();
+        camera.drawEditorGridLines();
         if (selectedSprite) selectedSprite.drawAnchors();
     }
 

@@ -11,6 +11,9 @@
     -o-user-select: none;
 }
 
+.image-GameLogo {
+    margin-top: -60px;
+}
 
 .hidden {
     display: none !important;
@@ -35,6 +38,9 @@ textarea {
     border-color:rgb(48, 192, 192);
     cursor: pointer;
     font-family: Arial;
+    color: lightblue;
+    font-weight: bolder;
+    font-size: 20px;
 }
 .menuButtonSmall {
     background-color: rgb(32,156,156);
@@ -45,6 +51,8 @@ textarea {
     cursor: pointer;
     font-family: Arial;
     padding: 4px;
+    color: lightblue;
+    font-weight: bolder;
 }
 
 .menu {

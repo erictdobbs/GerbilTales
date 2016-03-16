@@ -153,6 +153,16 @@ function MenuActionButtonSmall(text, func) {
 }
 
 
+function MenuImage(image) {
+    this.toNode = function (menu) {
+        var img = document.createElement("img");
+        img.src = image.src;
+        img.classList.add('image-' + image.id);
+        return img;
+    }
+}
+
+
 function MenuTable(elements) {
     // elements is a list of lists corresponding to a 2d array of nodes
     this.elements = elements;
@@ -185,10 +195,10 @@ function GetMenuObjectFromElement(element) {
 
 
 function MainMenu() {
-    var disableButton = new MenuActionButton("Disable", function () {
-        var parent = GetMenuObjectFromElement(this);
-        setTimeout(function () { parent.enable(); }, 1000);
-        parent.disable();
+    var gameLogo = new MenuImage(document.getElementById('GameLogo'))
+
+    var levelSelect = new MenuActionButton("Play", function () {
+        GetMenuObjectFromElement(this).close();
     });
     var startLevelEditor = new MenuActionButton("Level Editor", function () {
         var editMenu = new EditMenu();
@@ -199,14 +209,15 @@ function MainMenu() {
         GetMenuObjectFromElement(this).close();
         SwitchToEditMode();
     });
+    var logo = new MenuImage(document.getElementById('StudioLogo')).toNode();
+    logo.style.float = 'left';
+    logo.style.margin = '20px';
 
-    MenuBase.call(this, 400, 600, [
-        new MenuTitle("Main Menu"),
-        new MenuActionButton("Close", function () { GetMenuObjectFromElement(this).close(); }),
-        new MenuText("test test test test "),
-        new MenuTable([[disableButton.toNode(), startLevelEditor.toNode()],
-                       [new MenuText("33333").toNode(), new MenuText("4").toNode()]]),
-        new MenuTextArea("test test test test ")
+    MenuBase.call(this, 600, 300, [
+        gameLogo,
+        levelSelect,
+        startLevelEditor,
+        new MenuTable([[logo, new MenuText("version " + version).toNode()]])
     ]);
 }
 MainMenu.prototype = new MenuBase();
@@ -240,6 +251,7 @@ var editButton = null;
 var playButton = null;
 var exportButton = null;
 var importButton = null;
+var cameraButton = null;
 function EditMenu() {
     var options = [];
 
@@ -252,11 +264,11 @@ function EditMenu() {
     playButton = button2.toNode();
     options.push(playButton);
 
-    var button3 = new MenuActionButtonSmall("Export level", ExportLevel);
+    var button3 = new MenuActionButtonSmall("Export Level", ExportLevel);
     exportButton = button3.toNode();
     options.push(exportButton);
 
-    var button4 = new MenuActionButtonSmall("Import level", function () { ImportLevel(prompt('Paste your level export string:')); });
+    var button4 = new MenuActionButtonSmall("Import Level", function () { ImportLevel(prompt('Paste your level export string:')); });
     importButton = button4.toNode();
     options.push(importButton);
 
@@ -264,10 +276,16 @@ function EditMenu() {
         GetMenuObjectFromElement(this).close();
         for (var i = 0; i < menus.length; i++) if (menus[i] instanceof ToolMenu) menus[i].close();
         var mainMenu = new MainMenu();
+        SwitchToPlayMode();
+        sprites = [];
         mainMenu.centerPosition();
         mainMenu.display();
     });
     options.push(button5.toNode());
+
+    var button6 = new MenuActionButtonSmall("Center Camera", function () { camera.x = 0; camera.y; });
+    cameraButton = button6.toNode();
+    options.push(cameraButton);
 
     MenuBase.call(this, null, null, [
         new MenuTable([options])

@@ -12,7 +12,7 @@ function HandleAnchors() {
             if (selectedSprite) ValidateEditableValue(selectedSprite);
             if (selectedAnchor.onRelease) {
                 selectedAnchor.onRelease();
-                selectedAnchor.parent.edit();
+                if (selectedAnchor.parent) selectedAnchor.parent.edit();
             }
         }
         selectedAnchor = null;
@@ -38,6 +38,7 @@ function HandleAnchors() {
             }
             SelectEditorObject(-1);
             document.getElementById('editables').innerHTML = '';
+            selectedAnchor = cameraAnchor;
         }
     }
     if (selectedAnchor != null) {
@@ -55,6 +56,7 @@ function SwitchToEditMode() {
     exportButton.classList.remove('hidden');
     importButton.classList.remove('hidden');
     playButton.classList.remove('hidden');
+    cameraButton.classList.remove('hidden');
 
     mode = gameMode.edit;
     sprites = [];
@@ -69,6 +71,7 @@ function SwitchToPlayMode() {
     exportButton.classList.add('hidden');
     importButton.classList.add('hidden');
     playButton.classList.add('hidden');
+    cameraButton.classList.add('hidden');
 
     mode = gameMode.play;
     for (var i = 0; i < sprites.length; i++) sprites[i].kill();
@@ -93,7 +96,8 @@ function SwitchToPlayMode() {
 }
 
 function InsertEditorObject(index) {
-    editorSprites.push(editorObjectTypes[index].add(0, 0));
+    var newEditorSprite = editorObjectTypes[index].add(parseInt(camera.x / editorScale), parseInt(camera.y / editorScale));
+    editorSprites.push(newEditorSprite);
     UpdateEditorPanel();
 }
 
@@ -102,16 +106,6 @@ function UpdateEditorPanel() {
     var panel = new EditableMenu();
     panel.bottomRightPosition();
     panel.display();;
-
-    //for (var i = 0; i < editorSprites.length; i++) {
-    //    var editorObjDiv = document.createElement("div");
-    //    editorObjDiv.classList.add("editorObject");
-    //    if (editorSprites[i] == selectedSprite) editorObjDiv.classList.add("selected");
-    //    editorObjDiv.innerHTML = editorSprites[i].constructor.name.replace("Editor", "");
-    //    editorObjDiv.setAttribute("editorSpriteIndex", i);
-    //    editorObjDiv.onclick = function () { SelectEditorObject(this.getAttribute("editorSpriteIndex")); };
-    //    container.appendChild(editorObjDiv);
-    //}
 }
 
 function SelectEditorObject(index) {

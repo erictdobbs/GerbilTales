@@ -55,6 +55,13 @@ function EditorAnchor(parent, myAnchorType, onChange) {
     }
 }
 
+var cameraAnchor = new EditorAnchor(null, null, function (dX, dY) {
+    camera.x -= (2*dX / editorScale);
+    camera.y -= (2*dY / editorScale);
+});
+cameraAnchor.draw = function () { };
+cameraAnchor.onRelease = function () { };
+
 function ResizerAnchorSet(parent) {
     var ret = [];
 
