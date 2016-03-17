@@ -163,6 +163,16 @@ function MenuImage(image) {
 }
 
 
+function MenuFancyText(text) {
+    this.toNode = function (menu) {
+        var img = document.createElement("img");
+        img.src = WriteFancyTextToCanvas(text);
+        img.classList.add('image-text');
+        return img;
+    }
+}
+
+
 function MenuTable(elements) {
     // elements is a list of lists corresponding to a 2d array of nodes
     this.elements = elements;
@@ -195,7 +205,8 @@ function GetMenuObjectFromElement(element) {
 
 
 function MainMenu() {
-    var gameLogo = new MenuImage(document.getElementById('GameLogo'))
+    //var gameLogo = new MenuImage(document.getElementById('GameLogo'))
+    var gameLogo = new MenuFancyText('Gerbil Tales!');
 
     var levelSelect = new MenuActionButton("Play", function () {
         GetMenuObjectFromElement(this).close();
@@ -303,3 +314,30 @@ function EditableMenu() {
 }
 EditableMenu.prototype = new MenuBase();
 EditableMenu.prototype.constructor = EditableMenu;
+
+
+
+function WriteFancyTextToCanvas(text) {
+    var canvas = document.getElementById('textDraw');
+    var context = canvas.getContext('2d');
+    context.font = '40pt Candy Shop Black';
+    var textWidth = context.measureText(text).width;
+    var left = (canvas.width - textWidth) / 2;
+
+    //canvas.width = textWidth + 20;
+
+    context.lineWidth = 14;
+    context.strokeStyle = 'rgb(177, 174, 89)';
+    context.strokeText(text, left, 80);
+
+    context.fillStyle = 'rgb(227, 225, 173)';
+    context.fillText(text, left, 80);
+
+    context.lineWidth = 2;
+    context.strokeStyle = 'rgba(255, 255, 190, 0.75)';
+    context.strokeText(text, left, 80);
+
+    context.fill();
+    context.stroke();
+    return canvas.toDataURL("image/png");
+}

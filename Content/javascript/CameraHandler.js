@@ -89,20 +89,25 @@
         this.height = viewHeight;
         if (mode == gameMode.play || mode == gameMode.playPaused) {
             var cameraFoci = sprites.filter(function (obj) { return obj.cameraFocus; });
-            var fociXs = cameraFoci.map(function (obj) { return obj.x; });
-            var fociYs = cameraFoci.map(function (obj) { return obj.y; });
+            if (cameraFoci.length > 0) {
+                var fociXs = cameraFoci.map(function (obj) { return obj.x; });
+                var fociYs = cameraFoci.map(function (obj) { return obj.y; });
 
-            var targetX = fociXs.average();
-            var targetY = fociYs.average();
-            var xRange = cameraFoci.map(function (obj) { return obj.getRight(); }).max() - cameraFoci.map(function (obj) { return obj.getLeft(); }).min();
-            var yRange = cameraFoci.map(function (obj) { return obj.getBottom(); }).max() - cameraFoci.map(function (obj) { return obj.getTop(); }).min();
+                var targetX = fociXs.average();
+                var targetY = fociYs.average();
+                var xRange = cameraFoci.map(function (obj) { return obj.getRight(); }).max() - cameraFoci.map(function (obj) { return obj.getLeft(); }).min();
+                var yRange = cameraFoci.map(function (obj) { return obj.getBottom(); }).max() - cameraFoci.map(function (obj) { return obj.getTop(); }).min();
 
-            var targetScale = 1 / [(xRange + 256) / this.width, (yRange + 256) / this.height].max();
-            this.scale += (targetScale - this.scale) / 20;
-            this.editorTargetScale = this.scale;
+                var targetScale = 1 / [(xRange + 256) / this.width, (yRange + 256) / this.height].max();
+                this.scale += (targetScale - this.scale) / 20;
+                this.editorTargetScale = this.scale;
 
-            this.dx = (targetX - this.x) / 20;
-            this.dy = (targetY - this.y) / 20;
+                this.dx = (targetX - this.x) / 20;
+                this.dy = (targetY - this.y) / 20;
+            } else {
+                this.dx *= 0.95;
+                this.dy *= 0.95;
+            }
         } else if (mode == gameMode.edit) {
             if (mouseScroll > 0) this.editorTargetScale *= this.zoomSpeedRatio;
             if (mouseScroll < 0) this.editorTargetScale /= this.zoomSpeedRatio;
