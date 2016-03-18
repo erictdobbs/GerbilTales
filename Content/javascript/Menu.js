@@ -15,8 +15,11 @@ function MenuBase(width, height, elements) {
     if (this.width) this.menuElement.style.width = this.width + 'px';
     if (this.height) this.menuElement.style.height = this.height + 'px';
     this.centerPosition = function () {
-        this.menuElement.style.left = ((viewWidth - this.width) / 2) + 'px';
-        this.menuElement.style.top = ((viewHeight - this.height) / 2) + 'px';
+        var width = this.width ? this.width : this.menuElement.offsetWidth;
+        var height = this.height ? this.height : this.menuElement.offsetHeight;
+
+        this.menuElement.style.left = ((viewWidth - width) / 2) + 'px';
+        this.menuElement.style.top = ((viewHeight - height) / 2) + 'px';
     }
     this.bottomLeftPosition = function () {
         this.menuElement.style.left = '0px';
@@ -207,9 +210,14 @@ function GetMenuObjectFromElement(element) {
 function MainMenu() {
     //var gameLogo = new MenuImage(document.getElementById('GameLogo'))
     var gameLogo = new MenuFancyText('Gerbil Tales!');
+    editorSprites = [];
+    sprites = [];
 
     var levelSelect = new MenuActionButton("Play", function () {
         GetMenuObjectFromElement(this).close();
+        var levelMenu = new LevelSelectMenu();
+        levelMenu.display();
+        levelMenu.centerPosition();
     });
     var startLevelEditor = new MenuActionButton("Level Editor", function () {
         var editMenu = new EditMenu();
@@ -219,6 +227,8 @@ function MainMenu() {
         toolMenu.display();
         GetMenuObjectFromElement(this).close();
         SwitchToEditMode();
+        camera.x = 0;
+        camera.y = 0;
     });
     var logo = new MenuImage(document.getElementById('StudioLogo')).toNode();
     logo.style.float = 'left';
@@ -271,7 +281,7 @@ function EditMenu() {
     editButton.classList.add('hidden');
     options.push(editButton);
 
-    var button2 = new MenuActionButtonSmall("Switch to PLAY Mode", SwitchToPlayMode);
+    var button2 = new MenuActionButtonSmall("Switch to PLAY Mode", function () { SwitchToPlayMode(true) });
     playButton = button2.toNode();
     options.push(playButton);
 
@@ -287,14 +297,14 @@ function EditMenu() {
         GetMenuObjectFromElement(this).close();
         for (var i = 0; i < menus.length; i++) if (menus[i] instanceof ToolMenu) menus[i].close();
         var mainMenu = new MainMenu();
-        SwitchToPlayMode();
+        SwitchToPlayMode(true);
         sprites = [];
         mainMenu.centerPosition();
         mainMenu.display();
     });
     options.push(button5.toNode());
 
-    var button6 = new MenuActionButtonSmall("Center Camera", function () { camera.x = 0; camera.y; });
+    var button6 = new MenuActionButtonSmall("Center Camera", function () { camera.x = 0; camera.y = 0; });
     cameraButton = button6.toNode();
     options.push(cameraButton);
 
@@ -305,6 +315,62 @@ function EditMenu() {
 EditMenu.prototype = new MenuBase();
 EditMenu.prototype.constructor = EditMenu;
 
+
+
+function LevelSelectMenu() {
+    var title = new MenuFancyText('Levels');
+    var backToMainMenu = new MenuActionButton("Back to Main Menu", function () {
+        var mainMenu = new MainMenu();
+        mainMenu.display();
+        mainMenu.centerPosition();
+        GetMenuObjectFromElement(this).close();
+    });
+    var playCustomButton = new MenuActionButton("Play a Custom Level", function () {
+        var importMenu = new LevelImportMenu();
+        importMenu.display();
+        importMenu.centerPosition();
+        GetMenuObjectFromElement(this).close();
+    });
+
+    MenuBase.call(this, 500, null, [
+        title,
+        playCustomButton,
+        backToMainMenu
+    ]);
+}
+LevelSelectMenu.prototype = new MenuBase();
+LevelSelectMenu.prototype.constructor = LevelSelectMenu;
+
+
+
+function LevelImportMenu() {
+    var title = new MenuFancyText('Custom Level');
+    var backToMainMenu = new MenuActionButton("Back to Main Menu", function () {
+        var mainMenu = new MainMenu();
+        mainMenu.centerPosition();
+        mainMenu.display();
+        GetMenuObjectFromElement(this).close();
+    });
+    var text = new MenuText("Paste your level code below and click Play.");
+    var textArea = new MenuTextArea('', false);
+    var importButton = new MenuActionButton("Play", function () {
+        var levelString = document.getElementsByTagName('textarea')[0].value;
+        var levelObj = JSON.parse(levelString);
+        var level = new LevelBase(levelObj)
+        level.LevelStartMenu();
+        GetMenuObjectFromElement(this).close();
+    });
+
+    MenuBase.call(this, 500, null, [
+        title,
+        text,
+        textArea,
+        importButton,
+        backToMainMenu
+    ]);
+}
+LevelImportMenu.prototype = new MenuBase();
+LevelImportMenu.prototype.constructor = LevelImportMenu;
 
 
 
@@ -320,6 +386,9 @@ EditableMenu.prototype.constructor = EditableMenu;
 function WriteFancyTextToCanvas(text) {
     var canvas = document.getElementById('textDraw');
     var context = canvas.getContext('2d');
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
     context.font = '40pt Candy Shop Black';
     var textWidth = context.measureText(text).width;
     var left = (canvas.width - textWidth) / 2;

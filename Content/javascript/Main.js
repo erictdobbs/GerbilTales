@@ -152,5 +152,7 @@ function MainDrawLoop() {
     }
 
     if (debugPressed) debugKeyStep = true;
+
+    CheckForDeadState();
 }
 

@@ -64,14 +64,16 @@ function SwitchToEditMode() {
     for (var i = 0; i < menus.length; i++) if (menus[i] instanceof ToolMenu) menus[i].display();
 }
 
-function SwitchToPlayMode() {
-    selectedSprite = null;
-    UpdateEditorPanel();
-    editButton.classList.remove('hidden');
-    exportButton.classList.add('hidden');
-    importButton.classList.add('hidden');
-    playButton.classList.add('hidden');
-    cameraButton.classList.add('hidden');
+function SwitchToPlayMode(inEditor) {
+    if (inEditor) {
+        selectedSprite = null;
+        UpdateEditorPanel();
+        editButton.classList.remove('hidden');
+        exportButton.classList.add('hidden');
+        importButton.classList.add('hidden');
+        playButton.classList.add('hidden');
+        cameraButton.classList.add('hidden');
+    }
 
     mode = gameMode.play;
     for (var i = 0; i < sprites.length; i++) sprites[i].kill();

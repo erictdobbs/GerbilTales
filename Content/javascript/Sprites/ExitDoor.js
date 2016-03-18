@@ -64,7 +64,7 @@ function ExitDoor(x, y, width, height, requiredGerbils) {
         
         gameViewContext.font = "20px monospace";
         gameViewContext.fillStyle = this.color.toString();
-        this.camera.centerText(this.currentGerbilCount + "/" + this.requiredGerbils, this.x, this.y - this.width * 0.6);
+        //this.camera.centerText(this.currentGerbilCount + "/" + this.requiredGerbils, this.x, this.y - this.width * 0.6);
     }
 
 }

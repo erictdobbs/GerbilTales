@@ -31,16 +31,19 @@ function ImportLevel(levelString) {
     if (levelString == undefined) return;
     if (levelString == '') return;
     var obj = JSON.parse(levelString);
+    LoadLevel(obj);
+}
 
-    if (obj.v === '0.01') {
+function LoadLevel(levelObject) {
+    if (levelObject.v === '0.01') {
         editorSprites = [];
         selectedSprite = null;
-        for (var i = 0; i < obj.s.length; i++) {
-            var importSprite = obj.s[i];
+        for (var i = 0; i < levelObject.s.length; i++) {
+            var importSprite = levelObject.s[i];
             var editorTypeName = importSprite.a;
             var editorObjectType = editorObjectTypes.filter(function (x) { return x.type.name == editorTypeName })[0];
             if (editorObjectType == undefined) console.error("Failed to find object type " + editorTypeName);
-            
+
             var spr = editorObjectType.add(0, 0);
             for (var j = 0; j < importSprite.e.length; j++) {
                 var editable = spr.editables[j];
@@ -52,9 +55,9 @@ function ImportLevel(levelString) {
             }
             editorSprites.push(spr);
         }
-        for (var i = 0; i < obj.s.length; i++) {
+        for (var i = 0; i < levelObject.s.length; i++) {
             var spr = editorSprites[i];
-            var importSprite = obj.s[i];
+            var importSprite = levelObject.s[i];
             for (var j = 0; j < importSprite.e.length; j++) {
                 var editable = spr.editables[j];
                 var paramType = editable.paramType;
@@ -65,6 +68,6 @@ function ImportLevel(levelString) {
             }
         }
     } else {
-        console.error("Unknown version (" + obj.v + ")");
-    }    
+        console.error("Unknown version (" + levelObject.v + ")");
+    }
 }

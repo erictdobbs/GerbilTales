@@ -90,15 +90,15 @@
         if (mode == gameMode.play || mode == gameMode.playPaused) {
             var cameraFoci = sprites.filter(function (obj) { return obj.cameraFocus; });
             if (cameraFoci.length > 0) {
-                var fociXs = cameraFoci.map(function (obj) { return obj.x; });
-                var fociYs = cameraFoci.map(function (obj) { return obj.y; });
+                var fociXs = cameraFoci.map(function (obj) { return obj.x + 16 * obj.dx; });
+                var fociYs = cameraFoci.map(function (obj) { return obj.y + 16 * obj.dy; });
 
                 var targetX = fociXs.average();
                 var targetY = fociYs.average();
                 var xRange = cameraFoci.map(function (obj) { return obj.getRight(); }).max() - cameraFoci.map(function (obj) { return obj.getLeft(); }).min();
                 var yRange = cameraFoci.map(function (obj) { return obj.getBottom(); }).max() - cameraFoci.map(function (obj) { return obj.getTop(); }).min();
 
-                var targetScale = 1 / [(xRange + 256) / this.width, (yRange + 256) / this.height].max();
+                var targetScale = 1 / [(xRange + 128) / this.width, (yRange + 128) / this.height].max();
                 this.scale += (targetScale - this.scale) / 20;
                 this.editorTargetScale = this.scale;
 
