@@ -5,35 +5,46 @@ function GetCurrentMenu() {
     return menuStack.last();
 }
 
-
 function MenuBase(width, height, elements) {
     this.width = width;
     this.height = height;
     this.elements = elements;
+    this.hideBackPanel = false;
+    this.anchorType = anchorType.center;
     this.menuContainer = document.getElementById("MenuContainer");
     this.menuElement = document.createElement('div');
     if (this.width) this.menuElement.style.width = this.width + 'px';
     if (this.height) this.menuElement.style.height = this.height + 'px';
-    this.centerPosition = function () {
+    this.refreshPosition = function () {
         var width = this.width ? this.width : this.menuElement.offsetWidth;
         var height = this.height ? this.height : this.menuElement.offsetHeight;
+        if (this.anchorType.sides.indexOf('left') > -1)
+            this.menuElement.style.left = '0px';
+        else if (this.anchorType.sides.indexOf('right') > -1)
+            this.menuElement.style.right = '0px';
+        else
+            this.menuElement.style.left = ((viewWidth - width) / 2) + 'px';
 
-        this.menuElement.style.left = ((viewWidth - width) / 2) + 'px';
-        this.menuElement.style.top = ((viewHeight - height) / 2) + 'px';
+        if (this.anchorType.sides.indexOf('top') > -1)
+            this.menuElement.style.top = '0px';
+        else if (this.anchorType.sides.indexOf('bottom') > -1)
+            this.menuElement.style.bottom = '0px';
+        else
+            this.menuElement.style.top = ((viewHeight - height) / 2) + 'px';
     }
-    this.bottomLeftPosition = function () {
-        this.menuElement.style.left = '0px';
-        this.menuElement.style.bottom = '0px';
-    }
-    this.bottomRightPosition = function () {
-        this.menuElement.style.right = '0px';
-        this.menuElement.style.bottom = '0px';
+    this.setPosition = function (newAnchorType) {
+        this.anchorType = newAnchorType;
+        this.refreshPosition();
     }
     this.display = function () {
         if (menus.indexOf(this) == -1) {
             menus.push(this);
             var menuElement = document.createElement('div');
-            this.menuElement.classList.add('menu');
+            if (this.hideBackPanel) {
+                this.menuElement.classList.add('menu-no-back');
+            } else {
+                this.menuElement.classList.add('menu');
+            }
             for (var i = 0; i < this.elements.length; i++) {
                 var node = this.elements[i].toNode(this);
                 this.menuElement.appendChild(node);
@@ -44,6 +55,7 @@ function MenuBase(width, height, elements) {
         if (this.id) {
             this.menuElement.id = this.id;
         }
+        this.refreshPosition();
     }
     this.hide = function () {
         this.menuElement.style.opacity = '0';
@@ -198,9 +210,15 @@ function MenuTable(elements) {
 function GetMenuObjectFromElement(element) {
     for (var i = 0; i < menus.length; i++) {
         var el = element;
-        while (el && !el.classList.contains('menu')) el = el.parentNode;
+        while (el && el.classList && !el.classList.contains('menu')) el = el.parentNode;
             if (menus[i].menuElement == el)
                 return menus[i];
+    }
+}
+
+function CloseAllMenus() {
+    for (var i = menus.length-1; i >= 0; i--) {
+        menus[i].close();
     }
 }
 
@@ -217,11 +235,9 @@ function MainMenu() {
         GetMenuObjectFromElement(this).close();
         var levelMenu = new LevelSelectMenu();
         levelMenu.display();
-        levelMenu.centerPosition();
     });
     var startLevelEditor = new MenuActionButton("Level Editor", function () {
         var editMenu = new EditMenu();
-        editMenu.bottomLeftPosition();
         editMenu.display();
         var toolMenu = new ToolMenu();
         toolMenu.display();
@@ -261,6 +277,7 @@ function ToolMenu() {
     MenuBase.call(this, null, null, [
         new MenuTable([tools])
     ]);
+    this.anchorType = anchorType.topleft;
 }
 ToolMenu.prototype = new MenuBase();
 ToolMenu.prototype.constructor = ToolMenu;
@@ -299,7 +316,6 @@ function EditMenu() {
         var mainMenu = new MainMenu();
         SwitchToPlayMode(true);
         sprites = [];
-        mainMenu.centerPosition();
         mainMenu.display();
     });
     options.push(button5.toNode());
@@ -311,6 +327,7 @@ function EditMenu() {
     MenuBase.call(this, null, null, [
         new MenuTable([options])
     ]);
+    this.anchorType = anchorType.bottomleft;
 }
 EditMenu.prototype = new MenuBase();
 EditMenu.prototype.constructor = EditMenu;
@@ -322,32 +339,41 @@ function LevelSelectMenu() {
     var backToMainMenu = new MenuActionButton("Back to Main Menu", function () {
         var mainMenu = new MainMenu();
         mainMenu.display();
-        mainMenu.centerPosition();
         GetMenuObjectFromElement(this).close();
     });
     var playCustomButton = new MenuActionButton("Play a Custom Level", function () {
         var importMenu = new LevelImportMenu();
         importMenu.display();
-        importMenu.centerPosition();
         GetMenuObjectFromElement(this).close();
     });
 
-    MenuBase.call(this, 500, null, [
-        title,
-        playCustomButton,
-        backToMainMenu
-    ]);
+    var options = [title];
+    for (var i = 0; i < levels.length; i++) {
+        console.log(i);
+        var level = levels[i];
+        options.push(GetLevelPlayButton(i));
+    }
+    options.push(playCustomButton);
+    options.push(backToMainMenu);
+
+    MenuBase.call(this, 500, null, options);
 }
 LevelSelectMenu.prototype = new MenuBase();
 LevelSelectMenu.prototype.constructor = LevelSelectMenu;
 
+function GetLevelPlayButton(levelIndex) {
+    return new MenuActionButton("Play Level " + (levelIndex + 1).toString(), function () {
+        var levelToPlay = new LevelBase(levels[levelIndex]);
+        levelToPlay.LevelStartMenu();
+        GetMenuObjectFromElement(this).close();
+    })
+}
 
 
 function LevelImportMenu() {
     var title = new MenuFancyText('Custom Level');
     var backToMainMenu = new MenuActionButton("Back to Main Menu", function () {
         var mainMenu = new MainMenu();
-        mainMenu.centerPosition();
         mainMenu.display();
         GetMenuObjectFromElement(this).close();
     });
@@ -377,6 +403,7 @@ LevelImportMenu.prototype.constructor = LevelImportMenu;
 function EditableMenu() {
     this.id = 'editables';
     MenuBase.call(this, null, null, []);
+    this.anchorType = anchorType.bottomright;
 }
 EditableMenu.prototype = new MenuBase();
 EditableMenu.prototype.constructor = EditableMenu;

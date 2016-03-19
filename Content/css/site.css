@@ -67,6 +67,11 @@ textarea {
     text-align: center;
 }
 
+.menu-no-back {
+    position:absolute;
+    text-align: center;
+}
+
 table {
     margin: auto;
     width: 100%;

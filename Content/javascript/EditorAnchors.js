@@ -1,13 +1,13 @@
 ﻿var anchorType = {
-    center: { type: 'center', cursor: 'move' },
-    left: { type: 'left', cursor: 'ew-resize' },
-    right: { type: 'right', cursor: 'ew-resize' },
-    top: { type: 'top', cursor: 'ns-resize' },
-    bottom: { type: 'bottom', cursor: 'ns-resize' },
-    topleft: { type: 'topleft', cursor: 'nwse-resize' },
-    topright: { type: 'topright', cursor: 'nesw-resize' },
-    bottomleft: { type: 'bottomleft', cursor: 'nesw-resize' },
-    bottomright: { type: 'bottomright', cursor: 'nwse-resize' }
+    center: { type: 'center', cursor: 'move', sides: [] },
+    left: { type: 'left', cursor: 'ew-resize', sides: ['left'] },
+    right: { type: 'right', cursor: 'ew-resize', sides: ['right'] },
+    top: { type: 'top', cursor: 'ns-resize', sides: ['top'] },
+    bottom: { type: 'bottom', cursor: 'ns-resize', sides: ['bottom'] },
+    topleft: { type: 'topleft', cursor: 'nwse-resize', sides: ['top','left'] },
+    topright: { type: 'topright', cursor: 'nesw-resize', sides: ['top','right'] },
+    bottomleft: { type: 'bottomleft', cursor: 'nesw-resize', sides: ['bottom','left'] },
+    bottomright: { type: 'bottomright', cursor: 'nwse-resize', sides: ['bottom', 'right'] }
 }
 
 function EditorAnchor(parent, myAnchorType, onChange) {

@@ -106,7 +106,6 @@ function InsertEditorObject(index) {
 function UpdateEditorPanel() {
     for (var i = 0; i < menus.length; i++) if (menus[i] instanceof EditableMenu) menus[i].delete();
     var panel = new EditableMenu();
-    panel.bottomRightPosition();
     panel.display();;
 }
 

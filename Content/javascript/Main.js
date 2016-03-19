@@ -21,6 +21,9 @@ function ResizeWindow() {
     gameView.style.height = viewHeight + 'px';
     gameViewContainer.style.width = viewWidth + 'px';
     gameViewContainer.style.height = viewHeight + 'px';
+    for (var i = 0; i < menus.length; i++) {
+        menus[i].refreshPosition();
+    }
 }
 
 function InitializeGameEngine() {
@@ -28,7 +31,6 @@ function InitializeGameEngine() {
     ResizeWindow();
 
     var mainMenu = new MainMenu();
-    mainMenu.centerPosition();
     mainMenu.display();
 
     document.body.onresize = ResizeWindow;
