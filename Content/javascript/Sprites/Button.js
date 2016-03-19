@@ -1,4 +1,7 @@
 ﻿function EditorButton(x, y, width) {
+    this.name = "Button";
+    this.description = "Acts as a power source based on the number of gerbils stacked on top.";
+
     EditorBase.call(this, x, y, width, 1);
 
     this.isPowerSource = true;

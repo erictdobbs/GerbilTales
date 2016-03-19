@@ -1,4 +1,7 @@
 ﻿function EditorPeekablock(x, y, width, height) {
+    this.name = "Peekablock";
+    this.description = "Only solid when powered.";
+
     EditorBase.call(this, x, y, width, height);
 
     this.powerSource = null;

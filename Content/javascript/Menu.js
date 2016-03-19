@@ -127,6 +127,20 @@ function MenuText(text) {
 }
 
 
+function MenuTextInput(text, readOnly) {
+    this.text = text;
+    this.readOnly = readOnly;
+    this.toNode = function (menu) {
+        var input = document.createElement("input");
+        input.type = "text";
+        input.readOnly = this.readOnly;
+        input.value = this.text;
+        input.classList.add("menuTextInput");
+        input.style.width = (menu.width - 44) + 'px';
+        return input;
+    }
+}
+
 function MenuTextArea(text, readOnly) {
     this.text = text;
     this.readOnly = readOnly;
@@ -302,11 +316,17 @@ function EditMenu() {
     playButton = button2.toNode();
     options.push(playButton);
 
-    var button3 = new MenuActionButtonSmall("Export Level", ExportLevel);
+    var button3 = new MenuActionButtonSmall("Export Level", function () {
+        var exportMenu = new LevelExportMenu();
+        exportMenu.display();
+    });
     exportButton = button3.toNode();
     options.push(exportButton);
 
-    var button4 = new MenuActionButtonSmall("Import Level", function () { ImportLevel(prompt('Paste your level export string:')); });
+    var button4 = new MenuActionButtonSmall("Import Level", function () {
+        var importMenu = new EditorImportMenu();
+        importMenu.display();        
+    });
     importButton = button4.toNode();
     options.push(importButton);
 
@@ -349,7 +369,6 @@ function LevelSelectMenu() {
 
     var options = [title];
     for (var i = 0; i < levels.length; i++) {
-        console.log(i);
         var level = levels[i];
         options.push(GetLevelPlayButton(i));
     }
@@ -397,6 +416,76 @@ function LevelImportMenu() {
 }
 LevelImportMenu.prototype = new MenuBase();
 LevelImportMenu.prototype.constructor = LevelImportMenu;
+
+
+function EditorImportMenu() {
+    var title = new MenuFancyText('Level Import');
+    var cancelButton = new MenuActionButton("Cancel", function () {
+        GetMenuObjectFromElement(this).close();
+    });
+    var text = new MenuText("Paste your level code below and click Import.");
+    var textArea = new MenuTextArea('', false);
+    var importButton = new MenuActionButton("Import", function () {
+        var levelString = document.getElementsByTagName('textarea')[0].value;
+        var levelObj = JSON.parse(levelString);
+        LoadLevel(levelObj);
+        GetMenuObjectFromElement(this).close();
+    });
+
+    MenuBase.call(this, 500, null, [
+        title,
+        text,
+        textArea,
+        importButton,
+        cancelButton
+    ]);
+}
+LevelImportMenu.prototype = new MenuBase();
+LevelImportMenu.prototype.constructor = LevelImportMenu;
+
+
+function LevelExportMenu() {
+    var title = new MenuFancyText('Level Export');
+    var cancelButton = new MenuActionButton("Cancel", function () {
+        GetMenuObjectFromElement(this).close();
+    });
+    var textInput = new MenuTextInput('Level Name', false);
+    var exportButton = new MenuActionButton("Export", function () {
+        var levelName = document.getElementsByClassName('menuTextInput')[0].value;
+        var levelString = ExportLevel(levelName);
+        GetMenuObjectFromElement(this).close();
+        var exportMenu = new LevelExportResultMenu(levelString);
+        exportMenu.display();
+    });
+
+    MenuBase.call(this, 500, null, [
+        title,
+        textInput,
+        exportButton,
+        cancelButton
+    ]);
+}
+LevelExportMenu.prototype = new MenuBase();
+LevelExportMenu.prototype.constructor = LevelExportMenu;
+
+
+function LevelExportResultMenu(levelString) {
+    var title = new MenuFancyText('Level Export');
+    var text = new MenuText("Here is your level code.");
+    var cancelButton = new MenuActionButton("Done", function () {
+        GetMenuObjectFromElement(this).close();
+    });
+    var result = new MenuTextArea(levelString, true);
+
+    MenuBase.call(this, 500, null, [
+        title,
+        text,
+        result,
+        cancelButton
+    ]);
+}
+LevelExportResultMenu.prototype = new MenuBase();
+LevelExportResultMenu.prototype.constructor = LevelExportResultMenu;
 
 
 

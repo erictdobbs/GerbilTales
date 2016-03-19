@@ -109,6 +109,12 @@ table {
     background-color: rgb(34, 67, 93);
 }
 
+#editables {
+    width: 300px;
+    text-align: left;
+    padding: 5px;
+}
+
 canvas {
     display: block;
     outline: 5px solid white;

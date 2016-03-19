@@ -151,6 +151,11 @@ function MainDrawLoop() {
         }
         camera.drawEditorGridLines();
         if (selectedSprite) selectedSprite.drawAnchors();
+
+        gameViewContext.strokeStyle = 'rgba(255,255,255,0.5)';
+        gameViewContext.lineWidth = 3;
+        camera.drawLine(camera.x - 8, camera.y - 8, camera.x + 8, camera.y + 8);
+        camera.drawLine(camera.x + 8, camera.y - 8, camera.x - 8, camera.y + 8);
     }
 
     if (debugPressed) debugKeyStep = true;

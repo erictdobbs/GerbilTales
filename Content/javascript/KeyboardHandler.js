@@ -14,10 +14,10 @@ keyboardState.handleKeyUp = function (e) {
 
 keyboardState.isKeyPressed = function (key) { return keyboardState.keyState[key]; };
 
-keyboardState.isLeftPressed = function () { return this.isKeyPressed(this.key["A"]); };
-keyboardState.isRightPressed = function () { return this.isKeyPressed(this.key["D"]); };
-keyboardState.isUpPressed = function () { return this.isKeyPressed(this.key["W"]); };
-keyboardState.isDownPressed = function () { return this.isKeyPressed(this.key["S"]); };
+keyboardState.isLeftPressed = function () { return this.isKeyPressed(this.key["A"]) || this.isKeyPressed(this.key["Left"]); };
+keyboardState.isRightPressed = function () { return this.isKeyPressed(this.key["D"]) || this.isKeyPressed(this.key["Right"]); };
+keyboardState.isUpPressed = function () { return this.isKeyPressed(this.key["W"]) || this.isKeyPressed(this.key["Up"]); };
+keyboardState.isDownPressed = function () { return this.isKeyPressed(this.key["S"]) || this.isKeyPressed(this.key["Down"]); };
 keyboardState.isJumpPressed = function () { return this.isKeyPressed(this.key["Space"]); };
 keyboardState.isDeletePressed = function () { return this.isKeyPressed(this.key["Delete"]); };
 

@@ -1,4 +1,7 @@
 ﻿function EditorTextBox(x, y, width, height) {
+    this.name = "Text Box";
+    this.description = "Provides helpful hints. Fades out when it leaves the center of the screen.";
+
     EditorBase.call(this, x, y, width, height);
     this.text = 'Text here';
 

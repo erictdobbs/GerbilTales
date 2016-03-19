@@ -32,6 +32,19 @@ function EditorBase(tileX, tileY, width, height) {
     this.edit = function () {
         var editableContainer = document.getElementById('editables');
         editableContainer.innerHTML = '';
+
+        var objectName = this.name;
+        var description = this.description;
+
+        var nameObject = document.createElement("h3");
+        nameObject.textContent = objectName;
+        editableContainer.appendChild(nameObject);
+
+        var descriptionObject = document.createElement("div");
+        descriptionObject.textContent = description;
+        descriptionObject.classList.add("editorDescription");
+        editableContainer.appendChild(descriptionObject);
+
         var newTable = document.createElement("table");
         for (var i = 0; i < this.editables.length; i++) {
             var editable = this.editables[i];
@@ -79,7 +92,6 @@ function Editable(paramName, paramType, validate) {
             checkbox.setAttribute("value", value);
             checkbox.checked = value;
             checkbox.setAttribute("onchange", this.paramType.onChange + '(this)');
-            console.log(checkbox);
             return checkbox;
         }
         if (this.paramType == paramTypes.powerSource) {

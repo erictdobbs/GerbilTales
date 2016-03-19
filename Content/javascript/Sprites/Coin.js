@@ -1,4 +1,7 @@
 ﻿function EditorCoin(x, y) {
+    this.name = "Coin";
+    this.description = "Cha-ching!";
+
     EditorBase.call(this, x, y, 1, 1);
 
     this.editables.push(new Editable('tileX', paramTypes.integer));

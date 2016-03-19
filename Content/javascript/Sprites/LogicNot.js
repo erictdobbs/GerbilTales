@@ -1,4 +1,6 @@
 ﻿function EditorLogicNot(x, y, width, height) {
+    this.name = "Not Gate";
+    this.description = "Provides power equal to the opposite of its power source. If it has no power source, it produces full power.";
     EditorBase.call(this, x, y, width, height);
 
     this.input = null;
@@ -10,7 +12,6 @@
     this.editables.push(new Editable('width', paramTypes.integer, ValidateMin1));
     this.editables.push(new Editable('height', paramTypes.integer, ValidateMin1));
     this.editables.push(new Editable('input', paramTypes.powerSource));
-    this.editables.push(new Editable('visible', paramTypes.boolean));
 
     this.anchors = ResizerAnchorSet(this);
     
@@ -49,29 +50,10 @@ function LogicNot(x, y, width, height, input) {
         else this.power = 1;
     };
 
+    this.imageSource = document.getElementById("LogicGates");
+
     this.draw = function () {
-        if (mode == gameMode.edit || this.visible) {
-            gameViewContext.fillStyle = this.color.toString();
-            this.camera.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
-            gameViewContext.strokeStyle = this.borderColor.toString();
-            gameViewContext.lineWidth = 3;
-            this.camera.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
-
-            gameViewContext.lineWidth = 6;
-            var x1 = this.getLeft() + this.width / 4;
-            var x2 = this.getRight() - this.width / 4;
-            var y1 = this.getTop() + this.height / 4;
-            var y2 = this.getBottom() - this.height / 4;
-
-            gameViewContext.beginPath();
-            this.camera.moveTo(x1, y1);
-            this.camera.lineTo(x2, y2);
-            gameViewContext.stroke();
-            gameViewContext.beginPath();
-            this.camera.moveTo(x2, y1);
-            this.camera.lineTo(x1, y2);
-            gameViewContext.stroke();
-        }
+        this.camera.drawImage(this.imageSource, 32, (this.power > 0 ? 16 : 0), editorScale, editorScale, this.getLeft(), this.getTop(), this.width, this.height);
     }
 }
 LogicNot.prototype = new SpriteBase();

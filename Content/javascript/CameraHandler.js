@@ -152,7 +152,7 @@
 
             var xDir = target.x > source.x ? 1 : -1;
             var yDir = target.y > source.y ? 1 : -1;
-            var indicatorDistance = 16;
+            var indicatorDistance = 8;
 
             var unpoweredColor = new Color(80, 80, 80, (source.power / 4) + 0.2);
             var poweredColor = new Color(64, 255, 64, (source.power / 4) + 0.2);
@@ -161,18 +161,19 @@
 
             var bubbleGap = 3;
             var bubbleDelay = 7;
+            var bubbleRadius = 3;
             var bubbleCount = parseInt(target.powerFrame / bubbleDelay + 1) % bubbleGap;
 
             for (var x = source.x - (source.x - target.x) % indicatorDistance ; x * xDir < target.x * xDir; x += xDir * indicatorDistance) {
                 gameViewContext.beginPath();
-                this.arc(x, source.y, 5, 0, Math.PI * 2);
+                this.arc(x, source.y, bubbleRadius, 0, Math.PI * 2);
                 if (bubbleCount == 0) gameViewContext.fill();
                 gameViewContext.stroke();
                 bubbleCount = (bubbleCount - 1 + bubbleGap) % bubbleGap;
             }
             for (var y = source.y; y * yDir < target.y * yDir; y += yDir * indicatorDistance) {
                 gameViewContext.beginPath();
-                this.arc(target.x, y, 5, 0, Math.PI * 2);
+                this.arc(target.x, y, bubbleRadius, 0, Math.PI * 2);
                 if (bubbleCount == 0) gameViewContext.fill();
                 gameViewContext.stroke();
                 bubbleCount = (bubbleCount - 1 + bubbleGap) % bubbleGap;

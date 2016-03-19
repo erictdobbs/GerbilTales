@@ -1,4 +1,7 @@
 ﻿function EditorCell(x, y, width, height) {
+    this.name = "Cell";
+    this.description = "Releases its contents when receiving full power, but solid when unpowered.";
+
     EditorBase.call(this, x, y, width, height);
 
     this.powerSource = null;

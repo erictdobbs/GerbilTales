@@ -1,11 +1,15 @@
 ﻿function EditorFan(x, y, width) {
-    EditorBase.call(this, x, y, width, 1);
+    this.name = "Fan";
+    this.description = "Pushes gerbils sky-high when powered.";
 
+    EditorBase.call(this, x, y, width, 1);
+    this.tileRange = 5;
     this.powerSource = null;
     this.editables.push(new Editable('tileX', paramTypes.integer));
     this.editables.push(new Editable('tileY', paramTypes.integer));
     this.editables.push(new Editable('width', paramTypes.integer, ValidateMin1));
     this.editables.push(new Editable('powerSource', paramTypes.powerSource));
+    this.editables.push(new Editable('tileRange', paramTypes.integer, ValidateMin1));
 
     this.anchors.push(new CenterAnchor(this));
     this.anchors.push(new LeftAnchor(this));
@@ -17,6 +21,7 @@
             parseInt(this.width) * editorScale,
             editorScale,
             this.powerSource);
+        fan.range = this.tileRange * editorScale;
         return fan;
     }
 }
@@ -92,10 +97,10 @@ function FanParticle(fan, x, y) {
 
     this.draw = function () {
         var fanStrength = this.fan.getFanStrength(this.y);
-        this.dy = (10 * fanStrength) - 1;
+        this.dy = -(10 * fanStrength) - 1;
         this.y -= this.dy;
-        if (this.y > this.fan.range / 2) {
-            this.y = 0;
+        if (this.y > this.fan.range) {
+            this.y = 2;
             this.x = this.fan.width * Math.random();
         }
 

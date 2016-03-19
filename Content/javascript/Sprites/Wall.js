@@ -1,4 +1,7 @@
 ﻿function EditorWall(x, y, width, height) {
+    this.name = "Wall";
+    this.description = "Your basic solid object";
+
     EditorBase.call(this, x, y, width, height);
 
     this.editables.push(new Editable('tileX', paramTypes.integer));

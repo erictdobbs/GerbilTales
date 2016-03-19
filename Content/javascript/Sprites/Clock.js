@@ -1,8 +1,11 @@
 ﻿function EditorClock(x, y, radius) {
+    this.name = "Clock";
+    this.description = "Provides power periodically. Time is measured in frames (roughly 50 per second).";
+
     EditorBase.call(this, x, y, radius * 2, radius * 2);
     this.radius = radius;
-    this.timeOn = 30;
-    this.timeOff = 30;
+    this.timeOn = 25;
+    this.timeOff = 25;
     this.startingTick = 0;
 
     this.isPowerSource = true;

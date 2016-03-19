@@ -1,4 +1,7 @@
 ﻿function EditorGerbil(x, y) {
+    this.name = "Gerbil";
+    this.description = "It's a gerbil!";
+
     EditorBase.call(this, x, y, 1, 1);
 
     this.editables.push(new Editable('tileX', paramTypes.integer));
@@ -101,6 +104,7 @@ function Gerbil(x, y) {
 
             if (this.moveDirection) this.dx = this.speed * this.moveDirection;
             if (this.moveDirection == 0) this.dx *= 0.8;
+            this.dy *= 0.99;
 
             var solidTouchedSprites = this.blockMovement();
             if (solidTouchedSprites.any(function (x) { return x.deadly; })) {
@@ -132,7 +136,7 @@ function Gerbil(x, y) {
         }
         if (keyboardState.isJumpPressed()) {
             if (this.canJump()) {
-                this.dy -= 3.8;
+                this.dy -= 4.0;
                 this.y -= 1;
             }
         }

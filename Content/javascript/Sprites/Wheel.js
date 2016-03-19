@@ -1,4 +1,7 @@
 ﻿function EditorWheel(x, y, radius) {
+    this.name = "Wheel";
+    this.description = "Provides power while gerbils are running inside. Press the up key (default 'W') to have a nearby gerbil jump inside.";
+
     EditorBase.call(this, x, y, radius * 2, radius*2);
 
     this.isPowerSource = true;
