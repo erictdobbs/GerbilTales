@@ -331,12 +331,14 @@ function EditMenu() {
     options.push(importButton);
 
     var button5 = new MenuActionButtonSmall("Back to Main Menu", function () {
-        GetMenuObjectFromElement(this).close();
-        for (var i = 0; i < menus.length; i++) if (menus[i] instanceof ToolMenu) menus[i].close();
-        var mainMenu = new MainMenu();
-        SwitchToPlayMode(true);
-        sprites = [];
-        mainMenu.display();
+        if (confirm("Are you sure? You will lose any changes you have made.")) {
+            GetMenuObjectFromElement(this).close();
+            for (var i = 0; i < menus.length; i++) if (menus[i] instanceof ToolMenu) menus[i].close();
+            var mainMenu = new MainMenu();
+            SwitchToPlayMode(true);
+            sprites = [];
+            mainMenu.display();
+        }
     });
     options.push(button5.toNode());
 

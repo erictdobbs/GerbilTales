@@ -55,6 +55,7 @@ Array.prototype.average = function () {
     return this.sum() / this.length;
 };
 Array.prototype.rand = function () {
+    if (this.length == 1) return this[0];
     if (this.length) {
         var index = parseInt(this.length * Math.random());
         return this[index];
