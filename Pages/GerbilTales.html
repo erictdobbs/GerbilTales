@@ -5,45 +5,45 @@
 
     <link rel="stylesheet" type="text/css" href="../Content/css/site.css">
 
-    <!--<script type="text/javascript" src="../Content/javaScript/LogHandler.js"></script>-->
-    <script type="text/javascript" src="../Content/javaScript/Linq.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Version.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/ColorHandler.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/KeyboardHandler.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/MouseHandler.js"></script>
+    <!--<script type="text/javascript" src="../Content/javascript/LogHandler.js"></script>-->
+    <script type="text/javascript" src="../Content/javascript/Linq.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Version.js"></script>
+    <script type="text/javascript" src="../Content/javascript/ColorHandler.js"></script>
+    <script type="text/javascript" src="../Content/javascript/KeyboardHandler.js"></script>
+    <script type="text/javascript" src="../Content/javascript/MouseHandler.js"></script>
 
-    <script type="text/javascript" src="../Content/javaScript/Terrain.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Texture.js"></script>
 
-    <script type="text/javascript" src="../Content/javaScript/EditorAnchors.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/EditorBase.js"></script>
+    <script type="text/javascript" src="../Content/javascript/EditorAnchors.js"></script>
+    <script type="text/javascript" src="../Content/javascript/EditorBase.js"></script>
 
-    <script type="text/javascript" src="../Content/javaScript/EditorHandler.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/EditorExport.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/EditorValidation.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Menu.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/CameraHandler.js"></script>
+    <script type="text/javascript" src="../Content/javascript/EditorHandler.js"></script>
+    <script type="text/javascript" src="../Content/javascript/EditorExport.js"></script>
+    <script type="text/javascript" src="../Content/javascript/EditorValidation.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Menu.js"></script>
+    <script type="text/javascript" src="../Content/javascript/CameraHandler.js"></script>
 
-    <script type="text/javascript" src="../Content/javaScript/LevelHandler.js"></script>
+    <script type="text/javascript" src="../Content/javascript/LevelHandler.js"></script>
 
-    <script type="text/javascript" src="../Content/javaScript/SpriteBase.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/Gerbil.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/ExitDoor.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/SpikeBlock.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/Button.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/Clock.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/Wall.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/Coin.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/LogicAnd.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/LogicOr.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/LogicNot.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/Peekablock.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/Wheel.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/Fan.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/Cell.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/TextBox.js"></script>
-    <script type="text/javascript" src="../Content/javaScript/Sprites/Lever.js"></script>
+    <script type="text/javascript" src="../Content/javascript/SpriteBase.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/Gerbil.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/ExitDoor.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/SpikeBlock.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/Button.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/Clock.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/Wall.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/Coin.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/LogicAnd.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/LogicOr.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/LogicNot.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/Peekablock.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/Wheel.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/Fan.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/Cell.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/TextBox.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/Lever.js"></script>
 
-    <script type="text/javascript" src="../Content/javaScript/Main.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Main.js"></script>
 </head>
 <body class="unselectable" unselectable="on">
     <div id="gameViewContainer" style="position: relative; width: 1000px;">
@@ -62,10 +62,14 @@
         <img class="graphicSheet" id="Background1" src="../Content/Images/background1.jpg" />
         <img class="graphicSheet" id="StudioLogo" src="../Content/Images/StudioLogo.png" />
         <img class="graphicSheet" id="GameLogo" src="../Content/Images/GerbilTalesLogo.png" />
-        <img class="graphicSheet terrain" id="TerrainGrassy" src="../Content/Images/TerrainGrassy.png" />
+        <img class="graphicSheet" id="TextureGrassy" src="../Content/Images/TextureGrassy.png" />
+        <img class="graphicSheet" id="TextureStone" src="../Content/Images/TextureStone.png" />
+        <img class="graphicSheet" id="TextureStoneRecessed" src="../Content/Images/TextureStoneRecessed.png" />
         <img class="graphicSheet" id="SpikeBlock" src="../Content/Images/SpikeBlock.png" />
         <img class="graphicSheet" id="LogicGates" src="../Content/Images/LogicGates.png" />
         <img class="graphicSheet" id="Lever" src="../Content/Images/Lever.png" />
+        <img class="graphicSheet" id="Button" src="../Content/Images/Button.png" />
+        <img class="graphicSheet" id="Fan" src="../Content/Images/TextureFan.png" />
     </div>
 
 </body>

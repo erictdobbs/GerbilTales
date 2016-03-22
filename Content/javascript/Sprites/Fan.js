@@ -43,7 +43,7 @@ function Fan(x, y, width, height, powerSource) {
     this.fanParticles = []
     for (var i = 0; i < 9; i++) this.fanParticles.push(new FanParticle(this, Math.random() * this.width, 16 * i));
 
-    this.color = new Color(100, 128, 128, 1.0);
+    this.color = new Color(100, 255, 128, 1.0);
     this.borderColor = new Color(80, 80, 80, 1.0);
 
     this.executeRules = function () {
@@ -70,18 +70,12 @@ function Fan(x, y, width, height, powerSource) {
         return (this.range - (this.y - y)) / this.range * this.getPower() / 2;
     }
 
-    this.draw = function () {
-        gameViewContext.fillStyle = this.color.toString();
-        this.camera.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
-        gameViewContext.strokeStyle = this.borderColor.toString();
-        gameViewContext.lineWidth = 3;
-        this.camera.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
+    this.texture = new FanTexture();
 
-        if (debugMode) {
-            gameViewContext.font = "20px monospace";
-            gameViewContext.fillStyle = this.borderColor.toString();
-            this.camera.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
-        }
+    this.draw = function () {
+        this.texture.draw(this);
+        gameViewContext.fillStyle = this.color.toString();
+        this.camera.fillRect(this.getLeft() + 4, this.getTop() + 11, (this.width - 8) * (this.getPower()), 2);
 
         for (var i = 0; i < this.fanParticles.length; i++) this.fanParticles[i].draw();
     }
@@ -96,13 +90,13 @@ function FanParticle(fan, x, y) {
     this.dy = 0;
 
     this.draw = function () {
-        var fanStrength = this.fan.getFanStrength(this.y);
+        var fanStrength = this.fan.getFanStrength(this.fan.getTop() - this.y);
         this.dy = -(10 * fanStrength) - 1;
         this.y -= this.dy;
         if (this.y > this.fan.range) {
             this.y = 2;
             this.x = this.fan.width * Math.random();
-        }
+        } 
 
         var fanColor = this.fan.borderColor;
         var alpha = Math.pow(this.fan.getPower() * (this.fan.range - this.y) / this.fan.range, 0.4);

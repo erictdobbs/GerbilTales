@@ -136,6 +136,12 @@ function MainDrawLoop() {
         camera.drawPowerConnection(sprites[i]);
     }
     for (var i = 0; i < sprites.length; i++) {
+        if (!sprites[i].background) continue;
+        sprites[i].prepareDraw();
+        sprites[i].draw();
+    }
+    for (var i = 0; i < sprites.length; i++) {
+        if (sprites[i].background) continue;
         sprites[i].prepareDraw();
         sprites[i].draw();
     }

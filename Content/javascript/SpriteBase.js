@@ -50,7 +50,13 @@ function SpriteBase(x, y) {
     this.applyGravity = function (alternateGravityConstant) {
         var gravity = 0.2;
         if (alternateGravityConstant != null) gravity = alternateGravityConstant;
-        this.dy += gravity;
+
+        if (this.dy < 5) {
+            this.dy += gravity;
+            if (this.dy > 5) this.dy = 5;
+        }
+
+
     }
 
     this.getTop = function () { return this.y - this.height / 2; }

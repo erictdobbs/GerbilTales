@@ -1,5 +1,5 @@
 ﻿
-function Terrain(imageSource, tileTypes) {
+function Texture(imageSource, tileTypes) {
     this.imageSource = imageSource;
     this.tileTypes = tileTypes;
 
@@ -28,12 +28,12 @@ function Terrain(imageSource, tileTypes) {
 
     this.drawTile = function (sprite, tileLocationString, x, y) {
         var tileLocation = this.getTileLocation(tileLocationString, x, y);
-        sprite.camera.drawImage(sprite.imageSource, tileLocation.x, tileLocation.y, editorScale, editorScale, x, y, editorScale, editorScale);
+        sprite.camera.drawImage(this.imageSource, tileLocation.x, tileLocation.y, editorScale, editorScale, x, y, editorScale, editorScale);
     }
 
     this.draw = function (sprite) {
-        if (sprite.width == editorScale) {
-            if (sprite.height == editorScale) {
+        if (sprite.width <= editorScale) {
+            if (sprite.height <= editorScale) {
                 this.drawTile(sprite, "block", sprite.getLeft(), sprite.getTop());
             } else {
                 this.drawTile(sprite, "topVerticalWedge", sprite.getLeft(), sprite.getTop());
@@ -42,7 +42,7 @@ function Terrain(imageSource, tileTypes) {
                     this.drawTile(sprite, "centerVerticalWedge", sprite.getLeft(), i);
                 }
             }
-        } else if (sprite.height == editorScale) {
+        } else if (sprite.height <= editorScale) {
             this.drawTile(sprite, "leftHorizontalWedge", sprite.getLeft(), sprite.getTop());
             this.drawTile(sprite, "rightHorizontalWedge", sprite.getRight() - editorScale, sprite.getTop());
             for (var i = sprite.getLeft() + editorScale; i < sprite.getRight() - editorScale; i += editorScale) {
@@ -68,8 +68,8 @@ function Terrain(imageSource, tileTypes) {
     }
 }
 
-function GrassyTerrain() {
-    var imageSource = document.getElementById("TerrainGrassy");
+function GrassyTexture() {
+    var imageSource = document.getElementById("TextureGrassy");
     var tileTypes = {
         topLeft: [{ x: 0, y: 0 }],
         top: [{ x: 1, y: 0 }, { x: 5, y: 1, frequency: 0.2 }],
@@ -86,9 +86,89 @@ function GrassyTerrain() {
         topVerticalWedge: [{ x: 3, y: 0 }],
         centerVerticalWedge: [{ x: 3, y: 1 }],
         bottomVerticalWedge: [{ x: 3, y: 2 }],
-        block: [{x:4, y:1}]
+        block: [{ x: 4, y: 1 }]
     };
-    Terrain.call(this, imageSource, tileTypes);
+    Texture.call(this, imageSource, tileTypes);
 }
-GrassyTerrain.prototype = new Terrain();
-GrassyTerrain.prototype.constructor = GrassyTerrain;
+GrassyTexture.prototype = new Texture();
+GrassyTexture.prototype.constructor = GrassyTexture;
+
+
+function StoneTexture() {
+    var imageSource = document.getElementById("TextureStone");
+    var tileTypes = {
+        topLeft: [{ x: 0, y: 0 }],
+        top: [{ x: 1, y: 0 }],
+        topRight: [{ x: 2, y: 0 }],
+        left: [{ x: 0, y: 1 }],
+        center: [{ x: 1, y: 1 }],
+        right: [{ x: 2, y: 1 }],
+        bottomLeft: [{ x: 0, y: 2 }],
+        bottom: [{ x: 1, y: 2 }],
+        bottomRight: [{ x: 2, y: 2 }],
+        leftHorizontalWedge: [{ x: 4, y: 0 }],
+        centerHorizontalWedge: [{ x: 5, y: 0 }],
+        rightHorizontalWedge: [{ x: 6, y: 0 }],
+        topVerticalWedge: [{ x: 3, y: 0 }],
+        centerVerticalWedge: [{ x: 3, y: 1 }],
+        bottomVerticalWedge: [{ x: 3, y: 2 }],
+        block: [{ x: 4, y: 1 }]
+    };
+    Texture.call(this, imageSource, tileTypes);
+}
+StoneTexture.prototype = new Texture();
+StoneTexture.prototype.constructor = StoneTexture;
+
+
+function StoneTextureRecessed() {
+    var imageSource = document.getElementById("TextureStoneRecessed");
+    var tileTypes = {
+        topLeft: [{ x: 0, y: 0 }],
+        top: [{ x: 1, y: 0 }],
+        topRight: [{ x: 2, y: 0 }],
+        left: [{ x: 0, y: 1 }],
+        center: [{ x: 1, y: 1 }],
+        right: [{ x: 2, y: 1 }],
+        bottomLeft: [{ x: 0, y: 2 }],
+        bottom: [{ x: 1, y: 2 }],
+        bottomRight: [{ x: 2, y: 2 }],
+        leftHorizontalWedge: [{ x: 4, y: 0 }],
+        centerHorizontalWedge: [{ x: 5, y: 0 }],
+        rightHorizontalWedge: [{ x: 6, y: 0 }],
+        topVerticalWedge: [{ x: 3, y: 0 }],
+        centerVerticalWedge: [{ x: 3, y: 1 }],
+        bottomVerticalWedge: [{ x: 3, y: 2 }],
+        block: [{ x: 4, y: 1 }]
+    };
+    Texture.call(this, imageSource, tileTypes);
+}
+StoneTextureRecessed.prototype = new Texture();
+StoneTextureRecessed.prototype.constructor = StoneTextureRecessed;
+
+
+function ButtonTexture() {
+    var imageSource = document.getElementById("Button");
+    var tileTypes = {
+        leftHorizontalWedge: [{ x: 0, y: 0 }],
+        centerHorizontalWedge: [{ x: 1, y: 0 }],
+        rightHorizontalWedge: [{ x: 2, y: 0 }],
+        block: [{ x: 4, y: 0 }]
+    };
+    Texture.call(this, imageSource, tileTypes);
+}
+ButtonTexture.prototype = new Texture();
+ButtonTexture.prototype.constructor = ButtonTexture;
+
+
+function FanTexture() {
+    var imageSource = document.getElementById("Fan");
+    var tileTypes = {
+        leftHorizontalWedge: [{ x: 0, y: 0 }],
+        centerHorizontalWedge: [{ x: 1, y: 0 }],
+        rightHorizontalWedge: [{ x: 2, y: 0 }],
+        block: [{ x: 4, y: 0 }]
+    };
+    Texture.call(this, imageSource, tileTypes);
+}
+FanTexture.prototype = new Texture();
+FanTexture.prototype.constructor = FanTexture;

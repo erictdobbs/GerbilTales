@@ -1,6 +1,7 @@
 ﻿function EditorButton(x, y, width) {
     this.name = "Button";
     this.description = "Acts as a power source based on the number of gerbils stacked on top.";
+    this.neededPush = 1;
 
     EditorBase.call(this, x, y, width, 1);
 
@@ -18,7 +19,8 @@
         var button = new Button(parseInt(this.tileX) * editorScale,
             (parseInt(this.tileY) + 0.5) * editorScale,
             parseInt(this.width) * editorScale,
-            editorScale/2);
+            editorScale / 2);
+        button.neededPush = this.neededPush;
         return button;
     }
 }
@@ -34,8 +36,7 @@ function Button(x, y, width, height) {
     this.width = width;
     this.height = height;
 
-    this.color = new Color(100, 128, 128, 1.0);
-    this.borderColor = new Color(80, 80, 80, 1.0);
+    this.color = new Color(100, 255, 128, 1.0);
 
     this.pushers = 0;
     this.neededPush = 3;
@@ -43,31 +44,17 @@ function Button(x, y, width, height) {
 
     this.executeRules = function () {
         this.pushers = this.getCumulativeRiders();
-
-        var powerDelta = this.pushers.length / this.neededPush * 0.01;
-        this.power += powerDelta;
-        if (this.power > this.pushers.length / this.neededPush) this.power = this.pushers.length / this.neededPush;
+        this.power = this.pushers.length / this.neededPush;
     };
 
+    this.texture = new ButtonTexture();
+
     this.draw = function () {
+        this.texture.draw(this);
         gameViewContext.fillStyle = this.color.toString();
-        this.camera.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
-        gameViewContext.strokeStyle = this.borderColor.toString();
-        gameViewContext.lineWidth = 3;
-        this.camera.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
-
-        if (this.pushers.length) {
-            gameViewContext.font = "20px monospace";
-            gameViewContext.fillStyle = this.borderColor.toString();
-            this.camera.centerText(this.pushers.length + "/" + this.neededPush, this.x, this.pushers.map(function (a) { return a.getTop() - a.height }).min());
-        }
-
-        if (debugMode) {
-            gameViewContext.font = "20px monospace";
-            gameViewContext.fillStyle = this.borderColor.toString();
-            this.camera.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
-        }
+        this.camera.fillRect(this.getLeft() + 4, this.getTop() + 4, (this.width - 8) * (this.power), 1);
     }
+
 }
 Button.prototype = new SpriteBase();
 Button.prototype.constructor = Button;

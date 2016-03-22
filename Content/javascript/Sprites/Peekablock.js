@@ -35,6 +35,8 @@ function Peekablock(x, y, width, height, powerSource) {
     this.width = width;
     this.height = height;
 
+    this.background = false;
+
     this.powerSource = powerSource;
 
     this.color = new Color(100, 100, 128, 1.0);
@@ -45,20 +47,17 @@ function Peekablock(x, y, width, height, powerSource) {
         var isOn = false;
         if (this.powerSource) isOn = this.powerSource.power > 0;
         this.solid = isOn;
+        this.background = !isOn;
     };
 
-    this.draw = function () {
-        gameViewContext.fillStyle = this.color.toString();
-        if (!this.solid) gameViewContext.fillStyle = this.transparentColor.toString();
-        this.camera.fillRect(this.getLeft(), this.getTop(), this.width, this.height);
-        gameViewContext.strokeStyle = this.borderColor.toString();
-        gameViewContext.lineWidth = 3;
-        this.camera.strokeRect(this.getLeft(), this.getTop(), this.width, this.height);
+    this.textureOn = new StoneTexture();
+    this.textureOff = new StoneTextureRecessed();
 
-        if (debugMode) {
-            gameViewContext.font = "20px monospace";
-            gameViewContext.fillStyle = this.borderColor.toString();
-            this.camera.fillText(sprites.indexOf(this), this.x - 11, this.y + 5);
+    this.draw = function () {
+        if (this.solid) {
+            this.textureOn.draw(this);
+        } else {
+            this.textureOff.draw(this);
         }
     }
 }
