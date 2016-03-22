@@ -11,8 +11,6 @@
 
     this.editables.push(new Editable('tileX', paramTypes.integer));
     this.editables.push(new Editable('tileY', paramTypes.integer));
-    this.editables.push(new Editable('width', paramTypes.integer, ValidateMin1));
-    this.editables.push(new Editable('height', paramTypes.integer, ValidateMin1));
     this.editables.push(new Editable('input1', paramTypes.powerSource));
     this.editables.push(new Editable('input2', paramTypes.powerSource));
 

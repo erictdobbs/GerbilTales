@@ -370,10 +370,13 @@ function LevelSelectMenu() {
     });
 
     var options = [title];
+
+    var selectableLevels = [];
     for (var i = 0; i < levels.length; i++) {
         var level = levels[i];
-        options.push(GetLevelPlayButton(i));
+        selectableLevels.push(GetLevelPlayButton(i).toNode());
     }
+    options.push(new MenuTable([selectableLevels]));
     options.push(playCustomButton);
     options.push(backToMainMenu);
 
@@ -383,7 +386,7 @@ LevelSelectMenu.prototype = new MenuBase();
 LevelSelectMenu.prototype.constructor = LevelSelectMenu;
 
 function GetLevelPlayButton(levelIndex) {
-    return new MenuActionButton("Play Level " + (levelIndex + 1).toString(), function () {
+    return new MenuActionButton("" + (levelIndex + 1).toString(), function () {
         var levelToPlay = new LevelBase(levels[levelIndex]);
         levelToPlay.LevelStartMenu();
         GetMenuObjectFromElement(this).close();

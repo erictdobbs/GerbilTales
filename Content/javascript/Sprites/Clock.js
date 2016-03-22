@@ -11,17 +11,17 @@
     this.isPowerSource = true;
     this.editables.push(new Editable('tileX', paramTypes.integer));
     this.editables.push(new Editable('tileY', paramTypes.integer));
-    this.editables.push(new Editable('radius', paramTypes.integer, ValidateMin1));
+    //this.editables.push(new Editable('radius', paramTypes.integer, ValidateMin1));
     this.editables.push(new Editable('timeOn', paramTypes.integer));
     this.editables.push(new Editable('timeOff', paramTypes.integer));
     this.editables.push(new Editable('startingTick', paramTypes.integer));
 
     this.anchors.push(new CenterAnchor(this));
-    this.anchors.push(new RadiusAnchor(this));
+    //this.anchors.push(new RadiusAnchor(this));
     
     this.createSprite = function () {
-        var clock = new Clock(parseInt(this.tileX) * editorScale,
-            parseInt(this.tileY) * editorScale,
+        var clock = new Clock((parseInt(this.tileX) + 0.5) * editorScale,
+            (parseInt(this.tileY) + 0.5) * editorScale,
             parseInt(this.radius * 2) * editorScale);
         clock.timeOff = this.timeOff;
         clock.timeOn = this.timeOn;
@@ -33,7 +33,7 @@ EditorClock.prototype = new EditorBase();
 EditorClock.prototype.constructor = EditorClock;
 
 editorObjectTypes.push(
-    { name: 'Clock', type: EditorClock, add: function (tileX, tileY) { return new this.type(tileX, tileY, 1); } }
+    { name: 'Clock', type: EditorClock, add: function (tileX, tileY) { return new this.type(tileX, tileY, 0.5); } }
 );
 
 function Clock(x, y, diameter) {

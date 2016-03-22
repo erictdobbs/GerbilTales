@@ -4,6 +4,10 @@ var currentLevel = null;
 function LevelBase(levelObject) {
     var me = this;
     this.levelObject = levelObject;
+
+    if (levels.indexOf(levelObject) > -1 && levels.indexOf(levelObject) < levels.length - 1) {
+        this.nextLevelObject = levels[levels.indexOf(levelObject) + 1];
+    }
     this.LevelStartMenu = function () {
         var menuContainer = document.getElementById("MenuContainer");
 
@@ -33,7 +37,6 @@ function LevelBase(levelObject) {
 
     this.DeadMenu = function () {
         var menuTitle = new MenuFancyText('Oops!');
-        var levelTitle = new MenuTitle('Level Title');
         var backToMainMenu = new MenuActionButton("Back to Main Menu", function () {
             var mainMenu = new MainMenu();
             mainMenu.display();
@@ -46,7 +49,6 @@ function LevelBase(levelObject) {
 
         var menu = new MenuBase(400, null, [
             menuTitle,
-            levelTitle,
             playButton,
             backToMainMenu
         ]);
@@ -54,7 +56,7 @@ function LevelBase(levelObject) {
     }
 
     this.WinMenu = function () {
-        var menuTitle = new MenuFancyText('Yeah!');
+        var menuTitle = new MenuFancyText(["Yeah!", "Nice!", "Gerbiltastic!", "Excellent!", "Awesome!", "Sweet!"].rand());
         var backToMainMenu = new MenuActionButton("Back to Main Menu", function () {
             var mainMenu = new MainMenu();
             mainMenu.display();
@@ -62,11 +64,17 @@ function LevelBase(levelObject) {
         });
         var text = new MenuText("Maybe there will be stats here some day.");
 
-        var menu = new MenuBase(400, null, [
-            menuTitle,
-            text,
-            backToMainMenu
-        ]);
+        var menuOptions = [menuTitle, text];
+        if (this.nextLevelObject) {
+            var newLevel = new LevelBase(this.nextLevelObject);
+            var nextLevelButton = new MenuActionButton("Next Level", function () {
+                newLevel.LevelStartMenu();
+            });
+            menuOptions.push(nextLevelButton);
+        }
+        menuOptions.push(backToMainMenu);
+
+        var menu = new MenuBase(400, null, menuOptions);
         menu.display();
     }
 }
@@ -75,8 +83,8 @@ function CheckForDeadState() {
     if (currentLevel == null) return;
     var gerbils = sprites.filter(function (spr) { return spr instanceof Gerbil; });
     var exitDoors = sprites.filter(function (spr) { return spr instanceof ExitDoor; });
-    if (gerbils.length == 0) {
-        var savedGerbilCount = exitDoors.map(function (x) { return x.currentGerbilCount; }).sum();
+    var savedGerbilCount = exitDoors.map(function (x) { return x.currentGerbilCount; }).sum();
+    if (gerbils.length == 0 || savedGerbilCount > 1) {
 
         if (savedGerbilCount == 0) currentLevel.DeadMenu();
         else currentLevel.WinMenu();

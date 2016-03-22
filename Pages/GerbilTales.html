@@ -44,6 +44,12 @@
     <script type="text/javascript" src="../Content/javascript/Sprites/Lever.js"></script>
 
     <script type="text/javascript" src="../Content/javascript/Main.js"></script>
+    <style>
+        @font-face {
+            font-family: 'Candy Shop Black';
+            src: url('../Content/Fonts/Candy Shop Black.ttf');
+        }
+    </style>
 </head>
 <body class="unselectable" unselectable="on">
     <div id="gameViewContainer" style="position: relative; width: 1000px;">
@@ -52,6 +58,7 @@
         <canvas id="gameView" width="1000" height="800" unselectable="on" class="unselectable">
             Your browser does not support HTML5 canvases.
         </canvas>
+        <span style="font-family:'Candy Shop Black'; position:fixed;">&nbsp;</span>
     </div>
 
     <!-- Image files -->
@@ -70,6 +77,7 @@
         <img class="graphicSheet" id="Lever" src="../Content/Images/Lever.png" />
         <img class="graphicSheet" id="Button" src="../Content/Images/Button.png" />
         <img class="graphicSheet" id="Fan" src="../Content/Images/TextureFan.png" />
+
     </div>
 
 </body>

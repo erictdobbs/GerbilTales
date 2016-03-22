@@ -85,7 +85,7 @@ function Gerbil(x, y) {
         this.handleInput();
         this.cameraFocus = (this.container === null);
 
-        if (this.dy > 10) {
+        if (this.dy >= 3) {
             var maxY = sprites.filter(function (spr) { return !(spr instanceof Gerbil); }).max(function (spr) { return spr.y; }).y;
             if (this.y > maxY + 300) {
                 this.killGerbil();

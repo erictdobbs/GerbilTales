@@ -48,6 +48,7 @@ function ImportLevel(levelString) {
 
 function LoadLevel(levelObject) {
     if (levelObject.v === '0.01') {
+        sprites = [];
         editorSprites = [];
         selectedSprite = null;
         var manifests = levelObject.m;

@@ -28,9 +28,9 @@
 EditorCell.prototype = new EditorBase();
 EditorCell.prototype.constructor = EditorCell;
 
-editorObjectTypes.push(
-    { name: 'Cell', type: EditorCell, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4, 2); } }
-);
+//editorObjectTypes.push(
+//    { name: 'Cell', type: EditorCell, add: function (tileX, tileY) { return new this.type(tileX, tileY, 4, 2); } }
+//);
 
 
 function Cell(x, y, width, height, powerSource, gerbilCount) {
