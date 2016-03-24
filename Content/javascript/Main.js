@@ -34,6 +34,7 @@ function InitializeGameEngine() {
     mainMenu.display();
 
     document.body.onresize = ResizeWindow;
+    window.addEventListener('orientationchange', ResizeWindow);
 
     gameView.addEventListener("mousedown", onMouseDown, false);
     gameView.addEventListener("mouseup", onMouseUp, false);

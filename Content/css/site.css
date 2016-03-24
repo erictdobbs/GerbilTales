@@ -47,7 +47,7 @@ textarea {
 }
 .menuButtonSmall {
     background-color: rgb(32,156,156);
-    font-size: 12px;
+    font-size: 16px;
     border-style:solid;
     border-width:2px;
     border-color:rgb(48, 192, 192);
@@ -56,6 +56,9 @@ textarea {
     padding: 4px;
     color: lightblue;
     font-weight: bolder;
+}
+.menuButtonSmall:hover {
+    background-color: rgb(48, 192, 192);
 }
 
 .menu {

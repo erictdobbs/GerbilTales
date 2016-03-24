@@ -66,7 +66,7 @@ function Editable(paramName, paramType, validate) {
     this.paramType = paramType;
     this.validate = validate;
     this.getInputBox = function (value) {
-        if (this.paramType == paramTypes.integer) {
+        if (this.paramType == paramTypes.integer || this.paramType == paramTypes.decimal) {
             var inputBox = document.createElement("input");
             inputBox.setAttribute("id", this.paramName);
             inputBox.classList.add("editorBox");
@@ -94,6 +94,26 @@ function Editable(paramName, paramType, validate) {
             checkbox.setAttribute("onchange", this.paramType.onChange + '(this)');
             return checkbox;
         }
+        if (this.paramType == paramTypes.direction) {
+            var selectBox = document.createElement("select");
+            selectBox.setAttribute("id", this.paramName);
+            selectBox.classList.add("editorBox");
+            selectBox.setAttribute("type", this.paramType.inputType);
+            selectBox.setAttribute("value", value);
+            selectBox.setAttribute("onchange", this.paramType.onChange + '(this)');
+            for (paramName in direction) {
+                var option = document.createElement("option");
+                var val = direction[paramName];
+                var name = paramName;
+
+                if (value == val) option.selected = true;
+
+                option.setAttribute("value", val);
+                option.innerHTML = name;
+                selectBox.appendChild(option);
+            }
+            return selectBox;
+        }
         if (this.paramType == paramTypes.powerSource) {
             var selectBox = document.createElement("select");
             selectBox.setAttribute("id", this.paramName);
@@ -110,14 +130,12 @@ function Editable(paramName, paramType, validate) {
                 var val = editorSprites.indexOf(options[i]);
                 var name = options[i].constructor.name.replace('Editor', '') + val;
 
-                // THIS ISN'T WORKING
                 if (value == options[i]) option.selected = true;
 
                 option.setAttribute("value", val);
                 option.innerHTML = name;
                 selectBox.appendChild(option);
             }
-            selectBox.selectedIndex = 0;
             return selectBox;
         }
     }
@@ -135,6 +153,10 @@ function EditorInputChanged(el) {
 };
 function EditorInputChangedInteger(el) {
     selectedSprite[el.id] = parseInt(el.value);
+    ValidateEditableValue(selectedSprite);
+};
+function EditorInputChangedDecimal(el) {
+    selectedSprite[el.id] = el.value;
     ValidateEditableValue(selectedSprite);
 };
 function EditorInputChangedBoolean(el) {
@@ -160,6 +182,8 @@ function ValidateEditableValue(editorSprite) {
 
 var paramTypes = {
     integer: { inputType: "number", defaultValue: 0, onChange: 'EditorInputChangedInteger' },
+    decimal: { inputType: "number", defaultValue: 0, onChange: 'EditorInputChangedDecimal' },
+    direction: { inputType: "number", defaultValue: 0, onChange: 'EditorInputChangedInteger' },
     boolean: { inputType: "checkbox", defaultValue: false, onChange: 'EditorInputChangedBoolean' },
     string: { inputType: "text", defaultValue: '', onChange: 'EditorInputChangedText' },
     powerSource: { onChange: 'EditorInputChangedSprite' }

@@ -75,12 +75,25 @@ function SpriteBase(x, y) {
             this.camera.getMouseY() >= this.getTop();
     }
 
+    this.isCenterOnSprite = function (sprite) {
+        if (this.x > sprite.getRight()) return false;
+        if (this.x < sprite.getLeft()) return false;
+        if (this.y < sprite.getTop()) return false;
+        if (this.y > sprite.getBottom()) return false;
+        return true;
+    }
+
     this.doesOverlapSprite = function (sprite) {
         if (this.getLeft() > sprite.getRight()) return false;
         if (this.getRight() < sprite.getLeft()) return false;
         if (this.getTop() > sprite.getBottom()) return false;
         if (this.getBottom() < sprite.getTop()) return false;
         return true;
+    }
+
+    this.getSpritesOverlappingCenter = function () {
+        var me = this;
+        return sprites.filter(function (s) { return s != me && me.isCenterOnSprite(s); });
     }
 
     this.blockMovement = function (lockHorizontal) {
