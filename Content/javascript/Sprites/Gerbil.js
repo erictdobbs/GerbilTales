@@ -106,17 +106,7 @@ function Gerbil(x, y) {
             if (this.moveDirection == 0) this.dx *= 0.8;
             this.dy *= 0.99;
 
-            var solidTouchedSprites = this.blockMovement();
-            if (solidTouchedSprites.any(function (x) { return x.deadly; })) {
-                this.killGerbil();
-            }
-
-            var coins = sprites.filter(function (spr) { return spr instanceof Coin; });
-            for (var i = 0; i < coins.length; i++) {
-                if (this.doesOverlapSprite(coins[i])) {
-                    coins[i].kill();
-                }
-            }
+            this.handleSpriteInteractions();
 
             this.climb();
 
@@ -124,6 +114,65 @@ function Gerbil(x, y) {
             this.y += this.dy;
         }
     };
+
+    this.handleSpriteInteractions = function () {
+        var blocked = [];
+        this.riding = null;
+        this.isStanding = false;
+        for (var i = sprites.length - 1; i >= 0; i--) {
+            if (sprites[i] == this) continue;
+            if (sprites[i] == this.container) continue;
+            if (!sprites[i].solid && !sprites[i].deadly && !(sprites[i] instanceof Coin)) continue;
+            if (this.doesOverlapSprite(sprites[i])) {
+                if (sprites[i] instanceof Coin) {
+                    sprites[i].kill();
+                    continue;
+                }
+                var xOff = this.x - sprites[i].x;
+                var yOff = this.y - sprites[i].y;
+                var blockedHoriz = Math.abs(xOff) + (sprites[i].height - sprites[i].width) / 2 >= Math.abs(yOff);
+
+                if (blockedHoriz) {
+                    if (this.x > sprites[i].x) {
+                        if (this.dx < 0) this.dx = 0;
+                        this.setLeft(sprites[i].getRight());
+                        blocked.push(sprites[i]);
+                    }
+                    else {
+                        if (this.dx > 0) this.dx = 0;
+                        this.setRight(sprites[i].getLeft());
+                        blocked.push(sprites[i]);
+                    }
+                }
+                else {
+                    if (keyboardState.isDownPressed() && sprites[i] instanceof Gerbil && this instanceof Gerbil) continue;
+                    if (this.y < sprites[i].y) {
+                        if (sprites[i].onStomp) {
+                            sprites[i].onStomp(this);
+                            continue;
+                        } else {
+                            this.isStanding = true;
+                            this.riding = sprites[i];
+                            this.setBottom(sprites[i].getTop());
+                            this.dy = sprites[i].dy;
+                            blocked.push(sprites[i]);
+                        }
+                    } else {
+                        if (sprites[i] instanceof Wall /*|| sprites[i] instanceof Scale*/) this.setTop(sprites[i].getBottom());
+                        if (this.dy < 0) {
+                            this.dy = 0;
+                        }
+                        blocked.push(sprites[i]);
+                    }
+                }
+                if (sprites[i].deadly) {
+                    this.killGerbil();
+                    return;
+                }
+            }
+        }
+        return blocked;
+    }
 
     this.handleInput = function () {
         this.moveDirection = 0;

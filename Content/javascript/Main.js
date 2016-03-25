@@ -130,6 +130,9 @@ function MainDrawLoop() {
     for (var i = sprites.length - 1; i >= 0; i--)
         if (sprites[i] && !sprites[i].active)
             sprites[i].delete();
+    for (var i = particleEffects.length - 1; i >= 0; i--)
+        if (particleEffects[i] && !particleEffects[i].active)
+            particleEffects[i].delete();
 
     camera.updateCamera();
 
@@ -145,6 +148,9 @@ function MainDrawLoop() {
         if (sprites[i].background) continue;
         sprites[i].prepareDraw();
         sprites[i].draw();
+    }
+    for (var i = 0; i < particleEffects.length; i++) {
+        particleEffects[i].draw();
     }
 
     

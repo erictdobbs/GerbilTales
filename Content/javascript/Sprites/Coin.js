@@ -1,6 +1,7 @@
 ﻿function EditorCoin(x, y) {
     this.name = "Coin";
     this.description = "Cha-ching!";
+    this.solid = false;
 
     EditorBase.call(this, x, y, 1, 1);
 

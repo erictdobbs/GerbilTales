@@ -415,11 +415,17 @@ function LevelSelectMenu() {
     var options = [title];
 
     var selectableLevels = [];
+    var levelRow = [];
     for (var i = 0; i < levels.length; i++) {
         var level = levels[i];
-        selectableLevels.push(GetLevelPlayButton(i).toNode());
+        levelRow.push(GetLevelPlayButton(i).toNode());
+        if (levelRow.length >= 5) {
+            selectableLevels.push(levelRow);
+            levelRow = [];
+        }
     }
-    options.push(new MenuTable([selectableLevels]));
+    selectableLevels.push(levelRow);
+    options.push(new MenuTable(selectableLevels));
     options.push(playCustomButton);
     options.push(backToMainMenu);
 

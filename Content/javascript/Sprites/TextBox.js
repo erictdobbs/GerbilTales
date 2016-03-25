@@ -41,11 +41,11 @@ function TextBox(x, y, text) {
     };
 
     this.draw = function () {
+        var fontSize = 25;
         gameViewContext.font = fontSize + "px Arial";
         var textWidth = gameViewContext.measureText(this.text).width;
         var left = camera.convertX(this.x) - textWidth/2;
         var top = camera.convertY(this.y);
-        var fontSize = 25;
         var margin = 8;
 
         var cameraXDistance = camera.x - this.x;

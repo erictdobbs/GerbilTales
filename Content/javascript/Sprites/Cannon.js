@@ -47,7 +47,14 @@ function Cannon(x, y, width, height, dir, speed, powerSource) {
         var isPowered = false;
         if (this.powerSource) isPowered = this.powerSource.power > 0;
         if (!this.isPowered && isPowered) {
-            sprites.push(new Cannonball(this.x - 12 / 2, this.y - 12 / 2, 12, 12, this.direction, this.speed));
+            var xOffset = 0;
+            if (this.direction == direction.right) xOffset = 12;
+            if (this.direction == direction.left) xOffset = -12;
+            var yOffset = -2;
+            if (this.direction == direction.down) yOffset = 12;
+            if (this.direction == direction.up) yOffset = -12;
+            sprites.push(new Cannonball(this.x - 12 / 2 + xOffset, this.y - 12 / 2 + yOffset, 12, 12, this.direction, this.speed));
+            particleEffects.push(new Cannonblast(this.x + xOffset, this.y + yOffset, this.direction));
         }
         this.isPowered = isPowered;
     };

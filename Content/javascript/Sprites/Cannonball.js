@@ -25,6 +25,11 @@
         }
     };
 
+    this.onStomp = function (stomper) {
+        this.kill();
+        stomper.dy = -5;
+    }
+
     this.imageSource = document.getElementById("Cannonball");
 
     this.draw = function () {
