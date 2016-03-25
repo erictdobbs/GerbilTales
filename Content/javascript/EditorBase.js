@@ -156,7 +156,7 @@ function EditorInputChangedInteger(el) {
     ValidateEditableValue(selectedSprite);
 };
 function EditorInputChangedDecimal(el) {
-    selectedSprite[el.id] = el.value;
+    selectedSprite[el.id] = parseFloat(el.value);
     ValidateEditableValue(selectedSprite);
 };
 function EditorInputChangedBoolean(el) {

@@ -123,3 +123,7 @@ canvas {
     outline: 5px solid white;
     outline-offset: 3px;
 }
+
+li {
+    text-align: left;
+}

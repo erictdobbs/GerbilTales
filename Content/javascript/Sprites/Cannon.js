@@ -1,10 +1,9 @@
 ﻿function EditorCannon(x, y, width, height) {
     this.name = "Cannon";
-    this.description = "When powered, fires gerbil-sized cannonballs at the specified interval.";
+    this.description = "When powered, fires gerbil-sized cannonballs.";
 
     this.speed = 3;
     this.direction = direction.right;
-    this.ticksPerShot = 150;
     this.powerSource = null;
 
     EditorBase.call(this, x, y, width, height);
@@ -13,7 +12,6 @@
     this.editables.push(new Editable('tileY', paramTypes.integer));
     this.editables.push(new Editable('speed', paramTypes.decimal, ValidateMin1));
     this.editables.push(new Editable('direction', paramTypes.direction));
-    this.editables.push(new Editable('ticksPerShot', paramTypes.integer, ValidateMin1));
     this.editables.push(new Editable('powerSource', paramTypes.powerSource));
 
     this.anchors = [new CenterAnchor(this)];
@@ -23,7 +21,7 @@
             parseInt(this.tileY) * editorScale,
             parseInt(this.width + this.tileX - parseInt(this.tileX)) * editorScale,
             parseInt(this.height + this.tileY - parseInt(this.tileY)) * editorScale,
-            this.direction, this.speed, this.ticksPerShot, this.powerSource);
+            this.direction, this.speed, this.powerSource);
     }
 }
 EditorCannon.prototype = new EditorBase();
@@ -34,40 +32,32 @@ editorObjectTypes.push(
 );
 
 
-function Cannon(x, y, width, height, dir, speed, ticksPerShot, powerSource) {
+function Cannon(x, y, width, height, dir, speed, powerSource) {
     SpriteBase.call(this, x + width / 2, y + height / 2);
     this.width = width;
     this.height = height;
     this.direction = dir;
     this.speed = speed;
-    this.ticksPerShot = ticksPerShot;
-    this.timer = 0;
+    this.isPowered = false;
     this.powerSource = powerSource;
 
     this.solid = true;
 
-    this.color = new Color(255, 100, 128, 1.0);
-    this.borderColor = new Color(150, 80, 80, 1.0);
-
     this.executeRules = function () {
-        var isOn = false;
-        if (this.powerSource) isOn = this.powerSource.power > 0;
-        if (isOn) this.timer++;
-        if (this.timer > this.ticksPerShot) {
-            this.timer = 0;
-            sprites.push(new Cannonball(x, y, 12, 12, this.direction, this.speed));
+        var isPowered = false;
+        if (this.powerSource) isPowered = this.powerSource.power > 0;
+        if (!this.isPowered && isPowered) {
+            sprites.push(new Cannonball(this.x - 12 / 2, this.y - 12 / 2, 12, 12, this.direction, this.speed));
         }
+        this.isPowered = isPowered;
     };
 
     this.imageSource = document.getElementById("Cannon");
 
     this.color = new Color(100, 255, 128, 1.0);
     this.draw = function () {
-        var x = (this.direction == direction.right ? 0 : 16);
-        console.log(x, this.direction, direction.right);
+        var x = (this.direction / 90 * 16);
         this.camera.drawImage(this.imageSource, x, 0, editorScale, editorScale, this.getLeft(), this.getTop(), this.width, this.height);
-        gameViewContext.fillStyle = this.color.toString();
-        this.camera.fillRect(this.getLeft(), this.getBottom() - 1, (this.width) * (this.timer / this.ticksPerShot), 1);
     }
 }
 Cannon.prototype = new SpriteBase();

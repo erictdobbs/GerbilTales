@@ -5,6 +5,8 @@
     this.solid = true;
     this.speed = speed;
 
+    this.timer = 0;
+
     this.direction = directionOfMotion;
 
     this.deadly = true;
@@ -17,6 +19,9 @@
 
         if (this.getSpritesOverlappingCenter().any(function (s) { return !(s instanceof Cannon || s instanceof Gerbil) })) {
             this.kill();
+        } else {
+            this.timer++;
+            if (this.timer > 500 / this.speed) this.kill();
         }
     };
 

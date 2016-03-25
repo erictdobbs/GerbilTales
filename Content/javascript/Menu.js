@@ -127,6 +127,21 @@ function MenuText(text) {
 }
 
 
+function MenuUnorderedList(items) {
+    this.items = items;
+    this.toNode = function (menu) {
+        var el = document.createElement("ul");
+        for (var i = 0; i < this.items.length; i++) {
+            var t = document.createTextNode(this.items[i]);
+            var li = document.createElement("li");
+            li.appendChild(t);
+            el.appendChild(li);
+        }
+        return el;
+    }
+}
+
+
 function MenuTextInput(text, readOnly) {
     this.text = text;
     this.readOnly = readOnly;
@@ -260,6 +275,11 @@ function MainMenu() {
         camera.x = 0;
         camera.y = 0;
     });
+    var changelog = new MenuActionButton("Version " + version, function () {
+        GetMenuObjectFromElement(this).close();
+        var changelogMenu = new ChangeLogMenu();
+        changelogMenu.display();
+    });
     var logo = new MenuImage(document.getElementById('StudioLogo')).toNode();
     logo.style.float = 'left';
     logo.style.margin = '20px';
@@ -268,11 +288,34 @@ function MainMenu() {
         gameLogo,
         levelSelect,
         startLevelEditor,
-        new MenuTable([[logo, new MenuText("version " + version).toNode()]])
+        new MenuTable([[logo, changelog.toNode() /*new MenuText("version " + version).toNode()*/]])
     ]);
 }
 MainMenu.prototype = new MenuBase();
 MainMenu.prototype.constructor = MainMenu;
+
+
+
+function ChangeLogMenu() {
+    var backToMainMenu = new MenuActionButton("Back to Main Menu", function () {
+        var mainMenu = new MainMenu();
+        mainMenu.display();
+        GetMenuObjectFromElement(this).close();
+    });
+    MenuBase.call(this, 400, null, [
+        new MenuFancyText('Change Log'),
+        new MenuTitle('Version 0.1'),
+        new MenuUnorderedList([
+            'New game element: cannons! (available in the editor)',
+            'Game window now resizes on orientation change for mobile devices (still no mobile controls available)',
+            'Fixed bug where the editor panel did not intialize to the correct value for power source parameters',
+            'Two new levels! One shows off the clock element, the other combines that with the new cannon element'
+        ]),
+        backToMainMenu
+    ]);
+}
+ChangeLogMenu.prototype = new MenuBase();
+ChangeLogMenu.prototype.constructor = ChangeLogMenu;
 
 
 
