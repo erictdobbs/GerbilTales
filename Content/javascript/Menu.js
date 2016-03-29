@@ -255,7 +255,6 @@ function CloseAllMenus() {
 
 
 function MainMenu() {
-    //var gameLogo = new MenuImage(document.getElementById('GameLogo'))
     var gameLogo = new MenuFancyText('Gerbil Tales!');
     editorSprites = [];
     sprites = [];
@@ -275,10 +274,13 @@ function MainMenu() {
         camera.x = 0;
         camera.y = 0;
     });
-    var changelog = new MenuActionButton("Version " + version, function () {
+    var changelog = new MenuActionButtonSmall("Version " + version, function () {
         GetMenuObjectFromElement(this).close();
         var changelogMenu = new ChangeLogMenu();
         changelogMenu.display();
+    });
+    var survey = new MenuActionButtonSmall("Suggest the next feature!", function () {
+        window.open("https://docs.google.com/forms/d/1mdYA7JvVHHST7_a0X2rHhvfoRM30ouJDBsUItzSSQto/viewform");
     });
     var logo = new MenuImage(document.getElementById('StudioLogo')).toNode();
     logo.style.float = 'left';
@@ -288,7 +290,7 @@ function MainMenu() {
         gameLogo,
         levelSelect,
         startLevelEditor,
-        new MenuTable([[logo, changelog.toNode() /*new MenuText("version " + version).toNode()*/]])
+        new MenuTable([[logo, survey.toNode(), changelog.toNode() /*new MenuText("version " + version).toNode()*/]])
     ]);
 }
 MainMenu.prototype = new MenuBase();
@@ -304,6 +306,13 @@ function ChangeLogMenu() {
     });
     MenuBase.call(this, 400, null, [
         new MenuFancyText('Change Log'),
+        new MenuTitle('Version 0.2'),
+        new MenuUnorderedList([
+            'New game element: background walls to pretty up levels!',
+            'Mobile controls now available (though a little shaky)',
+            'Gerbils can now jump off of cannonballs for an extra high jump',
+            'Cannonballs now come with a fancy blast of smoke' 
+        ]),
         new MenuTitle('Version 0.1'),
         new MenuUnorderedList([
             'New game element: cannons! (available in the editor)',
@@ -321,6 +330,7 @@ ChangeLogMenu.prototype.constructor = ChangeLogMenu;
 
 function ToolMenu() {
     var tools = [];
+    var toolRow = [];
     for (var i = 0; i < editorObjectTypes.length; i++) {
         var button = new MenuActionButtonSmall(
             editorObjectTypes[i].name,
@@ -328,11 +338,16 @@ function ToolMenu() {
         );
         var buttonNode = button.toNode();
         buttonNode.setAttribute("editorObjectIndex", i);
-        tools.push(buttonNode);
+        toolRow.push(buttonNode);
+        if (toolRow.length >= 11) {
+            tools.push(toolRow);
+            toolRow = [];
+        }
     }
+    tools.push(toolRow);
 
     MenuBase.call(this, null, null, [
-        new MenuTable([tools])
+        new MenuTable(tools)
     ]);
     this.anchorType = anchorType.topleft;
 }

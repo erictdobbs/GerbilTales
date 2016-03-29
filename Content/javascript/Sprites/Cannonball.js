@@ -17,7 +17,7 @@
         if (this.direction == direction.down) this.y += this.speed;
         if (this.direction == direction.up) this.y -= this.speed;
 
-        if (this.getSpritesOverlappingCenter().any(function (s) { return !(s instanceof Cannon || s instanceof Gerbil) })) {
+        if (this.getSpritesOverlappingCenter().any(function (s) { return s.solid })) {
             this.kill();
         } else {
             this.timer++;

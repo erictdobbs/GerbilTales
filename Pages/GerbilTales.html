@@ -32,6 +32,7 @@
     <script type="text/javascript" src="../Content/javascript/Sprites/Button.js"></script>
     <script type="text/javascript" src="../Content/javascript/Sprites/Clock.js"></script>
     <script type="text/javascript" src="../Content/javascript/Sprites/Wall.js"></script>
+    <script type="text/javascript" src="../Content/javascript/Sprites/BackgroundWall.js"></script>
     <script type="text/javascript" src="../Content/javascript/Sprites/Coin.js"></script>
     <script type="text/javascript" src="../Content/javascript/Sprites/LogicAnd.js"></script>
     <script type="text/javascript" src="../Content/javascript/Sprites/LogicOr.js"></script>
@@ -49,6 +50,7 @@
     <script type="text/javascript" src="../Content/javascript/ParticleEffects/Cannonblast.js"></script>
 
     <script type="text/javascript" src="../Content/javascript/Main.js"></script>
+    <script type="text/javascript" src="../Content/javascript/MobileHandler.js"></script>
     <style>
         @font-face {
             font-family: 'Candy Shop Black';
@@ -66,6 +68,11 @@
         <span style="font-family:'Candy Shop Black'; position:fixed;">&nbsp;</span>
     </div>
 
+    <div id="touchLeftButton" class="touchButton hidden"></div>
+    <div id="touchRightButton" class="touchButton hidden"></div>
+    <div id="touchJumpButton" class="touchButton hidden"></div>
+
+
     <!-- Image files -->
     <div class="hidden">
         <canvas id="textDraw" width="800" height="120"></canvas>
@@ -73,8 +80,8 @@
         <img class="graphicSheet" id="Coin" data-cellwidth="16" data-cellheight="16" src="../Content/Images/coin.png" />
         <img class="graphicSheet" id="Background1" src="../Content/Images/background1.jpg" />
         <img class="graphicSheet" id="StudioLogo" src="../Content/Images/StudioLogo.png" />
-        <img class="graphicSheet" id="GameLogo" src="../Content/Images/GerbilTalesLogo.png" />
         <img class="graphicSheet" id="TextureGrassy" src="../Content/Images/TextureGrassy.png" />
+        <img class="graphicSheet" id="TextureDirtBackground" src="../Content/Images/TextureDirtBackground.png" />
         <img class="graphicSheet" id="TextureStone" src="../Content/Images/TextureStone.png" />
         <img class="graphicSheet" id="TextureStoneRecessed" src="../Content/Images/TextureStoneRecessed.png" />
         <img class="graphicSheet" id="SpikeBlock" src="../Content/Images/SpikeBlock.png" />

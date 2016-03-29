@@ -47,7 +47,7 @@ function ImportLevel(levelString) {
 }
 
 function LoadLevel(levelObject) {
-    if (levelObject.v === '0.01' || levelObject.v === '0.1') {
+    if (true /* levelObject.v === '0.01' || levelObject.v === '0.1' */) {
         sprites = [];
         editorSprites = [];
         selectedSprite = null;

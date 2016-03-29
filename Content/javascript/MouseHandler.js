@@ -9,6 +9,10 @@ function onMouseScroll(e) {
 }
 
 function onMouseDown(e) {
+    var freeze = false;
+    if (isMobile && !m_isMouseClicked) {
+        freeze = true;
+    }
     if (e.button === undefined || e.button === 0) {
         m_isMouseClicked = true;
 
@@ -17,6 +21,7 @@ function onMouseDown(e) {
         var pageX = e.pageX;
         var pageY = e.pageY;
         if (e.touches) {
+            if (!isMobile) SwitchToMobileMode();
             pageX = e.touches[0].pageX;
             pageY = e.touches[0].pageY;
         }
@@ -30,6 +35,12 @@ function onMouseDown(e) {
 
         m_mouseX = x;
         m_mouseY = y;
+    }
+    if (freeze) {
+        oldMouseX = m_mouseX;
+        oldMouseY = m_mouseY;
+        mouseDeltaX = 0;
+        mouseDeltaY = 0;
     }
 }
 

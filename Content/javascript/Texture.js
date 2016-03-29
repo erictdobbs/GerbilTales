@@ -94,6 +94,32 @@ GrassyTexture.prototype = new Texture();
 GrassyTexture.prototype.constructor = GrassyTexture;
 
 
+function DirtBackgroundTexture() {
+    var imageSource = document.getElementById("TextureDirtBackground");
+    var tileTypes = {
+        topLeft: [{ x: 0, y: 0 }],
+        top: [{ x: 1, y: 0 }],
+        topRight: [{ x: 2, y: 0 }],
+        left: [{ x: 0, y: 1 }],
+        center: [{ x: 1, y: 1 }],
+        right: [{ x: 2, y: 1 }],
+        bottomLeft: [{ x: 0, y: 2 }],
+        bottom: [{ x: 1, y: 2 }],
+        bottomRight: [{ x: 2, y: 2 }],
+        leftHorizontalWedge: [{ x: 4, y: 0 }],
+        centerHorizontalWedge: [{ x: 5, y: 0 }],
+        rightHorizontalWedge: [{ x: 6, y: 0 }],
+        topVerticalWedge: [{ x: 3, y: 0 }],
+        centerVerticalWedge: [{ x: 3, y: 1 }],
+        bottomVerticalWedge: [{ x: 3, y: 2 }],
+        block: [{ x: 4, y: 1 }]
+    };
+    Texture.call(this, imageSource, tileTypes);
+}
+DirtBackgroundTexture.prototype = new Texture();
+DirtBackgroundTexture.prototype.constructor = GrassyTexture;
+
+
 function StoneTexture() {
     var imageSource = document.getElementById("TextureStone");
     var tileTypes = {

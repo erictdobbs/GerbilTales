@@ -44,6 +44,7 @@ function InitializeGameEngine() {
     gameView.addEventListener("touchend", onMouseUp, false);
     gameView.addEventListener("wheel", onMouseScroll, false);
     gameView.oncontextmenu = function (e) { e.preventDefault(); };
+    InitializeTableControls();
 
     gameView.onmousedown = function (e) {
         e = e || window.event;
@@ -160,6 +161,11 @@ function MainDrawLoop() {
             camera.drawPowerConnection(editorSprites[i]);
         }
         for (var i = 0; i < editorSprites.length; i++) {
+            if (!editorSprites[i].background) continue;
+            editorSprites[i].draw();
+        }
+        for (var i = 0; i < editorSprites.length; i++) {
+            if (editorSprites[i].background) continue;
             editorSprites[i].draw();
         }
         camera.drawEditorGridLines();
