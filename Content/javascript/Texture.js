@@ -198,3 +198,54 @@ function FanTexture() {
 }
 FanTexture.prototype = new Texture();
 FanTexture.prototype.constructor = FanTexture;
+
+
+
+
+function ConveyorTexture1() {
+    var imageSource = document.getElementById("Conveyor");
+    var tileTypes = {
+        leftHorizontalWedge: [{ x: 0, y: 0 }],
+        centerHorizontalWedge: [{ x: 1, y: 0 }],
+        rightHorizontalWedge: [{ x: 2, y: 0 }]
+    };
+    Texture.call(this, imageSource, tileTypes);
+}
+ConveyorTexture1.prototype = new Texture();
+ConveyorTexture1.prototype.constructor = ConveyorTexture1;
+
+function ConveyorTexture2() {
+    var imageSource = document.getElementById("Conveyor");
+    var tileTypes = {
+        leftHorizontalWedge: [{ x: 0, y: 1 }],
+        centerHorizontalWedge: [{ x: 1, y: 1 }],
+        rightHorizontalWedge: [{ x: 2, y: 1 }]
+    };
+    Texture.call(this, imageSource, tileTypes);
+}
+ConveyorTexture2.prototype = new Texture();
+ConveyorTexture2.prototype.constructor = ConveyorTexture2;
+
+function ConveyorTexture3() {
+    var imageSource = document.getElementById("Conveyor");
+    var tileTypes = {
+        leftHorizontalWedge: [{ x: 0, y: 2 }],
+        centerHorizontalWedge: [{ x: 1, y: 2 }],
+        rightHorizontalWedge: [{ x: 2, y: 2 }]
+    };
+    Texture.call(this, imageSource, tileTypes);
+}
+ConveyorTexture3.prototype = new Texture();
+ConveyorTexture3.prototype.constructor = ConveyorTexture3;
+
+function ConveyorTexture4() {
+    var imageSource = document.getElementById("Conveyor");
+    var tileTypes = {
+        leftHorizontalWedge: [{ x: 0, y: 3 }],
+        centerHorizontalWedge: [{ x: 1, y: 3 }],
+        rightHorizontalWedge: [{ x: 2, y: 3 }]
+    };
+    Texture.call(this, imageSource, tileTypes);
+}
+ConveyorTexture4.prototype = new Texture();
+ConveyorTexture4.prototype.constructor = ConveyorTexture4;

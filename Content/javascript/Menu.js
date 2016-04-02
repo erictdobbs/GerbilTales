@@ -286,11 +286,15 @@ function MainMenu() {
     logo.style.float = 'left';
     logo.style.margin = '20px';
 
-    MenuBase.call(this, 600, 300, [
+    var subredditButton = new MenuActionButtonSmall("Visit the Subreddit!", function () {
+        window.open("https://www.reddit.com/r/gerbiltales/");
+    });
+
+    MenuBase.call(this, 600, null, [
         gameLogo,
         levelSelect,
         startLevelEditor,
-        new MenuTable([[logo, survey.toNode(), changelog.toNode() /*new MenuText("version " + version).toNode()*/]])
+        new MenuTable([[logo, new MenuTable([[survey.toNode()], [subredditButton.toNode()], [changelog.toNode()]]).toNode()]])
     ]);
 }
 MainMenu.prototype = new MenuBase();
@@ -304,24 +308,16 @@ function ChangeLogMenu() {
         mainMenu.display();
         GetMenuObjectFromElement(this).close();
     });
-    MenuBase.call(this, 400, null, [
-        new MenuFancyText('Change Log'),
-        new MenuTitle('Version 0.2'),
-        new MenuUnorderedList([
-            'New game element: background walls to pretty up levels!',
-            'Mobile controls now available (though a little shaky)',
-            'Gerbils can now jump off of cannonballs for an extra high jump',
-            'Cannonballs now come with a fancy blast of smoke' 
-        ]),
-        new MenuTitle('Version 0.1'),
-        new MenuUnorderedList([
-            'New game element: cannons! (available in the editor)',
-            'Game window now resizes on orientation change for mobile devices (still no mobile controls available)',
-            'Fixed bug where the editor panel did not intialize to the correct value for power source parameters',
-            'Two new levels! One shows off the clock element, the other combines that with the new cannon element'
-        ]),
-        backToMainMenu
-    ]);
+
+    var changes = [];
+    changes.push(new MenuFancyText('Change Log'));
+    for (var i = 0; i < versionHistory.length; i++) {
+        changes.push(new MenuTitle('Version ' + versionHistory[i].v));
+        changes.push(new MenuUnorderedList(versionHistory[i].changes));
+    }
+    changes.push(backToMainMenu);
+
+    MenuBase.call(this, 400, null, changes);
 }
 ChangeLogMenu.prototype = new MenuBase();
 ChangeLogMenu.prototype.constructor = ChangeLogMenu;
