@@ -23,7 +23,7 @@
         var condensedEditorSprite = { a: editorObjectTypeIndex, e: [] };
         for (var j = 0; j < editorSprite.editables.length; j++) {
             var editable = editorSprite.editables[j];
-            if (editable.paramType == paramTypes.powerSource) {
+            if (editable.paramType.isSpriteType) {
                 var val = editorSprites.indexOf(editorSprite[editable.paramName]);
                 condensedEditorSprite.e.push(val);
             } else {
@@ -64,7 +64,7 @@ function LoadLevel(levelObject) {
                 var editable = spr.editables.filter(function (x) { return x.paramName == manifest.e[j] })[0];
                 if (!editable) continue;
                 var paramType = editable.paramType;
-                if (paramType == paramTypes.powerSource) continue;
+                if (paramType.isSpriteType) continue;
                 var paramName = editable.paramName;
                 spr[paramName] = importSprite.e[j];
             }
@@ -78,7 +78,7 @@ function LoadLevel(levelObject) {
                 var editable = spr.editables.filter(function (x) { return x.paramName == manifest.e[j] })[0];
                 if (!editable) continue;
                 var paramType = editable.paramType;
-                if (paramType != paramTypes.powerSource) continue;
+                if (!paramType.isSpriteType) continue;
                 var paramName = editable.paramName;
                 spr[paramName] = editorSprites[importSprite.e[j]];
             }

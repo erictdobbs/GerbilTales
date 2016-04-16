@@ -1,6 +1,7 @@
 ﻿function EditorCannon(x, y, width, height) {
     this.name = "Cannon";
     this.description = "When powered, fires gerbil-sized cannonballs.";
+    this.isMovable = true;
 
     this.speed = 3;
     this.direction = direction.right;
@@ -40,6 +41,7 @@ function Cannon(x, y, width, height, dir, speed, powerSource) {
     this.speed = speed;
     this.isPowered = false;
     this.powerSource = powerSource;
+    this.isMovable = true;
 
     this.solid = true;
 

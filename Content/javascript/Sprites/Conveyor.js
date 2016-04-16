@@ -1,6 +1,7 @@
 ﻿function EditorConveyor(x, y, width, height) {
     this.name = "Conveyor Belt";
     this.description = "Moves gerbils around. Takes input1 for speed (stopped at 0, full speed at 1) and input2 for direction (left at 0, right for >0).";
+    this.isMovable = true;
 
     EditorBase.call(this, x, y, width, height);
 

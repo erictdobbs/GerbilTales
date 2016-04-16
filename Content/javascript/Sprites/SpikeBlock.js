@@ -1,6 +1,7 @@
 ﻿function EditorSpikeBlock(x, y, width, height) {
     this.name = "Spike Block";
     this.description = "Thorny and deadly to gerbils.";
+    this.isMovable = true;
 
     EditorBase.call(this, x, y, width, height);
 
@@ -28,6 +29,7 @@ function SpikeBlock(x, y, width, height) {
     SpriteBase.call(this, x + width / 2, y + height / 2);
     this.width = width;
     this.height = height;
+    this.isMovable = true;
 
     this.deadly = true;
 

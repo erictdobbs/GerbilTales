@@ -2,6 +2,7 @@
     this.name = "Button";
     this.description = "Acts as a power source based on the number of gerbils stacked on top.";
     this.neededPush = 1;
+    this.isMovable = true;
 
     EditorBase.call(this, x, y, width, 1);
 
@@ -35,6 +36,7 @@ function Button(x, y, width, height) {
     SpriteBase.call(this, x + width / 2, y + height / 2);
     this.width = width;
     this.height = height;
+    this.isMovable = true;
 
     this.color = new Color(100, 255, 128, 1.0);
 
@@ -45,6 +47,7 @@ function Button(x, y, width, height) {
     this.executeRules = function () {
         this.pushers = this.getCumulativeRiders();
         this.power = this.pushers.length / this.neededPush;
+        if (this.power > 1) this.power = 1;
     };
 
     this.texture = new ButtonTexture();

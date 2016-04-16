@@ -1,6 +1,7 @@
 ﻿function EditorWall(x, y, width, height) {
     this.name = "Wall";
     this.description = "Your basic solid object";
+    this.isMovable = true;
 
     EditorBase.call(this, x, y, width, height);
 
@@ -30,6 +31,7 @@ function Wall(x, y, width, height) {
     SpriteBase.call(this, x + width / 2, y + height / 2);
     this.width = width;
     this.height = height;
+    this.isMovable = true;
 
     this.color = new Color(100, 100, 128, 1.0);
     this.borderColor = new Color(80, 80, 80, 1.0);

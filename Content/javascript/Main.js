@@ -123,58 +123,55 @@ function MainDrawLoop() {
     var debugPressed = keyboardState.isKeyPressed(keyboardState.key.M);
     if (!debugPressed) debugKeyStep = false;
 
+    StartLog("sprites-executeRules");
     for (var i = 0; i < sprites.length; i++)
         if (sprites[i] && sprites[i].active)
             if (mode != gameMode.playPaused || (debugPressed && !debugKeyStep)) {
                 sprites[i].executeRules();
             }
+    StartLog("sprites-delete");
     for (var i = sprites.length - 1; i >= 0; i--)
         if (sprites[i] && !sprites[i].active)
-            sprites[i].delete();
+    sprites[i].delete();
+    StartLog("particleEffects-delete");
     for (var i = particleEffects.length - 1; i >= 0; i--)
         if (particleEffects[i] && !particleEffects[i].active)
             particleEffects[i].delete();
 
+    StartLog("camera-update");
     camera.updateCamera();
 
+    StartLog("PowerConnection-draw");
     for (var i = 0; i < sprites.length; i++) {
         camera.drawPowerConnection(sprites[i]);
     }
-    for (var i = 0; i < sprites.length; i++) {
-        if (!sprites[i].background) continue;
-        sprites[i].prepareDraw();
-        sprites[i].draw();
+    StartLog("sprites-draw");
+    for (var z = -5; z <= 5; z++) {
+        for (var i = 0; i < sprites.length; i++) {
+            if (sprites[i].zIndex != z) continue;
+            sprites[i].prepareDraw();
+            sprites[i].draw();
+        }
     }
-    for (var i = 0; i < sprites.length; i++) {
-        if (sprites[i].background) continue;
-        sprites[i].prepareDraw();
-        sprites[i].draw();
-    }
+    //for (var i = 0; i < sprites.length; i++) {
+    //    if (!sprites[i].background) continue;
+    //    sprites[i].prepareDraw();
+    //    sprites[i].draw();
+    //}
+    //for (var i = 0; i < sprites.length; i++) {
+    //    if (sprites[i].background) continue;
+    //    sprites[i].prepareDraw();
+    //    sprites[i].draw();
+    //}
+    StartLog("particleEffects-draw");
     for (var i = 0; i < particleEffects.length; i++) {
         particleEffects[i].draw();
     }
+    EndLog();
 
     
     if (mode == gameMode.edit) {
-        HandleAnchors();
-        for (var i = 0; i < editorSprites.length; i++) {
-            camera.drawPowerConnection(editorSprites[i]);
-        }
-        for (var i = 0; i < editorSprites.length; i++) {
-            if (!editorSprites[i].background) continue;
-            editorSprites[i].draw();
-        }
-        for (var i = 0; i < editorSprites.length; i++) {
-            if (editorSprites[i].background) continue;
-            editorSprites[i].draw();
-        }
-        camera.drawEditorGridLines();
-        if (selectedSprite) selectedSprite.drawAnchors();
-
-        gameViewContext.strokeStyle = 'rgba(255,255,255,0.5)';
-        gameViewContext.lineWidth = 3;
-        camera.drawLine(camera.x - 8, camera.y - 8, camera.x + 8, camera.y + 8);
-        camera.drawLine(camera.x + 8, camera.y - 8, camera.x - 8, camera.y + 8);
+        EditorDraw();
     }
 
     if (debugPressed) debugKeyStep = true;
@@ -182,3 +179,31 @@ function MainDrawLoop() {
     CheckForDeadState();
 }
 
+function EditorDraw() {
+    StartLog("handleAnchors");
+    HandleAnchors();
+    StartLog("editorSprites-executeRules");
+    for (var i = 0; i < editorSprites.length; i++) {
+        if (editorSprites[i].executeRules)
+            editorSprites[i].executeRules();
+    }
+    StartLog("editorSprites-drawPowerConnection");
+    for (var i = 0; i < editorSprites.length; i++) {
+        camera.drawPowerConnection(editorSprites[i]);
+    }
+    StartLog("editorSprites-draw");
+    for (var z = -5; z <= 5; z++) {
+        for (var i = 0; i < editorSprites.length; i++) {
+            if (editorSprites[i].zIndex != z) continue;
+            editorSprites[i].draw();
+        }
+    }
+    EndLog();
+    camera.drawEditorGridLines();
+    if (selectedSprite) selectedSprite.drawAnchors();
+
+    gameViewContext.strokeStyle = 'rgba(255,255,255,0.5)';
+    gameViewContext.lineWidth = 3;
+    camera.drawLine(camera.x - 8, camera.y - 8, camera.x + 8, camera.y + 8);
+    camera.drawLine(camera.x + 8, camera.y - 8, camera.x - 8, camera.y + 8);
+}

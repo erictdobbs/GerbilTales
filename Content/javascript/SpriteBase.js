@@ -13,6 +13,7 @@ function SpriteBase(x, y) {
     this.y = y;
     this.height = 16;
     this.width = 16;
+    this.zIndex = 0;
 
     this.dx = 0;
     this.dy = 0;

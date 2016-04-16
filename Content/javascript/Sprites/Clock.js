@@ -7,6 +7,7 @@
     this.timeOn = 25;
     this.timeOff = 25;
     this.startingTick = 0;
+    this.isMovable = true;
 
     this.isPowerSource = true;
     this.editables.push(new Editable('tileX', paramTypes.integer));
@@ -40,6 +41,7 @@ function Clock(x, y, diameter) {
     SpriteBase.call(this, x, y);
     this.width = diameter;
     this.height = diameter;
+    this.isMovable = true;
 
     this.poweredColor = new Color(50, 192, 50, 1.0);
     this.color = new Color(128, 192, 192, 1.0);

@@ -88,7 +88,7 @@ function SwitchToPlayMode(inEditor) {
         var editorSprite = editorSprites[i];
         for (var j = 0; j < editorSprite.editables.length; j++) {
             var editable = editorSprite.editables[j];
-            if (editable.paramType == paramTypes.powerSource) {
+            if (editable.paramType.isSpriteType) {
                 var paramName = editable.paramName;
                 var spriteIndex = editorSprites.indexOf(editorSprite[paramName]);
                 sprites[i][paramName] = sprites[spriteIndex];
@@ -104,9 +104,13 @@ function InsertEditorObject(index) {
 }
 
 function UpdateEditorPanel() {
-    for (var i = 0; i < menus.length; i++) if (menus[i] instanceof EditableMenu) menus[i].delete();
+    for (var i = 0; i < menus.length; i++)
+        if (menus[i] instanceof EditableMenu) {
+            menus[i].display();
+            return;
+        }
     var panel = new EditableMenu();
-    panel.display();;
+    panel.display();
 }
 
 function SelectEditorObject(index) {

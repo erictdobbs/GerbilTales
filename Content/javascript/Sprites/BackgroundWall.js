@@ -1,7 +1,9 @@
 ﻿function EditorBackgroundWall(x, y, width, height) {
     this.name = "BackgroundWall";
     this.description = "For a little extra flavor in your level. ";
-    this.background = true;
+    //this.background = true;
+
+    this.zIndex = -3;
 
     EditorBase.call(this, x, y, width, height);
 
@@ -32,7 +34,7 @@ function BackgroundWall(x, y, width, height) {
     this.width = width;
     this.height = height;
     this.solid = false;
-    this.background = true;
+    this.zIndex = -3;
 
     this.executeRules = function () {
     };

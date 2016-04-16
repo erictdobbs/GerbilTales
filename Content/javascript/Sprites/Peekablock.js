@@ -34,9 +34,7 @@ function Peekablock(x, y, width, height, powerSource) {
     SpriteBase.call(this, x + width / 2, y + height / 2);
     this.width = width;
     this.height = height;
-
-    this.background = false;
-
+    
     this.powerSource = powerSource;
 
     this.color = new Color(100, 100, 128, 1.0);
@@ -47,7 +45,8 @@ function Peekablock(x, y, width, height, powerSource) {
         var isOn = false;
         if (this.powerSource) isOn = this.powerSource.power > 0;
         this.solid = isOn;
-        this.background = !isOn;
+        this.zIndex = -1;
+        if (isOn) this.zIndex = 0;
     };
 
     this.textureOn = new StoneTexture();

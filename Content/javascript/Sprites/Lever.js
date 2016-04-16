@@ -1,6 +1,7 @@
 ﻿function EditorLever(x, y) {
     this.name = "Lever";
     this.description = "Togglable power source. A nearby gerbil can switch it with the up key (default 'W').";
+    this.isMovable = true;
 
     this.isPowerSource = true;
     this.startOn = false;
@@ -29,6 +30,7 @@ editorObjectTypes.push(
 
 function Lever(x, y) {
     SpriteBase.call(this, x, y);
+    this.isMovable = true;
 
     this.solid = false;
     this.power = 0;
