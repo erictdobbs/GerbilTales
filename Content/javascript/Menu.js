@@ -283,6 +283,9 @@ function MainMenu() {
         window.open("https://docs.google.com/forms/d/1mdYA7JvVHHST7_a0X2rHhvfoRM30ouJDBsUItzSSQto/viewform");
     });
     var logo = new MenuImage(document.getElementById('StudioLogo')).toNode();
+    logo.onclick = function () {
+        window.open("http://www.thedobbsworks.com/");
+    }
     logo.style.float = 'left';
     logo.style.margin = '20px';
 
